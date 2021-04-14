@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, lxz Blog">
+    <meta name="keywords" content="Mysql笔记, lxz Blog">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | lxz Blog</title>
+    <title>Mysql笔记 | lxz Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">Mysql笔记</h1>
                 </div>
             </div>
         </div>
@@ -433,23 +433,22 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%8D%9A%E5%AE%A2/">
-                                <span class="chip bg-color">博客</span>
+                            <a href="/tags/DBA/">
+                                <span class="chip bg-color">DBA</span>
+                            </a>
+                        
+                            <a href="/tags/SQL/">
+                                <span class="chip bg-color">SQL</span>
+                            </a>
+                        
+                            <a href="/tags/Mysql/">
+                                <span class="chip bg-color">Mysql</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/" class="post-category">
-                                入门基础
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -458,7 +457,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-10
+                    2021-04-11
                 </div>
                 
 
@@ -467,14 +466,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    89
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -497,26 +496,139 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <h3 id="Mysql内置函数"><a href="#Mysql内置函数" class="headerlink" title="Mysql内置函数"></a>Mysql内置函数</h3><h4 id="1-数学函数"><a href="#1-数学函数" class="headerlink" title="1. 数学函数"></a>1. 数学函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">获取绝对值
+<span class="token keyword">select</span> ABS<span class="token punctuation">(</span><span class="token number">0.8</span><span class="token punctuation">)</span><span class="token punctuation">,</span>ABS<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.8</span><span class="token punctuation">)</span> <span class="token comment">#返回绝对值 8,8</span>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+向上取整
+<span class="token keyword">SELECT</span> CEILING<span class="token punctuation">(</span><span class="token number">4.1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>CEIL<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">2.1</span><span class="token punctuation">)</span> <span class="token comment">#返回大于该值的最小整数 5,-2</span>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+向下取整
+<span class="token keyword">SELECT</span> FLOOR<span class="token punctuation">(</span><span class="token number">4.1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>FLOOR<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">5.1</span><span class="token punctuation">)</span> <span class="token comment">#返回小于或等于该值的最大整数 4,-6</span>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+取余数的三种方式
+<span class="token keyword">SELECT</span> <span class="token function">MOD</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">10</span> <span class="token operator">%</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">10</span> MOD <span class="token number">3</span> <span class="token comment">#取余数,返回10除以3后的余数</span>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hehe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+四舍五入 不设置精度<span class="token punctuation">,</span>则为整数
+<span class="token keyword">SELECT</span> <span class="token function">ROUND</span><span class="token punctuation">(</span><span class="token number">1.7823</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment">#将数值四舍五入,并且保留2位小数</span>
 
-<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
-<span class="token keyword">import</span> <span class="token string">"fmt"</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"hello Word!"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+截取数值<span class="token punctuation">,</span>保留指定的精度
+<span class="token keyword">select</span> <span class="token keyword">TRUNCATE</span><span class="token punctuation">(</span><span class="token number">1.999</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment">#保留一位小数,其他直接舍弃</span>
+<span class="token keyword">select</span> <span class="token keyword">TRUNCATE</span><span class="token punctuation">(</span><span class="token number">1.999</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">#舍弃掉小数</span>
+
+获取随机小数<span class="token punctuation">,</span>小于<span class="token number">1</span>
+<span class="token keyword">select</span> RAND<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>RAND<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+example：随机获取一个<span class="token number">100</span>以内的整数  <span class="token comment">#三种实现</span>
+<span class="token keyword">select</span> <span class="token function">ROUND</span><span class="token punctuation">(</span>RAND<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">as</span> num1<span class="token punctuation">,</span><span class="token keyword">TRUNCATE</span><span class="token punctuation">(</span>RAND<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token keyword">as</span> num2<span class="token punctuation">,</span>CEIL<span class="token punctuation">(</span>RAND<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">as</span> num3
+
+example: 随机获取一个指定的范围内的整数 
+获取 R<span class="token punctuation">,</span> 条件: <span class="token number">15</span> <span class="token operator">&lt;=</span> R <span class="token operator">&lt;</span> <span class="token number">50</span>
+<span class="token keyword">SELECT</span> FLOOR<span class="token punctuation">(</span><span class="token number">15</span> <span class="token operator">+</span> RAND<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">50</span> <span class="token operator">-</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-聚合函数"><a href="#2-聚合函数" class="headerlink" title="2.聚合函数"></a>2.聚合函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#count 统计表中数据数量,通常会根据表中的 主键统计</span>
+<span class="token keyword">select</span> <span class="token function">count</span><span class="token punctuation">(</span>user_id<span class="token punctuation">)</span> <span class="token keyword">from</span> tb_salary
+
+<span class="token comment">#sum 统计某一列数据总和</span>
+<span class="token keyword">select</span> <span class="token function">sum</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span> <span class="token keyword">FROM</span> tb_salary
+
+<span class="token comment">#avg 统计某一列数据的平均值</span>
+<span class="token keyword">select</span> <span class="token function">avg</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span> <span class="token keyword">from</span> tb_salary
+
+<span class="token comment">#max min 统计最高薪资和最低薪资</span>
+<span class="token keyword">select</span> <span class="token function">max</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span> <span class="token keyword">as</span> max_salary<span class="token punctuation">,</span><span class="token function">min</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span> <span class="token keyword">as</span> min_salary <span class="token keyword">from</span> tb_salary
+
+<span class="token comment">#DISTINCT 去重统计,将数值一致的数据抹除掉,只保留一条</span>
+<span class="token keyword">select</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token keyword">DISTINCT</span> salary<span class="token punctuation">)</span> <span class="token keyword">from</span> tb_salary
+
+
+<span class="token comment">###example</span>
+<span class="token comment">#GROUP_CONCAT的使用 将uint相同的数据列, 将某个字段连接为一个字段,并且以uint分组</span>
+<span class="token comment">#Tables:</span>
+<span class="token operator">+</span><span class="token comment">------+------------+</span>
+<span class="token operator">|</span> uint <span class="token operator">|</span> <span class="token keyword">date</span>       <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">------+------------+</span>
+<span class="token operator">|</span> a    <span class="token operator">|</span> <span class="token number">2020</span><span class="token operator">-</span><span class="token number">09</span><span class="token operator">-</span><span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> a    <span class="token operator">|</span> <span class="token number">2021</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> b    <span class="token operator">|</span> <span class="token number">2021</span><span class="token operator">-</span><span class="token number">09</span><span class="token operator">-</span><span class="token number">09</span> <span class="token operator">|</span>
+<span class="token operator">|</span> b    <span class="token operator">|</span> <span class="token number">2021</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">06</span> <span class="token operator">|</span>
+<span class="token operator">|</span> c    <span class="token operator">|</span> <span class="token number">2021</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> c    <span class="token operator">|</span> <span class="token number">2013</span><span class="token operator">-</span><span class="token number">06</span><span class="token operator">-</span><span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> d    <span class="token operator">|</span> <span class="token number">2021</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">------+------------+</span>
+<span class="token comment">#Sql:</span>
+<span class="token keyword">select</span> uint<span class="token punctuation">,</span>GROUP_CONCAT<span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">date</span><span class="token punctuation">`</span><span class="token punctuation">)</span> <span class="token keyword">from</span> test_count <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> uint
+
+<span class="token comment">#Result:</span>
+<span class="token operator">+</span><span class="token comment">------+-----------------------+</span>
+<span class="token operator">|</span> uint <span class="token operator">|</span> GROUP_CONCAT<span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">date</span><span class="token punctuation">`</span><span class="token punctuation">)</span>  <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">------+-----------------------+</span>
+<span class="token operator">|</span> a    <span class="token operator">|</span> <span class="token number">2020</span><span class="token operator">-</span><span class="token number">09</span><span class="token operator">-</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">2021</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> b    <span class="token operator">|</span> <span class="token number">2021</span><span class="token operator">-</span><span class="token number">09</span><span class="token operator">-</span><span class="token number">09</span><span class="token punctuation">,</span><span class="token number">2021</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">06</span> <span class="token operator">|</span>
+<span class="token operator">|</span> c    <span class="token operator">|</span> <span class="token number">2021</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">2013</span><span class="token operator">-</span><span class="token number">06</span><span class="token operator">-</span><span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> d    <span class="token operator">|</span> <span class="token number">2021</span><span class="token operator">-</span><span class="token number">04</span><span class="token operator">-</span><span class="token number">11</span>            <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">------+-----------------------+</span>
+<span class="token number">4</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+
+<span class="token comment"># HAVING的使用 在分组之后,再次进行条件筛选</span>
+<span class="token keyword">select</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>user_id<span class="token punctuation">)</span><span class="token punctuation">,</span>salary <span class="token keyword">from</span> tb_salary <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> salary <span class="token keyword">HAVING</span> salary <span class="token operator">IS</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>注: <em>聚合函数无法嵌套使用,如:</em></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token function">max</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="example-按照年份、日统计-并且以unit分组"><a href="#example-按照年份、日统计-并且以unit分组" class="headerlink" title="example: 按照年份、日统计,并且以unit分组"></a>example: 按照年份、日统计,并且以unit分组</h5><p><img src="/img/02.png"></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+    uint <span class="token keyword">as</span> <span class="token string">'单位'</span><span class="token punctuation">,</span>
+    <span class="token function">count</span><span class="token punctuation">(</span>TO_DAYS<span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">date</span><span class="token punctuation">`</span><span class="token punctuation">)</span> <span class="token operator">=</span> TO_DAYS<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">or</span> <span class="token boolean">NULL</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token string">'今日统计'</span><span class="token punctuation">,</span>
+    <span class="token function">count</span><span class="token punctuation">(</span><span class="token keyword">YEAR</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">date</span><span class="token punctuation">`</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token keyword">YEAR</span><span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">or</span> <span class="token boolean">null</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token string">'今年统计'</span>
+<span class="token keyword">from</span> test_count
+<span class="token keyword">group</span> <span class="token keyword">by</span> uint<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p> <em>Result:</em><br><img src="/img/03.png"></p>
+<h4 id="3-字符串函数"><a href="#3-字符串函数" class="headerlink" title="3.字符串函数"></a>3.字符串函数</h4><ul>
+<li>字符串大小写转换  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 转换小写</span>
+<span class="token keyword">select</span> LOWER<span class="token punctuation">(</span><span class="token string">'MYSQL'</span><span class="token punctuation">)</span> <span class="token comment">#Result: mysql</span>
+<span class="token comment"># 转换大写</span>
+<span class="token keyword">select</span> UPPER<span class="token punctuation">(</span><span class="token string">'mysql'</span><span class="token punctuation">)</span> <span class="token comment">#Result: MYSQL</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>多个字符串连接  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> CONCAT<span class="token punctuation">(</span><span class="token string">'M'</span><span class="token punctuation">,</span><span class="token string">'Y'</span><span class="token punctuation">,</span><span class="token string">'SQL'</span><span class="token punctuation">)</span> <span class="token comment">#Result: MYSQL</span>
+
+如果有任何一个参数为<span class="token boolean">null</span><span class="token punctuation">,</span>则结果为<span class="token boolean">null</span>
+<span class="token keyword">select</span> CONCAT<span class="token punctuation">(</span><span class="token string">'M'</span><span class="token punctuation">,</span><span class="token boolean">null</span><span class="token punctuation">,</span><span class="token string">'SQL'</span><span class="token punctuation">)</span> <span class="token comment">#Result: null</span>
+  
+如果是数字<span class="token punctuation">,</span>则自动转换为字符串
+<span class="token keyword">select</span> CONCAT<span class="token punctuation">(</span><span class="token string">'M'</span><span class="token punctuation">,</span><span class="token string">'Y'</span><span class="token punctuation">,</span><span class="token string">'SQL'</span><span class="token punctuation">,</span><span class="token number">5.8</span><span class="token punctuation">)</span> <span class="token comment">#Result: MYSQL5.8</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>根据指定的连接符,进行字符串拼接  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> CONCAT_WS<span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">,</span><span class="token string">'Python'</span><span class="token punctuation">,</span><span class="token string">'Java'</span><span class="token punctuation">,</span><span class="token string">'Golang'</span><span class="token punctuation">)</span> <span class="token comment">#Result: Python-Java-Golang</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>字符串截取  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 字符串截取,从下标为5的字符开始截取 mysql 字符下标从1开始</span>
+<span class="token keyword">select</span> substring<span class="token punctuation">(</span><span class="token string">'hello,word'</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token comment">#Result: o,word</span>
+
+<span class="token comment"># 字符串截取,从下标为5开始截取3位</span>
+<span class="token keyword">select</span> substring<span class="token punctuation">(</span><span class="token string">'hello,word'</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment">#Result: o,w</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>字符串统计  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 获取字符串的所占字节 utf8:一个中文占3字节 gbk:一个中文占2个字节</span>
+<span class="token keyword">select</span> LENGTH<span class="token punctuation">(</span><span class="token string">'hello,word'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>LENGTH<span class="token punctuation">(</span><span class="token string">'你好啊'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 10, 9</span>
+
+<span class="token comment"># 获取字符串的字符数量</span>
+<span class="token keyword">select</span> char_length<span class="token punctuation">(</span><span class="token string">'Java'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>CHAR_LENGTH<span class="token punctuation">(</span><span class="token string">'你好啊'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 4,3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>在一个字符串中查找 某个字符串第一次出现的位置  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> INSTR<span class="token punctuation">(</span><span class="token string">'foobaerbak'</span><span class="token punctuation">,</span><span class="token string">'ba'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 4</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>字符填充  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 字符串填充,在源字符串的基础上,如果未到达指定的字节上限,将用 ‘*’ 从字符头部补充字节 </span>
+<span class="token keyword">select</span> LPAD<span class="token punctuation">(</span><span class="token string">'source'</span><span class="token punctuation">,</span><span class="token string">'10'</span><span class="token punctuation">,</span><span class="token string">'*'</span><span class="token punctuation">)</span> <span class="token comment">#Result: ****source</span>
+
+<span class="token comment">#从字符串尾部填充</span>
+<span class="token keyword">select</span> rpad<span class="token punctuation">(</span><span class="token string">'source'</span><span class="token punctuation">,</span><span class="token string">'10'</span><span class="token punctuation">,</span><span class="token string">'*'</span><span class="token punctuation">)</span> <span class="token comment">#Result: source****</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>字符串剔除  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#去除两端空格 默认是去除空格</span>
+<span class="token keyword">select</span> TRIM<span class="token punctuation">(</span><span class="token string">'  hello  '</span><span class="token punctuation">)</span> <span class="token comment">#Result:hello</span>
+
+<span class="token comment"># 去除头部 指定的字符</span>
+<span class="token keyword">select</span> TRIM<span class="token punctuation">(</span>leading <span class="token string">';'</span> <span class="token keyword">FROM</span> <span class="token string">';;;hello;;;'</span><span class="token punctuation">)</span> <span class="token comment">#Result: hello;;;</span>
+
+<span class="token comment"># 去除尾部 指定的字符</span>
+<span class="token keyword">select</span> TRIM<span class="token punctuation">(</span>TRAILING <span class="token string">';'</span> <span class="token keyword">FROM</span> <span class="token string">';;;hello;;;'</span><span class="token punctuation">)</span> <span class="token comment">#Result: ;;;hello</span>
+
+<span class="token comment">#去除头部、尾部 指定的字符</span>
+<span class="token keyword">select</span> TRIM<span class="token punctuation">(</span>both <span class="token string">';'</span> <span class="token keyword">FROM</span> <span class="token string">';;;hello;;;'</span><span class="token punctuation">)</span> <span class="token comment">#Result: hello</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>字符串替换  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 字符串替换</span>
+<span class="token keyword">select</span> <span class="token keyword">REPLACE</span><span class="token punctuation">(</span><span class="token string">'www.mysql.com.com'</span><span class="token punctuation">,</span><span class="token string">'com'</span><span class="token punctuation">,</span><span class="token string">'cn'</span><span class="token punctuation">)</span> <span class="token comment">#Result: www.mysql.cn.cn</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li>字符串反转  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> REVERSE<span class="token punctuation">(</span><span class="token string">'ABCDEFG'</span><span class="token punctuation">)</span> <span class="token comment">#Result: GFEDCBA</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li></li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -542,7 +654,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/04/10/hello-world/">http://example.com/2021/04/10/hello-world/</a>
+                    <a href="http://example.com/2021/04/11/Mysql%E7%AC%94%E8%AE%B0/">http://example.com/2021/04/11/Mysql%E7%AC%94%E8%AE%B0/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -580,8 +692,16 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%8D%9A%E5%AE%A2/">
-                                    <span class="chip bg-color">博客</span>
+                                <a href="/tags/DBA/">
+                                    <span class="chip bg-color">DBA</span>
+                                </a>
+                            
+                                <a href="/tags/SQL/">
+                                    <span class="chip bg-color">SQL</span>
+                                </a>
+                            
+                                <a href="/tags/Mysql/">
+                                    <span class="chip bg-color">Mysql</span>
                                 </a>
                             
                         </div>
@@ -755,13 +875,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/04/11/Hexo-first-Blog/">
+                <a href="/2021/04/12/Vue3%E5%AD%A6%E4%B9%A0/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Hexo first Blog">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Vue3学习">
                         
-                        <span class="card-title">Hexo first Blog</span>
+                        <span class="card-title">Vue3学习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -772,14 +892,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-11
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-12
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    入门基础
+                            <a href="/categories/Vue/" class="post-category">
+                                    Vue
                                 </a>
                             
                             
@@ -789,8 +909,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">
-                        <span class="chip bg-color">技术博客</span>
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
+                    </a>
+                    
+                    <a href="/tags/Vue3/">
+                        <span class="chip bg-color">Vue3</span>
                     </a>
                     
                 </div>
@@ -801,16 +925,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/10/hello-world/">
+                <a href="/2021/04/11/Nginx%E9%99%90%E6%B5%81%E9%85%8D%E7%BD%AE/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Nginx限流配置">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">Nginx限流配置</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -821,26 +945,25 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-11
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    入门基础
+                            <a href="/categories/%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA/" class="post-category">
+                                    架构搭建
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%8D%9A%E5%AE%A2/">
-                        <span class="chip bg-color">博客</span>
+                    <a href="/tags/Nginx/">
+                        <span class="chip bg-color">Nginx</span>
                     </a>
                     
                 </div>
