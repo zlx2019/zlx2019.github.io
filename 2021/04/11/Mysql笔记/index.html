@@ -466,14 +466,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    7 分
                 </div>
                 
 
@@ -592,7 +592,7 @@ example: 随机获取一个指定的范围内的整数
 
 如果有任何一个参数为<span class="token boolean">null</span><span class="token punctuation">,</span>则结果为<span class="token boolean">null</span>
 <span class="token keyword">select</span> CONCAT<span class="token punctuation">(</span><span class="token string">'M'</span><span class="token punctuation">,</span><span class="token boolean">null</span><span class="token punctuation">,</span><span class="token string">'SQL'</span><span class="token punctuation">)</span> <span class="token comment">#Result: null</span>
-  
+
 如果是数字<span class="token punctuation">,</span>则自动转换为字符串
 <span class="token keyword">select</span> CONCAT<span class="token punctuation">(</span><span class="token string">'M'</span><span class="token punctuation">,</span><span class="token string">'Y'</span><span class="token punctuation">,</span><span class="token string">'SQL'</span><span class="token punctuation">,</span><span class="token number">5.8</span><span class="token punctuation">)</span> <span class="token comment">#Result: MYSQL5.8</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 <li>根据指定的连接符,进行字符串拼接  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> CONCAT_WS<span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">,</span><span class="token string">'Python'</span><span class="token punctuation">,</span><span class="token string">'Java'</span><span class="token punctuation">,</span><span class="token string">'Golang'</span><span class="token punctuation">)</span> <span class="token comment">#Result: Python-Java-Golang</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
@@ -626,8 +626,89 @@ example: 随机获取一个指定的范围内的整数
 <li>字符串替换  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 字符串替换</span>
 <span class="token keyword">select</span> <span class="token keyword">REPLACE</span><span class="token punctuation">(</span><span class="token string">'www.mysql.com.com'</span><span class="token punctuation">,</span><span class="token string">'com'</span><span class="token punctuation">,</span><span class="token string">'cn'</span><span class="token punctuation">)</span> <span class="token comment">#Result: www.mysql.cn.cn</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
 <li>字符串反转  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> REVERSE<span class="token punctuation">(</span><span class="token string">'ABCDEFG'</span><span class="token punctuation">)</span> <span class="token comment">#Result: GFEDCBA</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
-<li></li>
 </ul>
+<h4 id="4-日期时间函数"><a href="#4-日期时间函数" class="headerlink" title="4. 日期时间函数"></a>4. 日期时间函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#获取当前日期(不包含时间)</span>
+<span class="token keyword">SELECT</span> CURDATE<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">#Result: 2021-04-14</span>
+<span class="token comment">#获取当前时间(不包含日期)</span>
+<span class="token keyword">select</span> CURTIME<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">#Result: 17:54:27</span>
+<span class="token comment">#获取时间戳 (秒级时间戳)</span>
+<span class="token keyword">select</span> UNIX_TIMESTAMP<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">#Result: 1618394363</span>
+<span class="token comment">#获取当前日期和时间</span>
+<span class="token keyword">select</span> <span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">#Result: 2021-04-14 17:57:17</span>
+<span class="token comment">#类似now()的还有</span>
+<span class="token keyword">select</span> <span class="token keyword">CURRENT_TIMESTAMP</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>LOCALTIMESTAMP<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>LOCALTIME<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">#注意: </span>
+<span class="token comment">#systemdate() 返回的是执行到该函数的时间,多次调用该函数之前的间隔时间较大的话,获取的时间将会不一致</span>
+<span class="token comment">#now() 返回的是该Sql语句执行的时间,无论一条sql中调用几次now(),返回的时间都是一致的</span>
+<span class="token comment">#例：</span>
+<span class="token keyword">select</span> <span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>SLEEP<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 				<span class="token comment">#Result: 2021-04-14 18:05:21	0	2021-04-14 18:05:21</span>
+<span class="token keyword">select</span> SYSDATE<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>SLEEP<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>SYSDATE<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">#Result: 2021-04-14 18:06:03	0	2021-04-14 18:06:05</span>
+<span class="token comment"># 在以上情况下使用sysdate()会处在一定的问题,所以请使用now()</span>
+
+<span class="token comment"># 获取两个时间的差值 expr1 - expr2</span>
+<span class="token keyword">select</span> TIMEDIFF<span class="token punctuation">(</span><span class="token string">'12:30:00'</span><span class="token punctuation">,</span><span class="token string">'8:00:00'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 04:30:00</span>
+<span class="token comment"># 获取两个日期相差的天数</span>
+<span class="token keyword">select</span> DATEDIFF<span class="token punctuation">(</span><span class="token string">'2020-01-01'</span><span class="token punctuation">,</span><span class="token string">'2000-01-01'</span><span class="token punctuation">)</span> <span class="token comment">#Result 7305</span>
+<span class="token comment"># 日期添加 在指定的日期上添加一天</span>
+<span class="token keyword">select</span> DATE_ADD<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">INTERVAL</span> <span class="token number">1</span> <span class="token keyword">DAY</span><span class="token punctuation">)</span>
+<span class="token comment">#减一天</span>
+<span class="token keyword">select</span> DATE_SUB<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">INTERVAL</span> <span class="token number">1</span> <span class="token keyword">day</span><span class="token punctuation">)</span>
+<span class="token comment">#在指定的日期时间上 减去 1天2两小时30分钟</span>
+<span class="token keyword">select</span> date_sub<span class="token punctuation">(</span><span class="token string">'2020-01-05 12:30:00'</span><span class="token punctuation">,</span><span class="token keyword">INTERVAL</span> <span class="token string">'1 2:30:00'</span> DAY_SECOND<span class="token punctuation">)</span>
+
+<span class="token comment">#获取当前星期几、几月份</span>
+<span class="token keyword">set</span> lc_time_names<span class="token operator">=</span><span class="token string">'zh_CN'</span> <span class="token comment">#设置中文</span>
+<span class="token keyword">select</span> DAYNAME<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>MONTHNAME<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">#Result: 星期三 ,四月</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="5-加密函数"><a href="#5-加密函数" class="headerlink" title="5.加密函数"></a>5.加密函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#MD5加密(不可逆)</span>
+<span class="token keyword">select</span> MD5<span class="token punctuation">(</span><span class="token string">'lxz'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 5d52a67facac487d8aa43f29de250510</span>
+<span class="token keyword">select</span> sha<span class="token punctuation">(</span><span class="token string">'lxz'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 3f8306b511c633d761f5e0fc9386b791bb028fbb</span>
+<span class="token keyword">select</span> SHA1<span class="token punctuation">(</span><span class="token string">'lxz'</span><span class="token punctuation">)</span><span class="token comment">#Result: 3f8306b511c633d761f5e0fc9386b791bb028fbb</span>
+
+<span class="token comment">#AES对称加密 AES_ENCRYPT(要加密的数据,加密的秘钥值), to_base64()进行base64编码</span>
+<span class="token keyword">select</span> to_base64<span class="token punctuation">(</span>AES_ENCRYPT<span class="token punctuation">(</span><span class="token string">'lxz'</span><span class="token punctuation">,</span><span class="token string">'keys'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">#Result: eT8ZPEfQwax8t/W5gY4yfA==</span>
+<span class="token comment">#AES对称解密 AES_DECRYPT(要解密的数据,加密时的秘钥值) from_base64()进行base64解码</span>
+<span class="token keyword">select</span> AES_DECRYPT<span class="token punctuation">(</span>from_base64<span class="token punctuation">(</span><span class="token string">'eT8ZPEfQwax8t/W5gY4yfA=='</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'keys'</span><span class="token punctuation">)</span> <span class="token comment">#Result: lxz</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="6-流程控制"><a href="#6-流程控制" class="headerlink" title="6.流程控制"></a>6.流程控制</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 多条流程控制sql case: 选择的流程分支,如果是1,则会执行 when1 分支, 如果是2,则会执行 when2 分支,其他情况都会走else分支</span>
+<span class="token keyword">select</span> 	<span class="token keyword">case</span> <span class="token number">1</span>
+<span class="token keyword">when</span> <span class="token number">1</span> 
+	<span class="token keyword">then</span> <span class="token string">'one'</span>
+<span class="token keyword">when</span> <span class="token number">2</span> 
+	<span class="token keyword">then</span> <span class="token string">'two'</span>
+<span class="token keyword">else</span> <span class="token string">'more'</span> <span class="token keyword">end</span><span class="token punctuation">;</span>
+
+<span class="token comment">#查询用户状态</span>
+<span class="token keyword">select</span> <span class="token keyword">case</span> <span class="token punctuation">`</span><span class="token keyword">status</span><span class="token punctuation">`</span> 
+	<span class="token keyword">when</span> <span class="token number">1</span>
+		<span class="token keyword">then</span> <span class="token string">'已删除'</span>
+	<span class="token keyword">when</span> <span class="token number">2</span>
+		<span class="token keyword">then</span> <span class="token string">'已冻结'</span>
+	<span class="token keyword">else</span> <span class="token string">'正常'</span> <span class="token keyword">end</span>
+<span class="token keyword">from</span> <span class="token keyword">user</span>
+
+<span class="token comment">#IF 语句,expr1=true,会执行expr2,反之执行expr3</span>
+<span class="token comment">#IF(expr1,expr2,expr3)</span>
+<span class="token keyword">select</span> <span class="token keyword">IF</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">,</span><span class="token string">'Result_true'</span><span class="token punctuation">,</span><span class="token string">'Result_false'</span><span class="token punctuation">)</span> <span class="token comment">#Result: Result_true</span>
+<span class="token keyword">select</span> <span class="token keyword">IF</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">></span> <span class="token number">2</span><span class="token punctuation">,</span><span class="token string">'Result_true'</span><span class="token punctuation">,</span><span class="token string">'Result_false'</span><span class="token punctuation">)</span> <span class="token comment">#Result: Result_false</span>
+
+<span class="token comment">#IFNULL 语句,expr1如果不为NULL,就返回expr1,反之返回expr2</span>
+<span class="token comment">#IFNULL(expr1,expr2)</span>
+<span class="token keyword">select</span> IFNULL<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">123</span><span class="token punctuation">)</span> <span class="token comment">#Result: 1</span>
+<span class="token keyword">select</span> IFNULL<span class="token punctuation">(</span><span class="token boolean">NULL</span><span class="token punctuation">,</span><span class="token number">123</span><span class="token punctuation">)</span> <span class="token comment">#Result: 123</span>
+<span class="token keyword">select</span> IFNULL<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">123</span><span class="token punctuation">)</span> <span class="token comment">#Result: 0</span>
+
+
+<span class="token comment">#NULLIF 语句,如果expr1==expr2,则返回NULL,反之返回expr1</span>
+<span class="token comment">#NULLIF(expr1,expr2)</span>
+<span class="token keyword">select</span> <span class="token keyword">NULLIF</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment">#Result: NULL</span>
+<span class="token keyword">select</span> <span class="token keyword">NULLIF</span><span class="token punctuation">(</span><span class="token string">'first'</span><span class="token punctuation">,</span><span class="token string">'last'</span><span class="token punctuation">)</span> <span class="token comment">#Result: first</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
                 
             </div>
@@ -1162,7 +1243,7 @@ example: 随机获取一个指定的范围内的整数
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">2.8k</span>&nbsp;字
+                class="white-color">3.7k</span>&nbsp;字
             
             
             
@@ -1230,13 +1311,13 @@ example: 随机获取一个指定的范围内的整数
             
         </div>
         <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/blinkfox" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <a href="https://github.com/zlx2019" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
 
 
 
-    <a href="mailto:1181062873@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <a href="mailto:1143967454@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
         <i class="fas fa-envelope-open"></i>
     </a>
 
@@ -1246,7 +1327,7 @@ example: 随机获取一个指定的范围内的整数
 
 
 
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1181062873" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1181062873" data-position="top" data-delay="50">
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1143967454" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1143967454" data-position="top" data-delay="50">
         <i class="fab fa-qq"></i>
     </a>
 
