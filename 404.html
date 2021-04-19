@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>404</title>
+
+
+<pre><code>&lt;style&gt;
+    body &#123;
+        margin:0;padding:0;
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        flex-flow: row wrap;
+        align-content: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+    &#125;
+
+    div &#123;
+        width: 100%;
+        text-align: center;
+    &#125;
+
+    .number &#123;
+        margin:100px 0 0 0;
+        background: #fff;
+        position: relative;
+        font: 900 30vmin &#39;Consolas&#39;;
+        letter-spacing: 5vmin;
+        text-shadow: 2px -1px 0 #000, 4px -2px 0 #0a0a0a, 6px -3px 0 #0f0f0f, 8px -4px 0 #141414, 10px -5px 0 #1a1a1a, 12px -6px 0 #1f1f1f, 14px -7px 0 #242424, 16px -8px 0 #292929;
+    &#125;
+    .number::before &#123;
+        background-color: #673ab7;
+        background-image: radial-gradient(closest-side at 50% 50%, #ffc107 100%, rgba(0, 0, 0, 0)), radial-gradient(closest-side at 50% 50%, #e91e63 100%, rgba(0, 0, 0, 0));
+        background-repeat: repeat-x;
+        background-size: 40vmin 40vmin;
+        background-position: -100vmin 20vmin, 100vmin -25vmin;
+        width: 100%;
+        height: 100%;
+        mix-blend-mode: screen;
+        -webkit-animation: moving 10s linear infinite both;
+        animation: moving 10s linear infinite both;
+        display: block;
+        position: absolute;
+        content: &quot;&quot;;
+    &#125;
+    @-webkit-keyframes moving &#123;
+        to &#123;
+            background-position: 100vmin 20vmin, -100vmin -25vmin;
+        &#125;
+    &#125;
+    @keyframes moving &#123;
+        to &#123;
+            background-position: 100vmin 20vmin, -100vmin -25vmin;
+        &#125;
+    &#125;
+    .text &#123;
+        font: 400 5vmin &quot;Courgette&quot;;
+    &#125;
+    .text span &#123;
+        font-size: 10vmin;
+    &#125;
+&lt;/style&gt;
+</code></pre>
+</head>
+<body>
+
+<div class="number">404</div>
+
+<div class="text"><span>Resource</span><br>Not found</div>
+
+
+</body>
+</html>
