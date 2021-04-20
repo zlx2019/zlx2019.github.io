@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Mysql笔记, lxz Blog">
+    <meta name="keywords" content="Mysql内置函数, lxz Blog">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Mysql笔记 | lxz Blog</title>
+    <title>Mysql内置函数 | lxz Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Mysql笔记</h1>
+                    <h1 class="description center-align post-title">Mysql内置函数</h1>
                 </div>
             </div>
         </div>
@@ -466,14 +466,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    1.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    8 分
                 </div>
                 
 
@@ -709,6 +709,36 @@ example: 随机获取一个指定的范围内的整数
 <span class="token keyword">select</span> <span class="token keyword">NULLIF</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment">#Result: NULL</span>
 <span class="token keyword">select</span> <span class="token keyword">NULLIF</span><span class="token punctuation">(</span><span class="token string">'first'</span><span class="token punctuation">,</span><span class="token string">'last'</span><span class="token punctuation">)</span> <span class="token comment">#Result: first</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<h4 id="7-格式化函数"><a href="#7-格式化函数" class="headerlink" title="7.格式化函数"></a>7.格式化函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 日期时间格式化</span>
+<span class="token comment"># 日期时间格式化</span>
+<span class="token keyword">select</span> date_format<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'%Y %r'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 2021 07:11:10 PM</span>
+<span class="token keyword">select</span> date_format<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'%Y-%m-%d'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 2021-04-19</span>
+<span class="token keyword">select</span> date_format<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'%Y-%m-%d %H:%i:%s'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 2021-04-19 19:14:13</span>
+<span class="token comment">#反格式化 日期</span>
+<span class="token keyword">select</span> date_format<span class="token punctuation">(</span><span class="token number">19990306</span><span class="token punctuation">,</span><span class="token string">'%Y-%m-%d'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 1999-03-06</span>
+<span class="token keyword">select</span> date_format<span class="token punctuation">(</span><span class="token number">19990306122530</span><span class="token punctuation">,</span><span class="token string">'%Y-%m-%d %H:%i:%s'</span><span class="token punctuation">)</span> <span class="token comment">#Result: 1999-03-06 12:25:30</span>
+
+<span class="token comment">#获取当前是AM(上午)还是下午(PM)</span>
+<span class="token keyword">select</span> DATE_FORMAT<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'%p'</span><span class="token punctuation">)</span> 
+<span class="token comment">#结合case使用</span>
+<span class="token keyword">select</span> <span class="token keyword">case</span> DATE_FORMAT<span class="token punctuation">(</span><span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'%p'</span><span class="token punctuation">)</span>
+	<span class="token keyword">WHEN</span> <span class="token string">'AM'</span>
+		<span class="token keyword">THEN</span> <span class="token string">'现在是上午'</span>
+	<span class="token keyword">WHEN</span> <span class="token string">'PM'</span>
+		<span class="token keyword">THEN</span> <span class="token string">'现在是下午'</span>
+	<span class="token keyword">ELSE</span> <span class="token string">'未知'</span> <span class="token keyword">END</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="8-转换函数"><a href="#8-转换函数" class="headerlink" title="8.转换函数"></a>8.转换函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 转换函数</span>
+<span class="token comment"># 字符串转换整数	</span>
+<span class="token keyword">select</span> <span class="token keyword">convert</span><span class="token punctuation">(</span><span class="token string">'360'</span><span class="token punctuation">,</span>signed<span class="token punctuation">)</span> <span class="token comment">#Result: 360</span>
+<span class="token keyword">select</span> CAST<span class="token punctuation">(</span><span class="token string">'3098'</span> <span class="token keyword">AS</span> signed<span class="token punctuation">)</span> <span class="token comment">#Result: 3098</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="9-系统函数"><a href="#9-系统函数" class="headerlink" title="9.系统函数"></a>9.系统函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">##  查看版本号</span>
+<span class="token keyword">select</span> VERSION<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">#查看客户端连接数</span>
+<span class="token keyword">select</span> CONNECTION_ID<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">#查看用户连接信息</span>
+<span class="token keyword">show</span> PROCESSLIST<span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -735,7 +765,7 @@ example: 随机获取一个指定的范围内的整数
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/04/11/Mysql%E7%AC%94%E8%AE%B0/">http://example.com/2021/04/11/Mysql%E7%AC%94%E8%AE%B0/</a>
+                    <a href="https://zlx2019.github.io/2021/04/11/Mysql%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/">https://zlx2019.github.io/2021/04/11/Mysql%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1243,7 +1273,7 @@ example: 随机获取一个指定的范围内的整数
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">3.7k</span>&nbsp;字
+                class="white-color">4.1k</span>&nbsp;字
             
             
             
