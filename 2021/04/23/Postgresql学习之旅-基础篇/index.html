@@ -475,14 +475,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    569
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    7 分
                 </div>
                 
 
@@ -521,7 +521,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="3-常用命令"><a href="#3-常用命令" class="headerlink" title="3. 常用命令"></a>3. 常用命令</h3><ul>
+<h3 id="3-常用命令"><a href="#3-常用命令" class="headerlink" title="3.常用命令"></a>3.常用命令</h3><ul>
 <li><p>“\d”   查看当前数据库中所有表、视图、序列</p>
 </li>
 <li><p>“\d [table_name]”   在”\d”后面指定表名,则可以查看该表的定义结构</p>
@@ -584,7 +584,290 @@ List of schemas
 <p>删除表空间必须保证该空间的所有数据已经清除,否则命令执行失败</p>
 </li>
 </ul>
-<h3 id="5-数据库创建、修改、删除"><a href="#5-数据库创建、修改、删除" class="headerlink" title="5. 数据库创建、修改、删除"></a>5. 数据库创建、修改、删除</h3>
+<h3 id="5-数据库操作"><a href="#5-数据库操作" class="headerlink" title="5. 数据库操作"></a>5. 数据库操作</h3><h4 id="5-1-创建数据库"><a href="#5-1-创建数据库" class="headerlink" title="5.1 创建数据库"></a>5.1 创建数据库</h4><p>语法格式如下</p>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">CREATE DATABASE _name
+  [[WITH][OWNER[&#x3D;]_user_name]
+  [TEMPLATE [&#x3D;]_template]
+  [ENCODING[&#x3D;]_encoding]
+  [LC_COLLATE[&#x3D;]_lc_collate]
+  [LC_CTYPE[&#x3D;]_lc_ctype]
+  [TABLESPACE[&#x3D;]_table_space]
+  [ALLWCONN[&#x3D;]_allwconn]
+  [CONNECTION LIMIT[&#x3D;]_connlimit]
+  [IS_TEMPLATE[&#x3D;]_istemplate]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>_name : 数据库名</li>
+<li>_user_name: 该数据库所属者用户名</li>
+<li>_template: 使用的模板库,默认的模板库是template1</li>
+<li>_encoding: 字符集,默认使用模板库的字符集</li>
+<li>_lc_collate: 该数据库使用的排序规则,这会影响Order by 语法中字符串类型的顺序,也会影响text类型的索引顺序,默认跟模板库一致</li>
+<li>_lc_ctype: 该数据库的字符分类,会影响字符的分类</li>
+<li>_table_space: 关联的表空间</li>
+<li>_allwconn: 是否可以连接数据库</li>
+<li>_connlimit: 允许并发连接的数据库个数,默认为-1 表示没有限制</li>
+<li>_istemplate: 是否是模板库,默认为false</li>
+</ul>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 创建root_db数据库,所属者是root,关联space01表空间</span>
+<span class="token keyword">create</span> <span class="token keyword">database</span> root_db 
+owner root
+<span class="token keyword">tablespace</span> space01表空间<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-2-修改数据库"><a href="#5-2-修改数据库" class="headerlink" title="5.2 修改数据库"></a>5.2 修改数据库</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#修改数据库名</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> db_test <span class="token keyword">rename</span> <span class="token keyword">to</span> db_test03
+<span class="token comment">#修改最大连接数</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> db_test connection <span class="token keyword">limit</span> <span class="token number">100</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-3-删除数据库"><a href="#5-3-删除数据库" class="headerlink" title="5.3 删除数据库"></a>5.3 删除数据库</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">drop</span> <span class="token keyword">database</span> <span class="token keyword">if</span> existe db_name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="6-表结构操作"><a href="#6-表结构操作" class="headerlink" title="6. 表结构操作"></a>6. 表结构操作</h3><h4 id="6-1-创建表"><a href="#6-1-创建表" class="headerlink" title="6.1 创建表"></a>6.1 创建表</h4><ul>
+<li><p>创建一个名为dept的表</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> dept<span class="token punctuation">(</span>
+	dept_id <span class="token keyword">int</span>  <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	dept_name <span class="token keyword">varchar</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span> 
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>Check约束 create_time必须大于指定的日期</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> dept<span class="token punctuation">(</span>
+	dept_id <span class="token keyword">int</span>  <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	dept_name <span class="token keyword">varchar</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span>  <span class="token keyword">CONSTRAINT</span> create_time_check <span class="token keyword">CHECK</span><span class="token punctuation">(</span>create_time <span class="token operator">></span> <span class="token string">'2020-01-01 00:00:00'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>表级的Check约束,字段与字段之间的约束</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#create_time必须晚于parent_create_time</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> dept<span class="token punctuation">(</span>
+	dept_id <span class="token keyword">int</span>  <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	dept_name <span class="token keyword">varchar</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span><span class="token punctuation">,</span>
+	parent_id <span class="token keyword">int</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	parent_create_time <span class="token keyword">TIMESTAMP</span><span class="token punctuation">,</span>
+	<span class="token keyword">CHECK</span><span class="token punctuation">(</span>create_time <span class="token operator">></span> parent_create_time<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>唯一约束 [UNIQUE]</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#表示 dept_id 是唯一的,不存在相同的情况</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> dept<span class="token punctuation">(</span>
+	dept_id <span class="token keyword">int</span>  <span class="token keyword">UNIQUE</span><span class="token punctuation">,</span>
+	dept_name <span class="token keyword">varchar</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span>
+<span class="token punctuation">)</span>
+<span class="token comment">#或</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> dept<span class="token punctuation">(</span>
+	dept_id <span class="token keyword">int</span>  <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	dept_name <span class="token keyword">varchar</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span><span class="token punctuation">,</span>
+  <span class="token keyword">unique</span><span class="token punctuation">(</span>dept_id<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>主键约束 [PRIMARY KEY]</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> dept<span class="token punctuation">(</span>
+	dept_id <span class="token keyword">int</span>  <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	dept_name <span class="token keyword">varchar</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>联合主键约束</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> dept<span class="token punctuation">(</span>
+	dept_id <span class="token keyword">int</span>  <span class="token operator">not</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	dept_no <span class="token keyword">int</span> <span class="token operator">not</span> <span class="token boolean">NULL</span>
+	dept_name <span class="token keyword">varchar</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span><span class="token punctuation">,</span>
+	<span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">(</span>dept_id<span class="token punctuation">,</span>dept_no<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>默认值约束[DEFAULT]</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> dept<span class="token punctuation">(</span>
+	dept_id <span class="token keyword">int</span>  <span class="token operator">not</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	dept_name <span class="token keyword">varchar</span> <span class="token keyword">DEFAULT</span> <span class="token string">'暂无'</span><span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CURRENT_TIMESTAMP</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>外键约束</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#创建emp表,其中dept_id为物理外键, REFERENCES 指定父表</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> emp<span class="token punctuation">(</span>
+	emp_id <span class="token keyword">int</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	emp_name <span class="token keyword">VARCHAR</span> <span class="token operator">not</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	dept_id <span class="token keyword">int</span> <span class="token operator">not</span> <span class="token boolean">NULL</span> <span class="token keyword">REFERENCES</span> dept<span class="token punctuation">,</span>
+	create_time <span class="token keyword">TIMESTAMP</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CURRENT_TIMESTAMP</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<h4 id="6-2-修改表"><a href="#6-2-修改表" class="headerlink" title="6.2 修改表"></a>6.2 修改表</h4><ul>
+<li><p>修改表名</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">alter</span> <span class="token keyword">table</span> emp <span class="token keyword">rename</span> <span class="token keyword">to</span> emp_02<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>修改字段名</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> emp <span class="token keyword">RENAME</span> <span class="token keyword">COLUMN</span> <span class="token punctuation">`</span>username<span class="token punctuation">`</span> <span class="token keyword">to</span> <span class="token punctuation">`</span>nikename<span class="token punctuation">`</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>添加字段</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> emp <span class="token keyword">ADD</span> <span class="token keyword">COLUMN</span> <span class="token punctuation">`</span>_create_time<span class="token punctuation">`</span> <span class="token keyword">TIMESTAMP</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CURRENT_TIMESTAMP</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>删除字段</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> emp <span class="token keyword">DROP</span> <span class="token keyword">COLUMN</span> <span class="token punctuation">`</span>create_time<span class="token punctuation">`</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h4 id="6-3-删除表"><a href="#6-3-删除表" class="headerlink" title="6.3 删除表"></a>6.3 删除表</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#删除单表</span>
+<span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> emp<span class="token punctuation">;</span>
+<span class="token comment">#删除多表</span>
+<span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> emp<span class="token punctuation">,</span>dept<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="7-CRUD"><a href="#7-CRUD" class="headerlink" title="7.CRUD"></a>7.CRUD</h3><h4 id="7-1-插入数据-Insert"><a href="#7-1-插入数据-Insert" class="headerlink" title="7.1 插入数据(Insert)"></a>7.1 插入数据(Insert)</h4><ul>
+<li><p>指定字段插入数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> dept<span class="token punctuation">(</span>id<span class="token punctuation">,</span>name<span class="token punctuation">,</span>create_time<span class="token punctuation">)</span> <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token number">1001</span><span class="token punctuation">,</span><span class="token string">'人事部'</span><span class="token punctuation">,</span><span class="token string">'2020-05-19 12:30:00'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>不指定字段插入数据,需要按字段顺序添加,必须填写全部字段</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> dept <span class="token keyword">VALUES</span><span class="token punctuation">(</span><span class="token number">1002</span><span class="token punctuation">,</span><span class="token string">'技术部'</span><span class="token punctuation">,</span><span class="token string">'2021-04-10'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>如果一张表所有字段都可以为空时,可以执行以下语句,表示所有字段都取默认值</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> dept <span class="token keyword">DEFAULT</span> <span class="token keyword">VALUES</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>批量插入数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> dept <span class="token punctuation">(</span>id<span class="token punctuation">,</span>name<span class="token punctuation">,</span>create_time<span class="token punctuation">)</span><span class="token keyword">VALUES</span>
+<span class="token punctuation">(</span><span class="token number">1003</span><span class="token punctuation">,</span><span class="token string">'业务部'</span><span class="token punctuation">,</span><span class="token string">'2021-04-10'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token number">1004</span><span class="token punctuation">,</span><span class="token string">'市场部'</span><span class="token punctuation">,</span><span class="token string">'2021-04-10'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token number">1005</span><span class="token punctuation">,</span><span class="token string">'管理部'</span><span class="token punctuation">,</span><span class="token string">'2021-04-10'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<h4 id="7-2-其余懒得写了…"><a href="#7-2-其余懒得写了…" class="headerlink" title="7.2 其余懒得写了…"></a>7.2 其余懒得写了…</h4><h3 id="8-数据类型"><a href="#8-数据类型" class="headerlink" title="8. 数据类型"></a>8. 数据类型</h3><pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">Postgresql 的数据类型非常丰富,除数据库常见的数据类型(如数值、字符串)还有一些高级类型,如JSON、几何类型等.<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="8-1-数值类型"><a href="#8-1-数值类型" class="headerlink" title="8.1 数值类型"></a>8.1 数值类型</h4><ul>
+<li><p>整数类型</p>
+<table>
+<thead>
+<tr>
+<th align="left">类型名称</th>
+<th>存储容量</th>
+<th>说明</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">smallint</td>
+<td>2字节</td>
+<td>小范围整数</td>
+<td>-32768~32767</td>
+</tr>
+<tr>
+<td align="left">integer</td>
+<td>4字节</td>
+<td>整数的常见选择</td>
+<td>-2147483648~2147483647</td>
+</tr>
+<tr>
+<td align="left">bigint</td>
+<td>8字节</td>
+<td>大范围整数</td>
+<td>-9223372036854775808~9223372036854775807</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>任意精度数值类型</p>
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>存储容量</th>
+<th>说明</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>numeric</td>
+<td>可变</td>
+<td>用户指定精度,精确</td>
+<td>最高小数点前131072位,以及小数点后16383位</td>
+</tr>
+<tr>
+<td>decimal</td>
+<td>同上</td>
+<td>同上</td>
+<td>同上</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>浮点类型</p>
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>存储容量</th>
+<th>说明</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>real</td>
+<td>4字节</td>
+<td>可变精度,不精确</td>
+<td>6位十进制精度</td>
+</tr>
+<tr>
+<td>Double precision</td>
+<td>8字节</td>
+<td>同上</td>
+<td>15位十进制精度</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>序列类型</p>
+<p><em><u><strong>序列类型并不是真正的数据类型,通常我们需要使用自增主键的时候可以直接使用以下三种类型</strong></u></em></p>
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>存储容量</th>
+<th>说明</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>smallserial</td>
+<td>2字节</td>
+<td>自动增加的小整数</td>
+<td>1~32767</td>
+</tr>
+<tr>
+<td>serial</td>
+<td>4字节</td>
+<td>自动递增的整数</td>
+<td>1~2147483647</td>
+</tr>
+<tr>
+<td>bigserial</td>
+<td>8字节</td>
+<td>自动递增的大整数</td>
+<td>1~9223372036854775807</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>货币类型</p>
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>存储容量</th>
+<th>说明</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Money</td>
+<td>8字节</td>
+<td>货币、金钱类型</td>
+<td>-92233720368547758.08~92233720368547758.07</td>
+</tr>
+</tbody></table>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">lc_monetary默认为美元,需要将其设置为 &#39;zh_CN.utf8&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h4 id="8-2-字符串类型"><a href="#8-2-字符串类型" class="headerlink" title="8.2 字符串类型"></a>8.2 字符串类型</h4><pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">Postgresql 提供了3种基础字符串类型<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char</td>
+<td>固定长度字符串,长度不足时以空格填充字节</td>
+</tr>
+<tr>
+<td>varchar</td>
+<td>有长度限制的变长字符串</td>
+</tr>
+<tr>
+<td>text</td>
+<td>无长度限制的变长字符串</td>
+</tr>
+</tbody></table>
+
                 
             </div>
             <hr/>
@@ -1132,7 +1415,7 @@ List of schemas
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">4.7k</span>&nbsp;字
+                class="white-color">5.9k</span>&nbsp;字
             
             
             
