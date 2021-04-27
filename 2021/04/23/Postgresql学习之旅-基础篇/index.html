@@ -845,9 +845,7 @@ owner root
 </tbody></table>
 <pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">lc_monetary默认为美元,需要将其设置为 &#39;zh_CN.utf8&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ul>
-<h4 id="8-2-字符串类型"><a href="#8-2-字符串类型" class="headerlink" title="8.2 字符串类型"></a>8.2 字符串类型</h4><pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">Postgresql 提供了3种基础字符串类型<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<table>
+<h4 id="8-2-字符串类型"><a href="#8-2-字符串类型" class="headerlink" title="8.2 字符串类型"></a>8.2 字符串类型</h4><table>
 <thead>
 <tr>
 <th>类型名称</th>
@@ -867,7 +865,46 @@ owner root
 <td>无长度限制的变长字符串</td>
 </tr>
 </tbody></table>
-
+<ul>
+<li><p>连接运算符</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>返回类型</th>
+<th>说明</th>
+<th>示例</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>string||string</td>
+<td>text</td>
+<td>拼接</td>
+<td>‘post’||’greSql’</td>
+<td>‘postgreSql’</td>
+</tr>
+<tr>
+<td>string|| not-string</td>
+<td>text</td>
+<td>使用非字符串进行拼接</td>
+<td>‘Val’||98</td>
+<td>‘Val98’</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>匹配运算符</p>
+<ul>
+<li><p>LIKE模糊匹配</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token string">'今天天气真好'</span> <span class="token operator">like</span> <span class="token string">'%天气%'</span> <span class="token comment">#R: t</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>SIMILAR TO</p>
+</li>
+<li><p>POSIX正则表达式</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="8-3-日期类型和时间类型"><a href="#8-3-日期类型和时间类型" class="headerlink" title="8.3 日期类型和时间类型"></a>8.3 日期类型和时间类型</h4>
                 
             </div>
             <hr/>
@@ -1415,7 +1452,7 @@ owner root
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">5.9k</span>&nbsp;字
+                class="white-color">7.9k</span>&nbsp;字
             
             
             
