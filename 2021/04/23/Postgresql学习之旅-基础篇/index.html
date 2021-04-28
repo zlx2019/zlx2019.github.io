@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Postgresql学习之旅-基础篇, lxz Blog">
+    <meta name="keywords" content="Postgresql学习之旅-基础语法篇, lxz Blog">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Postgresql学习之旅-基础篇 | lxz Blog</title>
+    <title>Postgresql学习之旅-基础语法篇 | lxz Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -317,7 +317,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Postgresql学习之旅-基础篇</h1>
+                    <h1 class="description center-align post-title">Postgresql学习之旅-基础语法篇</h1>
                 </div>
             </div>
         </div>
@@ -475,14 +475,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.8k
+                    2.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    10 分
                 </div>
                 
 
@@ -904,7 +904,244 @@ owner root
 </ul>
 </li>
 </ul>
-<h4 id="8-3-日期类型和时间类型"><a href="#8-3-日期类型和时间类型" class="headerlink" title="8.3 日期类型和时间类型"></a>8.3 日期类型和时间类型</h4>
+<h4 id="8-3-日期类型和时间类型"><a href="#8-3-日期类型和时间类型" class="headerlink" title="8.3 日期类型和时间类型"></a>8.3 日期类型和时间类型</h4><table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>存储容量</th>
+<th>说明</th>
+<th>Min_val</th>
+<th>Max_val</th>
+<th>分辨率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>timestamp</td>
+<td>8字节</td>
+<td>包括日期和时间(无时区)</td>
+<td>4713BC</td>
+<td>294276AD</td>
+<td>1毫秒/14位</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>8字节</td>
+<td>包含日期和时间(有时区)</td>
+<td>同上</td>
+<td>同上</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>date</td>
+<td>4字节</td>
+<td>只包含日期</td>
+<td>同上</td>
+<td>5874897AD</td>
+<td>一天</td>
+</tr>
+<tr>
+<td>time</td>
+<td>8字节</td>
+<td>只包含时间</td>
+<td>0:00:00</td>
+<td>24:00:00</td>
+<td>1毫秒/14位</td>
+</tr>
+<tr>
+<td>time</td>
+<td>12字节</td>
+<td>只包含时间(带时区)</td>
+<td>0:00:00+1459</td>
+<td>24:00:00-1459</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>interval</td>
+<td>16字节</td>
+<td>时间间隔</td>
+<td>-178000000年</td>
+<td>178000000年</td>
+<td>1毫秒/14位</td>
+</tr>
+</tbody></table>
+<h4 id="8-4-布尔类型"><a href="#8-4-布尔类型" class="headerlink" title="8.4 布尔类型"></a>8.4 布尔类型</h4><ul>
+<li><p>PostgreSQL 布尔类型有三种状态</p>
+<ul>
+<li>true 真</li>
+<li>false 假</li>
+<li>unknown 位置</li>
+</ul>
+</li>
+<li><p>所占字节为 ‘1’字节</p>
+</li>
+<li><p>代表“真” 和 “假”可以使用的值</p>
+<table>
+<thead>
+<tr>
+<th>真</th>
+<th>假</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>‘t’</td>
+<td>‘f’</td>
+</tr>
+<tr>
+<td>‘true’</td>
+<td>‘false’</td>
+</tr>
+<tr>
+<td>‘y’</td>
+<td>‘n’</td>
+</tr>
+<tr>
+<td>‘yes’</td>
+<td>‘no’</td>
+</tr>
+<tr>
+<td>‘on’</td>
+<td>‘off’</td>
+</tr>
+<tr>
+<td>‘1’</td>
+<td>‘0’</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>比较谓词运算符</p>
+<table>
+<thead>
+<tr>
+<th>举例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>‘a’ BETWEEN  ‘x’  AND  ‘y’</td>
+<td>a 在  x和y之间</td>
+</tr>
+<tr>
+<td>‘a’ NOT  BETWEEN  ‘x’  AND  ‘y’</td>
+<td>a不在 x和y之间</td>
+</tr>
+<tr>
+<td>‘a’ BETWEEN SYMMETRIC  ‘x’  AND  ‘y’</td>
+<td>在对比较值排序后,位于 x和y之间</td>
+</tr>
+<tr>
+<td>‘a’ NOT BETWEEN SYMMETRIC  ‘x’  AND  ‘y’</td>
+<td>在对比较值排序后,不位于 x和y之间</td>
+</tr>
+<tr>
+<td>‘a’ IS DISTINCT from ‘b’</td>
+<td>a不等于b</td>
+</tr>
+<tr>
+<td>‘a’ IS NOT DISTINCT from ‘b’</td>
+<td>a 等于 b</td>
+</tr>
+<tr>
+<td>‘a’ IS NULL</td>
+<td>a是空值</td>
+</tr>
+<tr>
+<td>‘a’ IS NOT NULL</td>
+<td>a不是空值</td>
+</tr>
+<tr>
+<td>‘a’ is true</td>
+<td>a为真</td>
+</tr>
+<tr>
+<td>‘a’ is not  true</td>
+<td>a为假 或 未知</td>
+</tr>
+<tr>
+<td>‘a’ is false</td>
+<td>a为假</td>
+</tr>
+<tr>
+<td>‘a’ is not false</td>
+<td>a为真 或 未知</td>
+</tr>
+<tr>
+<td>‘a’ is unknown</td>
+<td>a 为 未知</td>
+</tr>
+<tr>
+<td>‘a’ is not unknown</td>
+<td>a 为真 或 假</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h4 id="8-5-位串类型"><a href="#8-5-位串类型" class="headerlink" title="8.5 位串类型"></a>8.5 位串类型</h4><h4 id="8-6枚举类型"><a href="#8-6枚举类型" class="headerlink" title="8.6枚举类型"></a>8.6枚举类型</h4><ul>
+<li><p>创建枚举</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TYPE</span> week <span class="token keyword">AS</span> <span class="token keyword">ENUM</span> <span class="token punctuation">(</span><span class="token string">'周一'</span><span class="token punctuation">,</span><span class="token string">'周二'</span><span class="token punctuation">,</span><span class="token string">'周三'</span><span class="token punctuation">,</span><span class="token string">'周四'</span><span class="token punctuation">,</span><span class="token string">'周五'</span><span class="token punctuation">,</span><span class="token string">'周六'</span><span class="token punctuation">,</span><span class="token string">'周日'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>创建表,使用该枚举作为字段类型</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> course<span class="token punctuation">(</span>
+	name <span class="token keyword">VARCHAR</span><span class="token punctuation">,</span>
+	c_week week
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>表DDL</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token string">"public"</span><span class="token punctuation">.</span><span class="token string">"course"</span> <span class="token punctuation">(</span>
+  <span class="token string">"name"</span> <span class="token keyword">varchar</span> <span class="token keyword">COLLATE</span> <span class="token string">"pg_catalog"</span><span class="token punctuation">.</span><span class="token string">"default"</span><span class="token punctuation">,</span>
+  <span class="token string">"c_week"</span> <span class="token string">"public"</span><span class="token punctuation">.</span><span class="token string">"week"</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>插入类型为枚举的数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> course <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'数学课'</span><span class="token punctuation">,</span><span class="token string">'周一'</span><span class="token punctuation">)</span>
+<span class="token keyword">insert</span> <span class="token keyword">into</span> course <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'英语'</span><span class="token punctuation">,</span><span class="token string">'周二'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>c-week 字段必须插入定义的枚举才可以,否则无法插入数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> course <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'未知课'</span><span class="token punctuation">,</span><span class="token string">'周八'</span><span class="token punctuation">)</span>
+<span class="token comment">#ERROR:  invalid input value for enum week: "周八"</span>
+<span class="token comment">#LINE 1: insert into course VALUES ('未知课','周八')</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+<li><p>根据枚举作为顺序条件查询</p>
+<ul>
+<li>枚举的大小之分是该枚举创建时所列出的值顺序而定</li>
+<li>每一种枚举都是独立的,无法和其他枚举类型进行比较</li>
+</ul>
+<p><strong>查询周三以后的课程</strong></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">from</span> course <span class="token keyword">where</span> c_week <span class="token operator">></span> <span class="token string">'周三'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>**查询一周内最早一天和最晚一天的课程 **</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">from</span> course <span class="token keyword">where</span> c_week <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token function">MIN</span><span class="token punctuation">(</span>c_week<span class="token punctuation">)</span> <span class="token keyword">FROM</span> course<span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">from</span> course <span class="token keyword">where</span> c_week <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token function">Max</span><span class="token punctuation">(</span>c_week<span class="token punctuation">)</span> <span class="token keyword">FROM</span> course<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>**根据枚举进行排序 **</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">from</span> course <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> c_week <span class="token keyword">DESC</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h4 id="8-7-几何类型"><a href="#8-7-几何类型" class="headerlink" title="8.7  几何类型"></a>8.7  几何类型</h4><h4 id="8-8-JSON类型"><a href="#8-8-JSON类型" class="headerlink" title="8.8 JSON类型"></a>8.8 JSON类型</h4><table>
+<thead>
+<tr>
+<th>类型名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>json</td>
+<td></td>
+</tr>
+<tr>
+<td>jsonb</td>
+<td>支持索引,效率较快</td>
+</tr>
+</tbody></table>
+<h4 id="8-9-数组类型"><a href="#8-9-数组类型" class="headerlink" title="8.9 数组类型"></a>8.9 数组类型</h4><ul>
+<li><p>创建带有数组类型的表</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> users<span class="token punctuation">(</span>
+	name <span class="token keyword">VARCHAR</span><span class="token punctuation">,</span>
+	hobby <span class="token keyword">VARCHAR</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>插入数据:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> users <span class="token keyword">VALUES</span><span class="token punctuation">(</span><span class="token string">'小张'</span><span class="token punctuation">,</span><span class="token string">'&#123;"乒乓球","篮球"&#125;'</span><span class="token punctuation">)</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> users <span class="token keyword">VALUES</span><span class="token punctuation">(</span><span class="token string">'小红'</span><span class="token punctuation">,</span>ARRAY<span class="token punctuation">[</span><span class="token string">'做饭'</span><span class="token punctuation">,</span><span class="token string">'炒菜'</span><span class="token punctuation">,</span><span class="token string">'追星'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>获取数组长度</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> array_dims<span class="token punctuation">(</span>hobby<span class="token punctuation">)</span> <span class="token keyword">from</span> users <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -1156,9 +1393,9 @@ owner root
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Postgresql学习之旅-基础篇">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Postgresql学习之旅-基础语法篇">
                         
-                        <span class="card-title">Postgresql学习之旅-基础篇</span>
+                        <span class="card-title">Postgresql学习之旅-基础语法篇</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1452,7 +1689,7 @@ owner root
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">7.9k</span>&nbsp;字
+                class="white-color">8.7k</span>&nbsp;字
             
             
             
