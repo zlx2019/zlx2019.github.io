@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Mysql学习之旅【二】dump指令, lxz Blog">
+    <meta name="keywords" content="Postgresql学习之旅【二】内置函数, lxz Blog">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Mysql学习之旅【二】dump指令 | lxz Blog</title>
+    <title>Postgresql学习之旅【二】内置函数 | lxz Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Mysql学习之旅【二】dump指令</h1>
+                    <h1 class="description center-align post-title">Postgresql学习之旅【二】内置函数</h1>
                 </div>
             </div>
         </div>
@@ -441,8 +441,8 @@
                                 <span class="chip bg-color">SQL</span>
                             </a>
                         
-                            <a href="/tags/Mysql/">
-                                <span class="chip bg-color">Mysql</span>
+                            <a href="/tags/Postgresql/">
+                                <span class="chip bg-color">Postgresql</span>
                             </a>
                         
                     </div>
@@ -453,8 +453,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Mysql%E7%B3%BB%E5%88%97/" class="post-category">
-                                Mysql系列
+                            <a href="/categories/Postgresql%E7%B3%BB%E5%88%97/" class="post-category">
+                                Postgresql系列
                             </a>
                         
                     </div>
@@ -466,7 +466,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-20
+                    2021-05-05
                 </div>
                 
 
@@ -475,14 +475,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    282
+                    926
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -505,23 +505,184 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="使用mysql-bin-目录下提供的mysqldump命令"><a href="#使用mysql-bin-目录下提供的mysqldump命令" class="headerlink" title="使用mysql bin/目录下提供的mysqldump命令"></a>使用mysql bin/目录下提供的mysqldump命令</h3><h4 id="1-导出数据表的结构信息和表数据"><a href="#1-导出数据表的结构信息和表数据" class="headerlink" title="1.导出数据表的结构信息和表数据"></a>1.导出数据表的结构信息和表数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h[host] -P[Port] -u[用户名] -p[用户密码]  数据库名 表名 &gt; 导出的sql文件
-mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; &#x2F;usr&#x2F;local&#x2F;tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+                <h4 id="1-数学函数"><a href="#1-数学函数" class="headerlink" title="1. 数学函数"></a>1. 数学函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 获取绝对值</span>
+<span class="token keyword">SELECT</span> abs<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">17.4</span><span class="token punctuation">)</span> <span class="token comment">--R: 17.4</span>
 
-<h4 id="2-导出多张表"><a href="#2-导出多张表" class="headerlink" title="2. 导出多张表"></a>2. 导出多张表</h4><p>通过 –tables 指定多表,以空格分隔</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db --tables users tb_salary&gt; &#x2F;usr&#x2F;local&#x2F;users_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<span class="token comment">-- 立方根</span>
+<span class="token keyword">SELECT</span> cbrt<span class="token punctuation">(</span><span class="token number">27</span><span class="token punctuation">)</span> <span class="token comment">--R: 3</span>
 
-<h4 id="3-只导出表结构"><a href="#3-只导出表结构" class="headerlink" title="3. 只导出表结构"></a>3. 只导出表结构</h4><p>通过 ‘-d’ 指令</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot -d gerry_db tb_salary&gt; &#x2F;usr&#x2F;local&#x2F;tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<span class="token comment">--大于参数的最小整数</span>
+<span class="token keyword">SELECT</span> ceil<span class="token punctuation">(</span><span class="token number">55.8</span><span class="token punctuation">)</span> <span class="token comment">--R: 56</span>
 
-<h4 id="4-只导出表数据"><a href="#4-只导出表数据" class="headerlink" title="4. 只导出表数据"></a>4. 只导出表数据</h4><p>通过 ‘-t’ 指令</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot -t gerry_db tb_salary&gt; &#x2F;usr&#x2F;local&#x2F;tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<span class="token comment">--小于参数的最大整数</span>
+<span class="token keyword">select</span> floor<span class="token punctuation">(</span><span class="token number">45.2</span><span class="token punctuation">)</span> <span class="token comment">--R:45</span>
 
-<h4 id="5-导出指定的数据库中所有表结构及数据"><a href="#5-导出指定的数据库中所有表结构及数据" class="headerlink" title="5.导出指定的数据库中所有表结构及数据"></a>5.导出指定的数据库中所有表结构及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h101.37.79.47 -P3306 -uroot -proot --databases gblog &gt; &#x2F;usr&#x2F;local&#x2F;gblog.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<span class="token comment">--求两数相除的商</span>
+<span class="token keyword">select</span> <span class="token operator">div</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span> <span class="token comment">--R: 2</span>
 
-<h4 id="6-导出多个的数据库中所有表结构及数据"><a href="#6-导出多个的数据库中所有表结构及数据" class="headerlink" title="6.导出多个的数据库中所有表结构及数据"></a>6.导出多个的数据库中所有表结构及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h101.37.79.47 -P3306 -uroot -proot --databases gblog zero &gt; &#x2F;usr&#x2F;local&#x2F;gblog_zero.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<span class="token comment">--求两数的余数</span>
+<span class="token keyword">select</span> <span class="token function">mod</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span> <span class="token comment">--R: 1</span>
 
-<h4 id="7-导出所有数据库的所有表结构信息及数据"><a href="#7-导出所有数据库的所有表结构信息及数据" class="headerlink" title="7.导出所有数据库的所有表结构信息及数据"></a>7.导出所有数据库的所有表结构信息及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot --all-databases &gt; &#x2F;usr&#x2F;local&#x2F;all.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<span class="token comment">--四舍五入 保留两位小数</span>
+<span class="token keyword">SELECT</span> <span class="token function">round</span><span class="token punctuation">(</span><span class="token number">65.4412</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>  <span class="token comment">--R: 65.44</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-随机函数"><a href="#2-随机函数" class="headerlink" title="2.随机函数"></a>2.随机函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 范围为0.0&lt;= x &lt; 1.0之中的随机数</span>
+<span class="token keyword">SELECT</span> random<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">--随机获取小于100的整数</span>
+<span class="token keyword">SELECT</span> ceil<span class="token punctuation">(</span>random<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="3-字符串函数"><a href="#3-字符串函数" class="headerlink" title="3.字符串函数"></a>3.字符串函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--连接字符串</span>
+<span class="token keyword">select</span> <span class="token string">'Hello'</span><span class="token operator">||</span><span class="token string">'Pgsql'</span> <span class="token comment">--R:HelloPgsql</span>
+
+<span class="token comment">--连接字符串与非字符串</span>
+<span class="token keyword">select</span> <span class="token string">'现在时间是:'</span><span class="token operator">||</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">--R:Hello2021-05-05 21:30:08.473724+08</span>
+
+<span class="token comment">--字符串包含的比特位数</span>
+<span class="token keyword">select</span> bit_length<span class="token punctuation">(</span><span class="token string">'H'</span><span class="token punctuation">)</span> <span class="token comment">--R: 8</span>
+<span class="token keyword">select</span> bit_length<span class="token punctuation">(</span><span class="token string">'好'</span><span class="token punctuation">)</span> <span class="token comment">--R: 24</span>
+<span class="token keyword">select</span> bit_length<span class="token punctuation">(</span><span class="token string">'H好'</span><span class="token punctuation">)</span> <span class="token comment">--R: 32</span>
+
+<span class="token comment">--字符串转换小写</span>
+<span class="token keyword">select</span> lower<span class="token punctuation">(</span><span class="token string">'HELLO'</span><span class="token punctuation">)</span> <span class="token comment">--R:hello</span>
+
+<span class="token comment">--转换大写</span>
+<span class="token keyword">select</span> upper<span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span> <span class="token comment">--R:HELLO</span>
+
+<span class="token comment">--将所有的参数以文本形式连接起来</span>
+<span class="token keyword">select</span> concat<span class="token punctuation">(</span><span class="token string">'abcd'</span><span class="token punctuation">,</span><span class="token number">213</span><span class="token punctuation">,</span><span class="token string">'真棒'</span><span class="token punctuation">)</span> <span class="token comment">--R:abcd213真棒</span>
+
+<span class="token comment">--字符串格式化,%1$s 表示继续使用第一个占位符</span>
+<span class="token keyword">select</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'Hello %s,is %1$s'</span><span class="token punctuation">,</span> <span class="token string">'World'</span><span class="token punctuation">)</span>
+
+<span class="token comment">--将每个单词首字母转为大写,剩下字母转为小写,单词之间以空格区分</span>
+<span class="token keyword">SELECT</span> initcap<span class="token punctuation">(</span><span class="token string">'hELLO,WORLD'</span><span class="token punctuation">)</span> <span class="token comment">--R： Hello,World</span>
+
+<span class="token comment">--获取字符串的前 'n'个字符</span>
+<span class="token keyword">select</span> <span class="token keyword">left</span><span class="token punctuation">(</span><span class="token string">'Hello'</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment">--R:He</span>
+
+<span class="token comment">--计算字符数的md5哈希值</span>
+<span class="token keyword">select</span> md5<span class="token punctuation">(</span><span class="token string">'HELLo wor'</span><span class="token punctuation">)</span> <span class="token comment">--R:ba50ee1efda092b2ae87aac268417c71</span>
+
+<span class="token comment">--字符串替换</span>
+<span class="token keyword">select</span> <span class="token keyword">replace</span><span class="token punctuation">(</span><span class="token string">'lxz is max'</span><span class="token punctuation">,</span><span class="token string">'lxz'</span><span class="token punctuation">,</span><span class="token string">'zlx'</span><span class="token punctuation">)</span> <span class="token comment">--R:zlx is max</span>
+
+<span class="token comment">--将字符串重复n次 连接起来</span>
+<span class="token keyword">SELECT</span> <span class="token keyword">repeat</span><span class="token punctuation">(</span><span class="token string">'lxz'</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span> <span class="token comment">--R: lxzlxzlxzlxz</span>
+
+<span class="token comment">--将字符串反转</span>
+<span class="token keyword">select</span> reverse<span class="token punctuation">(</span><span class="token string">'今天天气真不错'</span><span class="token punctuation">)</span> <span class="token comment">--R: 错不真气天天今</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="4-日期函数和时间函数"><a href="#4-日期函数和时间函数" class="headerlink" title="4.日期函数和时间函数"></a>4.日期函数和时间函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 两个日期相减,返回一个n年n月n日的结果</span>
+<span class="token keyword">SELECT</span> age<span class="token punctuation">(</span> <span class="token string">'2020-01-01'</span><span class="token punctuation">,</span>  <span class="token string">'2000-05-01'</span><span class="token punctuation">)</span> <span class="token comment">--R: 19 years 8 mons</span>
+
+<span class="token comment">--当前日期和时间</span>
+<span class="token keyword">SELECT</span> clock_timestamp<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">--R: 2021-05-05 21:57:38.808704+08</span>
+
+<span class="token comment">--当前日期</span>
+<span class="token keyword">select</span> <span class="token keyword">CURRENT_DATE</span>
+
+<span class="token comment">--当前时间</span>
+<span class="token keyword">select</span> <span class="token keyword">CURRENT_TIME</span>
+<span class="token keyword">select</span>  LOCALTIME
+
+<span class="token comment">--当前日期和时间</span>
+<span class="token keyword">select</span> <span class="token keyword">CURRENT_TIMESTAMP</span>
+<span class="token keyword">select</span> LOCALTIMESTAMP
+
+<span class="token comment">--使用年、月、日创建日期</span>
+<span class="token keyword">select</span> make_date<span class="token punctuation">(</span><span class="token number">2020</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span> <span class="token comment">--R:2020-10-20</span>
+
+<span class="token comment">--使用时、分、秒创建时间</span>
+<span class="token keyword">select</span> make_time<span class="token punctuation">(</span><span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">)</span> <span class="token comment">--R:21:30:28</span>
+
+<span class="token comment">--使用年、月、日、时、分、秒创建日期时间</span>
+<span class="token keyword">select</span> make_timestamp<span class="token punctuation">(</span><span class="token number">2019</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">00</span><span class="token punctuation">)</span> <span class="token comment">--R:2019-06-20 22:30:00</span>
+<span class="token comment">--使用年、月、日、时、分、秒创建日期时间(带有时区,如果不填写时区,则为当前时区)</span>
+<span class="token keyword">select</span> make_timestamptz<span class="token punctuation">(</span><span class="token number">2019</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">00</span><span class="token punctuation">)</span> <span class="token comment">--R:2019-06-20 22:30:00+08</span>
+
+<span class="token comment">--当前事务开始的时间</span>
+<span class="token keyword">select</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">--当前sql语句开始的时间</span>
+<span class="token keyword">SELECT</span> statement_timestamp<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>pg_sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>statement_timestamp<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">--R:一致</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-聚合函数"><a href="#5-聚合函数" class="headerlink" title="5.聚合函数"></a>5.聚合函数</h4><p>Table:</p>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">root_db&#x3D;# select * from func;
+ num  
+------
+   90 
+   21 
+ 3421 
+   12 
+   83 
+   23 
+(6 rows)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--将输入值,连接成一个数组</span>
+<span class="token comment">-- 将表中所有num连接成一个数组</span>
+<span class="token keyword">SELECT</span> array_agg<span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token keyword">from</span> func <span class="token comment">--R:&#123;90,21,3421,12,83,23&#125;</span>
+
+<span class="token comment">--获取平均值,并且四舍五入</span>
+<span class="token keyword">select</span> <span class="token function">round</span><span class="token punctuation">(</span><span class="token function">avg</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">from</span> func <span class="token comment">--R:608</span>
+
+<span class="token comment">--统计总结果行数量</span>
+<span class="token keyword">select</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> func <span class="token comment">--R：6</span>
+<span class="token comment">--统计 参数为非空的行数</span>
+<span class="token keyword">select</span> <span class="token function">count</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token keyword">FROM</span> func <span class="token comment">--R:6</span>
+
+<span class="token comment">--获取字段最大值</span>
+<span class="token keyword">select</span> <span class="token function">max</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token keyword">FROM</span> func <span class="token comment">--R:3421</span>
+<span class="token comment">-- 获取最小值</span>
+<span class="token keyword">select</span> <span class="token function">min</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token keyword">FROM</span> func <span class="token comment">--R:12</span>
+
+<span class="token comment">--求和</span>
+<span class="token keyword">SELECT</span> <span class="token function">sum</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token keyword">from</span> func <span class="token comment">--R:3650</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="6-集合函数"><a href="#6-集合函数" class="headerlink" title="6.集合函数"></a>6.集合函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 生成一系列值,从start-stop 步长为1</span>
+<span class="token keyword">SELECT</span> generate_series<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">)</span> <span class="token comment">--R: 1-90</span>
+
+<span class="token comment">--生成一系列值,从1-90 步长为3</span>
+<span class="token keyword">select</span> generate_series<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="7-系统信息函数"><a href="#7-系统信息函数" class="headerlink" title="7.系统信息函数"></a>7.系统信息函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 获取当前数据库</span>
+<span class="token keyword">select</span> CURRENT_CATALOG
+<span class="token keyword">SELECT</span> current_database<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">--当前正在执行的sql</span>
+<span class="token keyword">SELECT</span> current_query<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">-- 当前登陆者</span>
+<span class="token keyword">SELECT</span> <span class="token keyword">CURRENT_USER</span>
+<span class="token keyword">select</span> CURRENT_ROLE
+
+<span class="token comment">--当前模式</span>
+<span class="token keyword">select</span> <span class="token string">"current_schema"</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">select</span> CURRENT_SCHEMA
+
+<span class="token comment">-- 远程的客户端连接地址</span>
+<span class="token keyword">select</span> inet_client_addr<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">--远程客户端连接端口</span>
+<span class="token keyword">select</span> inet_client_port<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">--本地服务地址</span>
+<span class="token keyword">select</span> inet_server_addr<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">select</span> inet_server_port<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">-- 与当前会话关联的服务器进程id</span>
+<span class="token keyword">SELECT</span> pg_backend_pid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">-- 数据库启动的时间</span>
+<span class="token keyword">select</span> pg_postmaster_start_time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">--数据库版本信息</span>
+<span class="token keyword">select</span> <span class="token string">"version"</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 
                 
             </div>
@@ -548,7 +709,7 @@ mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; &#x2F;usr&#x2F
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zlx2019.github.io/2021/04/20/Mysql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%BA%8C%E3%80%91dump%E6%8C%87%E4%BB%A4/">https://zlx2019.github.io/2021/04/20/Mysql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%BA%8C%E3%80%91dump%E6%8C%87%E4%BB%A4/</a>
+                    <a href="https://zlx2019.github.io/2021/05/05/Postgresql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%BA%8C%E3%80%91%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/">https://zlx2019.github.io/2021/05/05/Postgresql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%BA%8C%E3%80%91%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -594,8 +755,8 @@ mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; &#x2F;usr&#x2F
                                     <span class="chip bg-color">SQL</span>
                                 </a>
                             
-                                <a href="/tags/Mysql/">
-                                    <span class="chip bg-color">Mysql</span>
+                                <a href="/tags/Postgresql/">
+                                    <span class="chip bg-color">Postgresql</span>
                                 </a>
                             
                         </div>
@@ -769,13 +930,13 @@ mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; &#x2F;usr&#x2F
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/04/23/Postgresql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%B8%80%E3%80%91%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%AF%87/">
+                <a href="/2021/05/06/Postgresql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%B8%89%E3%80%91%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Postgresql学习之旅【一】基础语法篇">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Postgresql学习之旅【三】查询语句">
                         
-                        <span class="card-title">Postgresql学习之旅【一】基础语法篇</span>
+                        <span class="card-title">Postgresql学习之旅【三】查询语句</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -786,7 +947,7 @@ mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; &#x2F;usr&#x2F
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-23
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-05-06
                         </span>
                         <span class="publish-author">
                             
@@ -826,13 +987,13 @@ mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; &#x2F;usr&#x2F
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/12/Vue3%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%B8%80%E3%80%91%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
+                <a href="/2021/05/05/vue3%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%BA%94%E3%80%91CompositionAPI/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Vue3学习之旅【一】基础语法">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="vue3学习之旅【五】CompositionAPI">
                         
-                        <span class="card-title">Vue3学习之旅【一】基础语法</span>
+                        <span class="card-title">vue3学习之旅【五】CompositionAPI</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -843,7 +1004,7 @@ mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; &#x2F;usr&#x2F
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-12
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-05
                             </span>
                         <span class="publish-author">
                             
