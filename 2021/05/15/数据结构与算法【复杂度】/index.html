@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="TypeScript学习之旅【一】邂逅ts, lxz Blog">
+    <meta name="keywords" content="数据结构与算法【复杂度】, lxz Blog">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>TypeScript学习之旅【一】邂逅ts | lxz Blog</title>
+    <title>数据结构与算法【复杂度】 | lxz Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">TypeScript学习之旅【一】邂逅ts</h1>
+                    <h1 class="description center-align post-title">数据结构与算法【复杂度】</h1>
                 </div>
             </div>
         </div>
@@ -433,12 +433,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%89%8D%E7%AB%AF/">
-                                <span class="chip bg-color">前端</span>
+                            <a href="/tags/%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+                                <span class="chip bg-color">复杂度</span>
                             </a>
                         
-                            <a href="/tags/js/">
-                                <span class="chip bg-color">js</span>
+                            <a href="/tags/%E7%AE%97%E6%B3%95/">
+                                <span class="chip bg-color">算法</span>
                             </a>
                         
                     </div>
@@ -449,8 +449,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/TypeScript/" class="post-category">
-                                TypeScript
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
+                                数据结构与算法
                             </a>
                         
                     </div>
@@ -462,7 +462,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-05-09
+                    2021-05-15
                 </div>
                 
 
@@ -471,14 +471,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    171
+                    847
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -501,40 +501,126 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><code>TypeScript是JavaScript的超集,它可以编译成JavaScript</code></p>
-<h3 id="1-Hello-Wrold"><a href="#1-Hello-Wrold" class="headerlink" title="1. Hello Wrold"></a>1. Hello Wrold</h3><h4 id="1-1-安装ts"><a href="#1-1-安装ts" class="headerlink" title="1.1 安装ts"></a>1.1 安装ts</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm install -g typescript<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h4 id="1-2-永远的Hello-Word"><a href="#1-2-永远的Hello-Word" class="headerlink" title="1.2 永远的Hello Word"></a>1.2 永远的Hello Word</h4><p>创建Hello.ts文件</p>
-<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Hello word!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h4 id="1-3-编译成js"><a href="#1-3-编译成js" class="headerlink" title="1.3 编译成js"></a>1.3 编译成js</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">tsc Hello.ts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h4 id="1-4-node-运行js"><a href="#1-4-node-运行js" class="headerlink" title="1.4 node 运行js"></a>1.4 node 运行js</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">node Hello.js<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="2-简化执行ts的步骤"><a href="#2-简化执行ts的步骤" class="headerlink" title="2.简化执行ts的步骤"></a>2.简化执行ts的步骤</h3><ul>
-<li><p>安装ts-node包</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">npm i -g ts-node<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
-<li><p>使用方式</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ts-node xxx.ts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+                <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p><u>一种功能的实现可以有n多个算法去解决,但是每一种算法的效率有所不同,如下功能,将用两种同的算法来完成,分别比较下效率,两种效率的差异就是算法的复杂度高低之分</u></p>
+<h5 id="1-求出第n个斐波那契数"><a href="#1-求出第n个斐波那契数" class="headerlink" title="1.求出第n个斐波那契数"></a>1.求出第<code>n</code>个斐波那契数</h5><ul>
+<li><p>什么是斐波那契数?</p>
+<p><u>从第一项数值开始,每相近的两项数进行相加,得出第三项数值,然后由第二项和第三项相加,以此类推,直至获取到第<code>n</code>项数值如:</u></p>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">0	1	1	2	3	5	8	13....
+---------------------原理如下
+0+1&#x3D;1
+1+1&#x3D;2
+2+1&#x3D;3
+2+3&#x3D;5
+3+5&#x3D;8
+5+8&#x3D;13
+....<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ul>
-<h3 id="3-变量"><a href="#3-变量" class="headerlink" title="3.变量"></a>3.变量</h3><h4 id="3-1-创建变量"><a href="#3-1-创建变量" class="headerlink" title="3.1 创建变量"></a>3.1 创建变量</h4><ul>
-<li><p>语法</p>
-<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">修饰符 变量名<span class="token operator">:</span> 数据类型<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
-<li><p>声明字符串为例(变量可赋值可不赋值)</p>
-<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">//修饰符  变量名: 数据类型</span>
-<span class="token keyword">let</span> username<span class="token operator">:</span> String <span class="token operator">=</span> <span class="token string">'lxz'</span><span class="token punctuation">;</span>
-or
-<span class="token keyword">let</span> password<span class="token operator">:</span> String<span class="token punctuation">;</span>
-password <span class="token operator">=</span> <span class="token string">'admin'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-<li><p>类型推导</p>
-<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">//boolean 类型</span>
-<span class="token keyword">let</span> isDone <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-<span class="token comment">//string 类型</span>
-<span class="token keyword">let</span> str <span class="token operator">=</span> <span class="token string">'hello'</span><span class="token punctuation">;</span>
-<span class="token comment">//数值</span>
-<span class="token keyword">let</span> num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<h6 id="第一种算法"><a href="#第一种算法" class="headerlink" title="第一种算法"></a>第一种算法</h6><p><strong>Java实现</strong></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/***
+ * 求出第n项斐波那契数值
+ * @Author lx Zhang.
+ * @Date 2021/5/15 9:07 上午
+ * @Param [n]
+ * @return int
+ **/</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">fib</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> n<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">fib</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">fib</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>测试</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>结果:</p>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">5 				消耗时长:1ms
+832040		消耗时长:7ms
+102334155	消耗时长:369ms
+未得出结果.....<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><u>可以看出来,随着我们参数<code>n</code>的增大,消耗的时间成倍的增长,当<code>n</code>仅仅为60时,竟然无法算出结果,测试电脑为Mac m1 16G配置….</u></p>
+<p><strong>接下来我们换go语言实现试试</strong></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">/**
+	求出第n项斐波那契数值
+ */</span>
+<span class="token keyword">func</span> <span class="token function">fib</span><span class="token punctuation">(</span>n <span class="token builtin">int64</span><span class="token punctuation">)</span> <span class="token builtin">int64</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> n <span class="token operator">&lt;=</span> <span class="token number">1</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> n<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> <span class="token function">fib</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">fib</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>测试</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Print</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>结果</p>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">5       		消耗时长 0ms
+610     		消耗时长 0ms
+832040  		消耗时长 0ms
+102334155   消耗时长 1ms
+....（n为50时）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><u>可以看出来go语言确实快了不少,但是随着参数的变大还是存在问题,显然是这个算法本身的问题</u></p>
+<h6 id="第二种算法"><a href="#第二种算法" class="headerlink" title="第二种算法"></a>第二种算法</h6><p><strong>Java实现</strong></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">fib</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> first <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> second <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> sum <span class="token operator">=</span> first <span class="token operator">+</span> second<span class="token punctuation">;</span><span class="token comment">//先求出每两项之和</span>
+        <span class="token comment">//数值项相加后进行后移</span>
+        first <span class="token operator">=</span> second<span class="token punctuation">;</span> <span class="token comment">//上一轮的第二项,后移一位,成为下一轮的第一项</span>
+        second <span class="token operator">=</span> sum<span class="token punctuation">;</span>   <span class="token comment">//将求得的和赋值于本轮的第二项,成为下一轮的第二项</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> second<span class="token punctuation">;</span><span class="token comment">//直至找到第n项</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>测试</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>结果</p>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">5						消耗时长:0ms
+832040			消耗时长:0ms
+102334155		消耗时长:0ms
+1820529360	消耗时长:0ms<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><u>第二种算法明显比第一种算法效率要高得多,这就是不同的算法,不同的复杂度</u></p>
+<h5 id="2-计算从1到-n的和"><a href="#2-计算从1到-n的和" class="headerlink" title="2.计算从1到 n的和"></a>2.计算从1到 n的和</h5><h6 id="第一种算法-1"><a href="#第一种算法-1" class="headerlink" title="第一种算法"></a>第一种算法</h6><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> result <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        result <span class="token operator">+=</span> i<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h6 id="第二种算法-1"><a href="#第二种算法-1" class="headerlink" title="第二种算法"></a>第二种算法</h6><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">sum2</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">+</span> n<span class="token punctuation">)</span> <span class="token operator">*</span> n <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><u>明显第二种使用到了公式,各方面都比第一种优雅、复杂度低</u></p>
+<h5 id="3-如何评判一个算法的好坏"><a href="#3-如何评判一个算法的好坏" class="headerlink" title="3.如何评判一个算法的好坏?"></a>3.如何评判一个算法的好坏?</h5><p><u>一般从下维度来评估一个算法的优劣</u></p>
+<ul>
+<li>正确性、可读性、健壮性(必要条件)</li>
 </ul>
-<h4 id="3-2-TypeScript的基本数据类型"><a href="#3-2-TypeScript的基本数据类型" class="headerlink" title="3.2 TypeScript的基本数据类型"></a>3.2 TypeScript的基本数据类型</h4>
+<p><u>在符合以上三类条件后,再根据以下维度评判</u></p>
+<ul>
+<li>时间复杂度<ul>
+<li>估算程序指令执行的次数(执行时间)</li>
+</ul>
+</li>
+<li>空间复杂度<ul>
+<li>估算所需占用的内存空间</li>
+</ul>
+</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -560,7 +646,7 @@ password <span class="token operator">=</span> <span class="token string">'admin
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zlx2019.github.io/2021/05/09/TypeScript%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%B8%80%E3%80%91%E9%82%82%E9%80%85ts/">https://zlx2019.github.io/2021/05/09/TypeScript%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%B8%80%E3%80%91%E9%82%82%E9%80%85ts/</a>
+                    <a href="https://zlx2019.github.io/2021/05/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E3%80%90%E5%A4%8D%E6%9D%82%E5%BA%A6%E3%80%91/">https://zlx2019.github.io/2021/05/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E3%80%90%E5%A4%8D%E6%9D%82%E5%BA%A6%E3%80%91/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -598,12 +684,12 @@ password <span class="token operator">=</span> <span class="token string">'admin
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%89%8D%E7%AB%AF/">
-                                    <span class="chip bg-color">前端</span>
+                                <a href="/tags/%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+                                    <span class="chip bg-color">复杂度</span>
                                 </a>
                             
-                                <a href="/tags/js/">
-                                    <span class="chip bg-color">js</span>
+                                <a href="/tags/%E7%AE%97%E6%B3%95/">
+                                    <span class="chip bg-color">算法</span>
                                 </a>
                             
                         </div>
@@ -777,13 +863,13 @@ password <span class="token operator">=</span> <span class="token string">'admin
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/05/09/Mysql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E5%85%AD%E3%80%91explain/">
+                <a href="/2021/05/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E3%80%90%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84%E3%80%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Mysql学习之旅【六】explain">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="数据结构与算法【动态数组】">
                         
-                        <span class="card-title">Mysql学习之旅【六】explain</span>
+                        <span class="card-title">数据结构与算法【动态数组】</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -794,18 +880,14 @@ password <span class="token operator">=</span> <span class="token string">'admin
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-05-09
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-05-16
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Mysql%E7%B3%BB%E5%88%97/" class="post-category">
-                                    Mysql系列
-                                </a>
-                            
-                            <a href="/categories/Mysql%E7%B3%BB%E5%88%97/%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/" class="post-category">
-                                    面试系列
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
+                                    数据结构与算法
                                 </a>
                             
                             
@@ -815,12 +897,8 @@ password <span class="token operator">=</span> <span class="token string">'admin
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/DBA/">
-                        <span class="chip bg-color">DBA</span>
-                    </a>
-                    
-                    <a href="/tags/Mysql/">
-                        <span class="chip bg-color">Mysql</span>
+                    <a href="/tags/%E6%95%B0%E7%BB%84-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                        <span class="chip bg-color">-数组 -数据结构</span>
                     </a>
                     
                 </div>
@@ -834,13 +912,13 @@ password <span class="token operator">=</span> <span class="token string">'admin
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/05/08/Mysql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%BA%94%E3%80%91%E9%94%81/">
+                <a href="/2021/05/10/Typescript%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%BA%8C%E3%80%91%E6%8E%A5%E5%8F%A3/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Mysql学习之旅【五】锁">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Typescript学习之旅【二】接口">
                         
-                        <span class="card-title">Mysql学习之旅【五】锁</span>
+                        <span class="card-title">Typescript学习之旅【二】接口</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -851,18 +929,14 @@ password <span class="token operator">=</span> <span class="token string">'admin
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-08
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-10
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Mysql%E7%B3%BB%E5%88%97/" class="post-category">
-                                    Mysql系列
-                                </a>
-                            
-                            <a href="/categories/Mysql%E7%B3%BB%E5%88%97/%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/" class="post-category">
-                                    面试系列
+                            <a href="/categories/TypeScript/" class="post-category">
+                                    TypeScript
                                 </a>
                             
                             
@@ -872,12 +946,12 @@ password <span class="token operator">=</span> <span class="token string">'admin
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/DBA/">
-                        <span class="chip bg-color">DBA</span>
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
                     </a>
                     
-                    <a href="/tags/Mysql/">
-                        <span class="chip bg-color">Mysql</span>
+                    <a href="/tags/js/">
+                        <span class="chip bg-color">js</span>
                     </a>
                     
                 </div>
@@ -1076,7 +1150,7 @@ password <span class="token operator">=</span> <span class="token string">'admin
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">23.1k</span>&nbsp;字
+                class="white-color">27k</span>&nbsp;字
             
             
             
