@@ -475,14 +475,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -544,6 +544,7 @@
 </li>
 <li><p><strong>可重复读(Repeatable Read)</strong></p>
 <p><u>事务级别(阻止了脏读、不可重复读的问题,会产生幻读)</u></p>
+<p>通过MVCC机制实现,解决了不可重复读、脏读</p>
 </li>
 <li><p><strong>串行化 (Serializable)</strong></p>
 <p><u>最高级别,所有的事务完全同步执行,没有并发可言,性能极低</u></p>
@@ -575,6 +576,7 @@
 <li><p>MVCC</p>
 <p><u>生成一个数据快照,并用这个快照来提供一致性的读取,也成为了多版本数据控制实际就是CAS版本控制 + 读写分离的思想主要用于RC和RR级别。</u></p>
 <p><u>其实就是多版本并发控制。MVCC 是一种并发控制的方法，一般在数据库管理系统中，实现对数据库的并发访问。</u></p>
+<p>在多个事务中,对数据进行操作时,会获取一个数据的快照及事务ID(版本号),在本事务中的所有查询语句,查询的都是本事务的数据快照,只有在进行 修改操作时,会先进行事务ID的比较,同步最新的数据快照后再进行数据修改.</p>
 </li>
 </ul>
 
@@ -1119,7 +1121,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">38.8k</span>&nbsp;字
+                class="white-color">44.5k</span>&nbsp;字
             
             
             

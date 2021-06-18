@@ -509,42 +509,6 @@
                     
 
                     
-                        <link rel="stylesheet" href="/libs/dplayer/DPlayer.min.css">
-<div class="video-player">
-    
-    <div class="title center-align">
-        <i class="fas fa-video-camera"></i>&nbsp;&nbsp;可惜你不听周杰伦,也不懂我
-    </div>
-    
-    <div class="row">
-        <div class="col l8 offset-l2 m10 offset-m1 s12">
-            <div id="dplayer" class="dplayer-video"
-                    ></div>
-        </div>
-    </div>
-</div>
-
-<script src="/libs/dplayer/DPlayer.min.js"></script>
-<script>
-    $(function () {
-        new DPlayer({
-            container: document.getElementById('dplayer'),
-            autoplay: 'false' === 'true',
-            theme: '#42b983',
-            loop: 'false' === 'true',
-            lang: 'zh-CN' === 'zh-CN' ? 'zh-cn' : 'en',
-            preload: 'auto',
-            volume: Number('0.7'),
-            video: {
-                url: 'https://movies-bucket.oss-cn-beijing.aliyuncs.com/%E4%B8%8B%E8%BD%BD.mp4',
-                pic: '',
-                thumbnails: ''
-            }
-        });
-    });
-</script>
-
-                    
 
                     
                     <div id="recommend-sections" class="recommend">
@@ -565,6 +529,104 @@
     <!-- 所有文章卡片 -->
     <article id="articles" class="container articles">
         <div class="row article-row">
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/06/17/RocketMQ/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="RocketMQ">
+                            
+                            <span class="card-title">RocketMQ</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                前言
+
+什么是MQ?
+MQ全称Message Queue(消息队列)，是在消息的传输过程中保存消息的容器。多用于分布式系统之间进行通信。队列:数据结构的一种，特征为“先进先出”
+为什么需要引入MQ?
+引入MQ后的优势
+
+应用解耦
+多个应用间
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/RocketMQ/" class="post-category">
+                                    RocketMQ
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+                            <span class="chip bg-color">消息中间件</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/06/03/Java%E3%80%90%E5%8F%8D%E5%B0%84%E3%80%91/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java【反射】">
+                            
+                            <span class="card-title">Java【反射】</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                前言反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性。这种 动态的获取信息 以及 动态调用对象的方法 的功能称为 java 的反射机制,Java本身是静态语言,但是通
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-03
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                lxz
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Java%E5%9F%BA%E7%A1%80/">
+                            <span class="chip bg-color">Java基础</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
@@ -590,13 +652,25 @@
                             </span>
                             <span class="publish-author">
                                 
-                                <i class="fas fa-user fa-fw"></i>
-                                lxz
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/Redis/" class="post-category">
+                                    Redis
+                                </a>
+                                
                                 
                             </span>
                         </div>
                     </div>
 
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+                            <span class="chip bg-color">缓存中间件</span>
+                        </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -942,101 +1016,6 @@
                 </div>
             </div>
             
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2021/05/18/ElasticSearch%E3%80%90%E4%B8%80%E3%80%91%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="ElasticSearch【一】基础学习">
-                            
-                            <span class="card-title">ElasticSearch【一】基础学习</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                前言什么是ElasticSeatch?
-ElasticSearch 简称ES,是目前非常主流的一款分布式开源搜索引擎,它基于Lucene 并且使用Java开发,提供了简单的Restful风格API;ES主要以轻量级的JSON作为数据存储格式
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/ElasticSearch/" class="post-category">
-                                    ElasticSearch
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/">
-                            <span class="chip bg-color">中间件</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2021/05/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E3%80%90%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84%E3%80%91/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="数据结构与算法【动态数组】">
-                            
-                            <span class="card-title">数据结构与算法【动态数组】</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                前言数组,是大多编程语言中的一个最基本也是最基础的一个数据结构,属于线性表,但是数组是不可以动态扩容的,也就是说在初始化数组时就已经决定了他的内存所占大小,那么就有了很大的局限性,不过众多语言都有它的强化版代表.比如Java中的List、G
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
-                                    数据结构与算法
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%95%B0%E7%BB%84-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-                            <span class="chip bg-color">-数组 -数据结构</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
         </div>
     </article>
 
@@ -1134,7 +1113,7 @@ ElasticSearch 简称ES,是目前非常主流的一款分布式开源搜索引擎
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">38.8k</span>&nbsp;字
+                class="white-color">44.5k</span>&nbsp;字
             
             
             
