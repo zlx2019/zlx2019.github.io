@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java高并发编程【一】线程基础, lxz Blog">
+    <meta name="keywords" content="Mysql学习之旅【七】主从搭建, lxz Blog">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java高并发编程【一】线程基础 | lxz Blog</title>
+    <title>Mysql学习之旅【七】主从搭建 | lxz Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java高并发编程【一】线程基础</h1>
+                    <h1 class="description center-align post-title">Mysql学习之旅【七】主从搭建</h1>
                 </div>
             </div>
         </div>
@@ -433,8 +433,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/">
-                                <span class="chip bg-color">高并发</span>
+                            <a href="/tags/DBA/">
+                                <span class="chip bg-color">DBA</span>
+                            </a>
+                        
+                            <a href="/tags/Mysql/">
+                                <span class="chip bg-color">Mysql</span>
                             </a>
                         
                     </div>
@@ -445,8 +449,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Java/" class="post-category">
-                                Java
+                            <a href="/categories/Mysql%E7%B3%BB%E5%88%97/" class="post-category">
+                                Mysql系列
                             </a>
                         
                     </div>
@@ -458,7 +462,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-05-20
+                    2021-06-21
                 </div>
                 
 
@@ -467,14 +471,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    210
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -497,22 +501,149 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="1-线程介绍"><a href="#1-线程介绍" class="headerlink" title="1.线程介绍"></a>1.线程介绍</h3><p><strong>线程</strong>（英语：thread）是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">操作系统</a>能够进行运算<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B0%83%E5%BA%A6">调度</a>的最小单位。大部分情况下，它被包含在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B">进程</a>之中，是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B">进程</a>中的实际运作单位。一条线程指的是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BF%9B%E7%A8%8B">进程</a>中一个单一顺序的控制流，一个进程中可以并发多个线程，每条线程并行执行不同的任务。在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Unix">Unix System V</a>及<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/SunOS">SunOS</a>中也被称为轻量进程（lightweight processes），但轻量进程更多指内核线程（kernel thread），而把用户线程（user thread）称为线程。</p>
-<h3 id="2-线程的生命周期-状态"><a href="#2-线程的生命周期-状态" class="headerlink" title="2.线程的生命周期(状态)"></a>2.线程的生命周期(状态)</h3><ul>
-<li><p>New</p>
-<p>创建线程</p>
+                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>主从同步使得数据可以从一个数据库服务器复制到其他服务器上，在复制数据时，一个服务器充当主服务器（master），其余的服务器充当从服务器（slave）。因为复制是异步进行的，所以从服务器不需要一直连接着主服务器，从服务器甚至可以通过拨号断断续续地连接主服务器。通过配置文件，可以指定复制所有的数据库，某个数据库，甚至是某个数据库上的某个表。</p>
+<h3 id="1-配置主库"><a href="#1-配置主库" class="headerlink" title="1.配置主库"></a>1.配置主库</h3><ol>
+<li><p>修改my.cnf</p>
+<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token selector">[mysqld]</span>
+<span class="token comment">#主数据库端ID号</span>
+<span class="token constant">server_id</span> <span class="token attr-value"><span class="token punctuation">=</span> 1           </span>
+<span class="token comment"> #开启二进制日志                  </span>
+<span class="token constant">log-bin</span> <span class="token attr-value"><span class="token punctuation">=</span> mysql-bin    </span>
+<span class="token comment">#需要复制的数据库名，如果复制多个数据库，重复设置这个选项即可                  </span>
+<span class="token constant">binlog-do-db</span> <span class="token attr-value"><span class="token punctuation">=</span> db        </span>
+<span class="token comment">#将从服务器从主服务器收到的更新记入到从服务器自己的二进制日志文件中                 </span>
+log-slave-updates                        
+<span class="token comment">#控制binlog的写入频率。每执行多少次事务写入一次(这个参数性能消耗很大，但可减小MySQL崩溃造成的损失) </span>
+<span class="token constant">sync_binlog</span> <span class="token attr-value"><span class="token punctuation">=</span> 1                    </span>
+<span class="token comment">#这个参数一般用在主主同步中，用来错开自增值, 防止键值冲突</span>
+<span class="token constant">auto_increment_offset</span> <span class="token attr-value"><span class="token punctuation">=</span> 1           </span>
+<span class="token comment">#这个参数一般用在主主同步中，用来错开自增值, 防止键值冲突</span>
+<span class="token constant">auto_increment_increment</span> <span class="token attr-value"><span class="token punctuation">=</span> 1            </span>
+<span class="token comment">#二进制日志自动删除的天数，默认值为0,表示“没有自动删除”，启动时和二进制日志循环时可能删除  </span>
+<span class="token constant">expire_logs_days</span> <span class="token attr-value"><span class="token punctuation">=</span> 7                    </span>
+<span class="token comment">#将函数复制到slave  </span>
+<span class="token constant">log_bin_trust_function_creators</span> <span class="token attr-value"><span class="token punctuation">=</span> 1   </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>在主库创建角色,用于从库连接主库</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">USER</span> <span class="token string">'repl'</span><span class="token variable">@'*.55.*.12'</span> IDENTIFIED <span class="token keyword">WITH</span> <span class="token string">'mysql_native_password'</span> <span class="token keyword">BY</span> <span class="token string">'rootROOT1234!'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>创建<code>repl</code>用户,密码为<code>rootROOT1234!</code>,并且 这个用户只能指定的ip连接</p>
+<p>注意: MySQL8.0默认指定使用需要SSL的身份验证插件caching_sha2_password，而我们在创建同步复制账号时候没有指定REQUIRE SSL。为了降低这件事情的复杂性，我们选择了社区的解决方法，选择绕过SSL插件的验证，改为mysql_native_password验证来做同步复制。</p>
+<p>授予该角色权限</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">GRANT</span> <span class="token keyword">REPLICATION</span> SLAVE <span class="token keyword">ON</span> <span class="token operator">*</span><span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">TO</span> <span class="token string">'repl'</span><span class="token variable">@'*.55.*.12'</span><span class="token punctuation">;</span>
+FLUSH <span class="token keyword">PRIVILEGES</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li><p>查看二进制日志的信息</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">></span> <span class="token keyword">show</span> master <span class="token keyword">status</span><span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">------------------+----------+--------------+------------------+-------------------+</span>
+<span class="token operator">|</span> <span class="token keyword">File</span>             <span class="token operator">|</span> Position <span class="token operator">|</span> Binlog_Do_DB <span class="token operator">|</span> Binlog_Ignore_DB <span class="token operator">|</span> Executed_Gtid_Set <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">------------------+----------+--------------+------------------+-------------------+</span>
+<span class="token operator">|</span> mysql<span class="token operator">-</span>bin<span class="token punctuation">.</span><span class="token number">000002</span> <span class="token operator">|</span>     <span class="token number">1937</span> <span class="token operator">|</span>              <span class="token operator">|</span> mysql            <span class="token operator">|</span>                   <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">------------------+----------+--------------+------------------+-------------------+</span>
+<span class="token number">1</span> <span class="token keyword">row</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>File的值是当前使用的二进制日志的文件名，Position是该日志里面的位置信息（不需要纠结这个究竟代表什么），记住这两个值，会在下面配置从服务器时用到。</p>
 </li>
-<li><p>Runnable</p>
-<p>创建完成后,未启动的状态,或者说是 未被分到cpu时间片的线程都属于该状态</p>
+</ol>
+<h3 id="2-配置从库"><a href="#2-配置从库" class="headerlink" title="2. 配置从库"></a>2. 配置从库</h3><ol>
+<li><p>配置my.cnf</p>
+<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token constant">server_id</span> <span class="token attr-value"><span class="token punctuation">=</span> 2</span>
+<span class="token constant">log-bin</span> <span class="token attr-value"><span class="token punctuation">=</span> mysql-bin</span>
+log-slave-updates
+<span class="token constant">sync_binlog</span> <span class="token attr-value"><span class="token punctuation">=</span> 0</span>
+<span class="token comment">#log buffer将每秒一次地写入log file中，并且log file的flush(刷到磁盘)操作同时进行。该模式下在事务提交的时候，不会主动触发写入磁盘的操作</span>
+<span class="token constant">innodb_flush_log_at_trx_commit</span> <span class="token attr-value"><span class="token punctuation">=</span> 0        </span>
+<span class="token comment">#指定slave要复制哪个库</span>
+<span class="token constant">replicate-do-db</span> <span class="token attr-value"><span class="token punctuation">=</span> db         </span>
+<span class="token comment">#MySQL主从复制的时候，当Master和Slave之间的网络中断，但是Master和Slave无法察觉的情况下（比如防火墙或者路由问题）。Slave会等待slave_net_timeout设置的秒数后，才能认为网络出现故障，然后才会重连并且追赶这段时间主库的数据</span>
+<span class="token constant">slave-net-timeout</span> <span class="token attr-value"><span class="token punctuation">=</span> 60                    </span>
+<span class="token constant">log_bin_trust_function_creators</span> <span class="token attr-value"><span class="token punctuation">=</span> 1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>执行同步命令</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">change master <span class="token keyword">to</span> MASTER_HOST<span class="token operator">=</span><span class="token string">'*.37.*.47'</span><span class="token punctuation">,</span>MASTER_PORT<span class="token operator">=</span><span class="token number">3306</span><span class="token punctuation">,</span>MASTER_USER<span class="token operator">=</span><span class="token string">'repl'</span><span class="token punctuation">,</span>MASTER_PASSWORD<span class="token operator">=</span><span class="token string">'rootROOT1234!'</span><span class="token punctuation">,</span>MASTER_LOG_FILE<span class="token operator">=</span><span class="token string">'mysql-bin.000002'</span><span class="token punctuation">,</span>MASTER_LOG_POS<span class="token operator">=</span><span class="token number">1708</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>MASTER_HOST: 主库ip</p>
+<p>MASTER_PORT: 主库端口</p>
+<p>MASTER_USER: 主库创建的用户</p>
+<p>MASTER_PASSWORD: 用户密码</p>
+<p>MASTER_LOG_FILE: 在主数据库执行命令<code>show master status</code> 查询到的二进制日志文件名称</p>
+<p>MASTER_LOG_POS: 在主数据库执行命令<code>show master status</code> 查询到的位置 Position的值</p>
 </li>
-<li><p>Running</p>
-<p>start()后的状态</p>
+<li><p>开启 主从复制功能</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">start</span> slave<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>查看详细状态</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">></span> <span class="token keyword">show</span> slave <span class="token keyword">status</span> \G
+<span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token number">1.</span> <span class="token keyword">row</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>
+               Slave_IO_State: Waiting <span class="token keyword">for</span> master <span class="token keyword">to</span> send event
+                  Master_Host: <span class="token number">101.37</span><span class="token number">.79</span><span class="token number">.47</span>
+                  Master_User: repl
+                  Master_Port: <span class="token number">3306</span>
+                Connect_Retry: <span class="token number">60</span>
+              Master_Log_File: mysql<span class="token operator">-</span>bin<span class="token punctuation">.</span><span class="token number">000002</span>
+          Read_Master_Log_Pos: <span class="token number">1937</span>
+               Relay_Log_File: zlx<span class="token operator">-</span>relay<span class="token operator">-</span>bin<span class="token punctuation">.</span><span class="token number">000002</span>
+                Relay_Log_Pos: <span class="token number">553</span>
+        Relay_Master_Log_File: mysql<span class="token operator">-</span>bin<span class="token punctuation">.</span><span class="token number">000002</span>
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+              Replicate_Do_DB: 
+          Replicate_Ignore_DB: 
+           Replicate_Do_Table: 
+       Replicate_Ignore_Table: 
+      Replicate_Wild_Do_Table: 
+  Replicate_Wild_Ignore_Table: 
+                   Last_Errno: <span class="token number">0</span>
+                   Last_Error: 
+                 Skip_Counter: <span class="token number">0</span>
+          Exec_Master_Log_Pos: <span class="token number">1937</span>
+              Relay_Log_Space: <span class="token number">760</span>
+              Until_Condition: None
+               Until_Log_File: 
+                Until_Log_Pos: <span class="token number">0</span>
+           Master_SSL_Allowed: <span class="token keyword">No</span>
+           Master_SSL_CA_File: 
+           Master_SSL_CA_Path: 
+              Master_SSL_Cert: 
+            Master_SSL_Cipher: 
+               Master_SSL_Key: 
+        Seconds_Behind_Master: <span class="token number">0</span>
+Master_SSL_Verify_Server_Cert: <span class="token keyword">No</span>
+                Last_IO_Errno: <span class="token number">0</span>
+                Last_IO_Error: 
+               Last_SQL_Errno: <span class="token number">0</span>
+               Last_SQL_Error: 
+  Replicate_Ignore_Server_Ids: 
+             Master_Server_Id: <span class="token number">1</span>
+                  Master_UUID: b8d3cf48<span class="token operator">-</span><span class="token number">1412</span><span class="token operator">-</span><span class="token number">11</span>eb<span class="token operator">-</span><span class="token number">9</span>e99<span class="token operator">-</span><span class="token number">00163</span>e169458
+             Master_Info_File: mysql<span class="token punctuation">.</span>slave_master_info
+                    SQL_Delay: <span class="token number">0</span>
+          SQL_Remaining_Delay: <span class="token boolean">NULL</span>
+      Slave_SQL_Running_State: Slave has <span class="token keyword">read</span> <span class="token keyword">all</span> relay log<span class="token punctuation">;</span> waiting <span class="token keyword">for</span> more updates
+           Master_Retry_Count: <span class="token number">86400</span>
+                  Master_Bind: 
+      Last_IO_Error_Timestamp: 
+     Last_SQL_Error_Timestamp: 
+               Master_SSL_Crl: 
+           Master_SSL_Crlpath: 
+           Retrieved_Gtid_Set: 
+            Executed_Gtid_Set: 
+                Auto_Position: <span class="token number">0</span>
+         Replicate_Rewrite_DB: 
+                 Channel_Name: 
+           Master_TLS_Version: 
+       Master_public_key_path: 
+        Get_master_public_key: <span class="token number">0</span>
+            Network_Namespace: 
+<span class="token number">1</span> <span class="token keyword">row</span> <span class="token operator">in</span> <span class="token keyword">set</span><span class="token punctuation">,</span> <span class="token number">1</span> warning <span class="token punctuation">(</span><span class="token number">0.01</span> sec<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>假如显示 <code>Slave_IO_Running</code> 和 <code>Slave_SQL_Running</code> 为 <code>Yes</code> ，以及<code>Slave_IO_State</code> 为 <code>Waiting for master to send event</code>，则证明主从复制成功！</p>
 </li>
-<li><p>Blocked</p>
-<p>阻塞状态,唤醒后会回到 Runnable状态</p>
-</li>
-</ul>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><h3 id="-2"><a href="#-2" class="headerlink" title=""></a></h3>
+</ol>
+<h3 id="3-从库Slave相关命令"><a href="#3-从库Slave相关命令" class="headerlink" title="3. 从库Slave相关命令"></a>3. 从库Slave相关命令</h3><p>启动主从复制</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">start</span> slave<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>停止同步操作</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">stop slave<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
                 
             </div>
             <hr/>
@@ -538,7 +669,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zlx2019.github.io/2021/05/20/Java%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E3%80%90%E4%B8%80%E3%80%91%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/">https://zlx2019.github.io/2021/05/20/Java%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E3%80%90%E4%B8%80%E3%80%91%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</a>
+                    <a href="https://zlx2019.github.io/2021/06/21/Mysql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%B8%83%E3%80%91%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/">https://zlx2019.github.io/2021/06/21/Mysql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%B8%83%E3%80%91%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -576,8 +707,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/">
-                                    <span class="chip bg-color">高并发</span>
+                                <a href="/tags/DBA/">
+                                    <span class="chip bg-color">DBA</span>
+                                </a>
+                            
+                                <a href="/tags/Mysql/">
+                                    <span class="chip bg-color">Mysql</span>
                                 </a>
                             
                         </div>
@@ -747,17 +882,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/05/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E3%80%90%E9%93%BE%E8%A1%A8%E3%80%91/">
+                <a href="/2021/06/21/Mysql%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E3%80%90%E4%B8%83%E3%80%91%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="数据结构与算法【链表】">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Mysql学习之旅【七】主从搭建">
                         
-                        <span class="card-title">数据结构与算法【链表】</span>
+                        <span class="card-title">Mysql学习之旅【七】主从搭建</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -767,30 +903,31 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-05-20
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
-                                    数据结构与算法
+                            <a href="/categories/Mysql%E7%B3%BB%E5%88%97/" class="post-category">
+                                    Mysql系列
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%93%BE%E8%A1%A8/">
-                        <span class="chip bg-color">链表</span>
+                    <a href="/tags/DBA/">
+                        <span class="chip bg-color">DBA</span>
                     </a>
                     
-                    <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-                        <span class="chip bg-color">数据结构</span>
+                    <a href="/tags/Mysql/">
+                        <span class="chip bg-color">Mysql</span>
                     </a>
                     
                 </div>
@@ -804,13 +941,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/05/20/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E3%80%90CompletableFuture%E3%80%91/">
+                <a href="/2021/06/17/RocketMQ/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="高并发编程【CompletableFuture】">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="RocketMQ">
                         
-                        <span class="card-title">高并发编程【CompletableFuture】</span>
+                        <span class="card-title">RocketMQ</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -821,15 +958,27 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-20
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-17
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            lxz
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/RocketMQ/" class="post-category">
+                                    RocketMQ
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+                        <span class="chip bg-color">消息中间件</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1026,7 +1175,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">46.2k</span>&nbsp;字
+                class="white-color">47.9k</span>&nbsp;字
             
             
             

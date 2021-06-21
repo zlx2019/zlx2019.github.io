@@ -467,14 +467,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    833
+                    411
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    1 分
                 </div>
                 
 
@@ -538,108 +538,9 @@ daemonize yes<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
 <p>启动时指定配置文件</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">redis-server &#x2F;etc&#x2F;redis.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h4 id="基本命令使用"><a href="#基本命令使用" class="headerlink" title="基本命令使用"></a>基本命令使用</h4><h5 id="1-key相关命令"><a href="#1-key相关命令" class="headerlink" title="1.key相关命令"></a>1.key相关命令</h5><ol>
-<li><p><strong>keys [pattern]</strong>  </p>
-<p>查看key列表, * 表示所有</p>
-</li>
-<li><p><strong>exists  [key …]</strong></p>
-<p>判断这个key是否存在;0表示不存在,1表示存在</p>
-</li>
-<li><p><strong>type [key]</strong></p>
-<p>查看这个key对应的value是什么类型</p>
-</li>
-<li><p><strong>del [key …]</strong></p>
-<p>删除一或多个key</p>
-</li>
-<li><p><strong>unlink  [key …]</strong></p>
-<p>异步删除key</p>
-</li>
-<li><p><strong>expire [key seconds]</strong></p>
-<p>添加过期时间,单位为秒</p>
-</li>
-<li><p><strong>ttl [key]</strong></p>
-<p>查看key有效时间时长;-1表示永不失效,-2表示已经失效</p>
-</li>
-<li><p><strong>select [index]</strong></p>
-<p>切换库</p>
-</li>
-<li><p><strong>dbsize</strong></p>
-<p>查看当前库 key的数量</p>
-</li>
-<li><p><strong>flushdb</strong></p>
-<p>清除当前库数据</p>
-</li>
-<li><p><strong>flushall</strong></p>
-<p>清除所有库数据</p>
-</li>
-</ol>
-<h5 id="2-字符串相关命令"><a href="#2-字符串相关命令" class="headerlink" title="2.字符串相关命令"></a>2.字符串相关命令</h5><ol>
-<li><p><strong>set key value</strong> </p>
-<p>设置值</p>
-</li>
-<li><p><strong>get key</strong></p>
-<p>获取值</p>
-</li>
-<li><p><strong>mset key1 value1 key2 value …</strong></p>
-<p>设置一组键值</p>
-</li>
-<li><p><strong>mget key1 key2 …</strong></p>
-<p>获取多个key的value</p>
-</li>
-<li><p><strong>append key value</strong></p>
-<p>将值追加到key对应的value末尾</p>
-</li>
-<li><p><strong>strlen key</strong></p>
-<p>获取key对应的value长度</p>
-</li>
-<li><p><strong>setnx  key value</strong></p>
-<p>只有key不存在时,才设置值,可以用来做分布式锁</p>
-</li>
-<li><p><strong>msetnx key value [key value …]</strong></p>
-<p>设置多个key,有一个失败则全部失败</p>
-</li>
-<li><p><strong>setex key seconds value</strong></p>
-<p>设置值,并且指定有效时间 单位秒</p>
-</li>
-<li><p><strong>getset key value</strong></p>
-<p>以旧换新,设置了新值,同时获取旧值 </p>
-</li>
-<li><p><strong>incr key</strong></p>
-<p>自增1</p>
-</li>
-<li><p><strong>decr key</strong></p>
-<p>递减1</p>
-</li>
-<li><p><strong>incrby key increment</strong></p>
-<p>自增指定的步长</p>
-</li>
-<li><p><strong>decrby key decrement</strong></p>
-<p>递减指定的步长</p>
-</li>
-</ol>
-<h5 id="3-list相关命令"><a href="#3-list相关命令" class="headerlink" title="3.list相关命令"></a>3.list相关命令</h5><ol>
-<li><p><strong>lpush key val…</strong></p>
-<p>在列表头部插入一个或多个值</p>
-</li>
-<li><p><strong>lrange key start end</strong></p>
-<p>获取列表的 起止-截止 数据 0 -1 表示全部数据</p>
-</li>
-<li><p><strong>rpush keu val…</strong></p>
-<p>在列表尾部插入一个或多个值</p>
-</li>
-<li><p><strong>lpop</strong></p>
-<p>在列表头部弹出一个值</p>
-</li>
-<li><p><strong>rpop</strong></p>
-<p>在列表尾部弹出一个值</p>
-</li>
-<li><p><strong>rpoplpush key1 key2</strong></p>
-<p>在key1尾部弹出一个值,插入到key2头部</p>
-</li>
-<li><p><strong>llen key</strong></p>
-<p>获取列表长度</p>
-</li>
-</ol>
+
+
+<p>后续重写….</p>
 
                 
             </div>
@@ -1162,7 +1063,7 @@ daemonize yes<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">46.2k</span>&nbsp;字
+                class="white-color">47.9k</span>&nbsp;字
             
             
             
