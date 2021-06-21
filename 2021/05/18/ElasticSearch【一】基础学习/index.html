@@ -30,7 +30,9 @@
     <script src="/libs/jquery/jquery.min.js"></script>
     <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
 
 
 
@@ -467,14 +469,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.8k
+                    2.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    12 分
+                    10 分
                 </div>
                 
 
@@ -539,9 +541,9 @@
 <h3 id="4-ES倒排索引原理"><a href="#4-ES倒排索引原理" class="headerlink" title="4.ES倒排索引原理"></a>4.ES倒排索引原理</h3><p>ES从插入数据到检索数据的流程原理:</p>
 <pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">首先获取到一条文档后,会在元数据区持久化该文档,并且生成一个DocID,可以根据该DocId直接命中该文档在元数据区的位置,然后对文档的所有数据进行分词建立索引,
 			假如只有一个名为title的text类型数据,我们来模拟多条数据
-				&quot;title&quot;: &quot;Running code open&quot;  	docID :1
-				&quot;title&quot;: &quot;Running start first&quot; 	docID :2
-				&quot;title&quot;: &quot;test Running&quot;			docID :3
+				"title": "Running code open"  	docID :1
+				"title": "Running start first" 	docID :2
+				"title": "test Running"			docID :3
 			首先会对title进行分词,然后es会在索引区创建以下矩形(概念模型)
 			
 			分词后的相同单词都会有一个唯一标识
@@ -559,11 +561,11 @@
 				6		test 		(3,&lt;0&gt;,1)
 
 				--------------------------------------------------
-			如以上结构,以单词1Running为例: 表示 &#39;Running&#39;单词
-			在id为 &#39;1&#39; 的文档中 &#39;&lt;0&gt;&#39; 的位置出现了&#39;1&#39;次,
-			在id为 &#39;2&#39; 的文档中 &#39;&lt;0&gt;&#39; 的位置出现了&#39;1&#39;次,
-			在id为 &#39;3&#39; 的文档中 &#39;&lt;1&gt;&#39; 的位置出现了&#39;1&#39;次
-		假如我们根据&#39;Running&#39;term查询,es会首先在列表中寻找该单词ID,然后在对应的倒排列表中获取它出现的DocID、位置、TF等数据,就可以直接命中该文档
+			如以上结构,以单词1Running为例: 表示 'Running'单词
+			在id为 '1' 的文档中 '&lt;0&gt;' 的位置出现了'1'次,
+			在id为 '2' 的文档中 '&lt;0&gt;' 的位置出现了'1'次,
+			在id为 '3' 的文档中 '&lt;1&gt;' 的位置出现了'1'次
+		假如我们根据'Running'term查询,es会首先在列表中寻找该单词ID,然后在对应的倒排列表中获取它出现的DocID、位置、TF等数据,就可以直接命中该文档
 		es中使用的数据结构: BKD Tree(自行扩展)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="5-ElasticSearch的安装"><a href="#5-ElasticSearch的安装" class="headerlink" title="5.ElasticSearch的安装"></a>5.ElasticSearch的安装</h3><ol>
@@ -591,10 +593,10 @@
 *               soft    nproc           4096<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>修改/etc/sysctl.conf，增加如下配置,保存后执行sysctl -p 生效</p>
-<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">fs.file-max&#x3D;655350<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">fs.file-max=655350<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>修改/etc/sysctl.conf，增加如下配置,保存后执行sysctl -p 生效</p>
-<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">vm.max_map_count&#x3D;262144<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">vm.max_map_count=262144<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 <li><p>开启远程连接</p>
 <p>修改elasticsearch.yml</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">network.host</span><span class="token punctuation">:</span> 0.0.0.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
@@ -663,33 +665,33 @@
 
 <h4 id="2-创建索引库"><a href="#2-创建索引库" class="headerlink" title="2.创建索引库"></a>2.创建索引库</h4><p>books 为索引库名称</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">PUT /books
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"mappings"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token property">"title"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-          <span class="token property">"price"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span><span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"double"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-          <span class="token property">"content"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span><span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-          <span class="token property">"createTime"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span><span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"date"</span><span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">{</span>
+  <span class="token property">"mappings"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"keyword"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">"price"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"double"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">"content"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">"createTime"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"date"</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="3-插入数据"><a href="#3-插入数据" class="headerlink" title="3.插入数据"></a>3.插入数据</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">POST /books/_doc/<span class="token number">1</span>
-<span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
   <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Golang微服务"</span><span class="token punctuation">,</span>
   <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">18.99</span><span class="token punctuation">,</span>
   <span class="token property">"content"</span><span class="token operator">:</span><span class="token string">"Golang微服务进阶..."</span><span class="token punctuation">,</span>
   <span class="token property">"createTime"</span><span class="token operator">:</span> <span class="token string">"2020-08-20"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>如果不指定ID,则会默认生成</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">POST /books/_doc
-<span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
   <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"gRPC"</span><span class="token punctuation">,</span>
   <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">180.99</span><span class="token punctuation">,</span>
   <span class="token property">"content"</span><span class="token operator">:</span><span class="token string">"高性能RPC框架"</span><span class="token punctuation">,</span>
   <span class="token property">"createTime"</span><span class="token operator">:</span> <span class="token string">"1999-02-20"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="4-查看索引库数据"><a href="#4-查看索引库数据" class="headerlink" title="4.查看索引库数据"></a>4.查看索引库数据</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -700,76 +702,76 @@
 
 <h4 id="7-更新文档"><a href="#7-更新文档" class="headerlink" title="7.更新文档"></a>7.更新文档</h4><p>更新id为1的文档,会覆盖掉原来的数据,只留下title字段</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">POST /books/_doc/<span class="token number">1</span>
-<span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
   <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"新的title"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>更新指定的字段</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">POST /books/_doc/<span class="token number">1</span>/_update
-<span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
   <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"只更新了title"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="8-批量插入"><a href="#8-批量插入" class="headerlink" title="8.批量插入"></a>8.批量插入</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">PUT /books/_bulk
-<span class="token punctuation">&#123;</span><span class="token property">"index"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1002</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量插入的书籍2"</span><span class="token punctuation">,</span><span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">10.9</span><span class="token punctuation">,</span><span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"内容2"</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"index"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1003</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量插入的书籍3"</span><span class="token punctuation">,</span><span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">10.9</span><span class="token punctuation">,</span><span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"内容3"</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"index"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1004</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量插入的书籍4"</span><span class="token punctuation">,</span><span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">10.9</span><span class="token punctuation">,</span><span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"内容4"</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">{</span><span class="token property">"index"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1002</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量插入的书籍2"</span><span class="token punctuation">,</span><span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">10.9</span><span class="token punctuation">,</span><span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"内容2"</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"index"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1003</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量插入的书籍3"</span><span class="token punctuation">,</span><span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">10.9</span><span class="token punctuation">,</span><span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"内容3"</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"index"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1004</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量插入的书籍4"</span><span class="token punctuation">,</span><span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">10.9</span><span class="token punctuation">,</span><span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"内容4"</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="9-批量操作-新增、修改、删除"><a href="#9-批量操作-新增、修改、删除" class="headerlink" title="9.批量操作(新增、修改、删除)"></a>9.批量操作(新增、修改、删除)</h4><p>“index”表示新增</p>
 <p>“update”表示修改</p>
 <p>“delete”表示删除</p>
 <p>三者可以混合使用</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">PUT /books/_bulk
-<span class="token punctuation">&#123;</span><span class="token property">"index"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1005</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量插入的书籍5"</span><span class="token punctuation">,</span><span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">10.9</span><span class="token punctuation">,</span><span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"内容5"</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"update"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1001</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"doc"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量修改title"</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#123;</span><span class="token property">"delete"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1002</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">{</span><span class="token property">"index"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1005</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量插入的书籍5"</span><span class="token punctuation">,</span><span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">10.9</span><span class="token punctuation">,</span><span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"内容5"</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"update"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1001</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"doc"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"批量修改title"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">"delete"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"_id"</span><span class="token operator">:</span> <span class="token number">1002</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="8-DSL查询语句"><a href="#8-DSL查询语句" class="headerlink" title="8.DSL查询语句"></a>8.DSL查询语句</h3><h4 id="1-match-all-查询全部数据"><a href="#1-match-all-查询全部数据" class="headerlink" title="1.match_all 查询全部数据"></a>1.match_all 查询全部数据</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"match_all"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"match_all"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="2-Sort-排序查询"><a href="#2-Sort-排序查询" class="headerlink" title="2. Sort 排序查询"></a>2. Sort 排序查询</h4><ul>
 <li>Desc 降序</li>
 <li>Asc 升序</li>
 </ul>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"match_all"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"match_all"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token property">"sort"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">&#123;</span>
-      <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"order"</span><span class="token operator">:</span> <span class="token string">"desc"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
   <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="3-分页查询"><a href="#3-分页查询" class="headerlink" title="3.分页查询"></a>3.分页查询</h4><ul>
 <li>from 表示偏移量</li>
 <li>size 表示页容量</li>
 </ul>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"match_all"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"match_all"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token property">"from"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> 
   <span class="token property">"size"</span><span class="token operator">:</span> <span class="token number">2</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="4-查询只获取指定的字段"><a href="#4-查询只获取指定的字段" class="headerlink" title="4. 查询只获取指定的字段"></a>4. 查询只获取指定的字段</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token property">"match_all"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">"match_all"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token property">"_source"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"title"</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-匹配查询"><a href="#5-匹配查询" class="headerlink" title="5. 匹配查询"></a>5. 匹配查询</h4><h4 id="5-1-match-模糊匹配查询"><a href="#5-1-match-模糊匹配查询" class="headerlink" title="5.1 match 模糊匹配查询"></a>5.1 match 模糊匹配查询</h4><p>只要包含关键字 就表示匹配成功</p>
@@ -778,13 +780,13 @@
 <li>keyword类型 按照整体来匹配</li>
 </ul>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /users/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"match"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
       <span class="token property">"username"</span><span class="token operator">:</span> <span class="token string">"name"</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -793,15 +795,15 @@
 <li>keyword 类型 按照整体来匹配</li>
 </ul>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"term"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"content"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"term"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"content"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"value"</span><span class="token operator">:</span> <span class="token string">"1"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -810,47 +812,47 @@
 <li>let : &lt;</li>
 </ul>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"gte"</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
         <span class="token property">"lte"</span><span class="token operator">:</span> <span class="token number">20</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="7-匹配前缀查询"><a href="#7-匹配前缀查询" class="headerlink" title="7. 匹配前缀查询"></a>7. 匹配前缀查询</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"prefix"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"prefix"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"value"</span><span class="token operator">:</span> <span class="token string">"Go"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="8-通配符查询"><a href="#8-通配符查询" class="headerlink" title="8. 通配符查询"></a>8. 通配符查询</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"wildcard"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"wildcard"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"value"</span><span class="token operator">:</span> <span class="token string">"北*"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="9-根据一组id查询"><a href="#9-根据一组id查询" class="headerlink" title="9. 根据一组id查询"></a>9. 根据一组id查询</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"ids"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"ids"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
       <span class="token property">"values"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">1001</span><span class="token punctuation">,</span><span class="token number">1003</span><span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="10-布尔查询-组合查询"><a href="#10-布尔查询-组合查询" class="headerlink" title="10. 布尔查询(组合查询)"></a>10. 布尔查询(组合查询)</h4><ul>
 <li>must: and</li>
@@ -859,139 +861,139 @@
 </ul>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">#must使用<span class="token punctuation">,</span>查询price <span class="token number">10</span><span class="token number">-100</span>区间、并且createTime小于<span class="token number">2021</span>日期的数据
 GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"bool"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"bool"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
       <span class="token property">"must"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
               <span class="token property">"gte"</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
               <span class="token property">"lte"</span><span class="token operator">:</span> <span class="token number">100</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"createTime"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"createTime"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
               <span class="token property">"lte"</span><span class="token operator">:</span> <span class="token string">"2021-01-01"</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
       <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
 
 # should使用<span class="token punctuation">,</span>查询price大于<span class="token number">200</span> 或者小于<span class="token number">30</span>的数据
 GET /book/books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"bool"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"bool"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
       <span class="token property">"should"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
               <span class="token property">"gte"</span><span class="token operator">:</span> <span class="token number">100</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
               <span class="token property">"lte"</span><span class="token operator">:</span> <span class="token number">30</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
       <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
 # must_not使用<span class="token punctuation">,</span>排除掉price为<span class="token number">180.99</span>的数据
 GET /book/books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"bool"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"bool"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
       <span class="token property">"must_not"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token property">"match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">"match"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
             <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">180.99</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
       <span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="11-高亮查询"><a href="#11-高亮查询" class="headerlink" title="11. 高亮查询"></a>11. 高亮查询</h4><p>在  “1” 前后追加 span 标签</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"term"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"content"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"term"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"content"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"value"</span><span class="token operator">:</span> <span class="token string">"1"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token property">"highlight"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"pre_tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"&lt;span style='color:red'>"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> 
-    <span class="token property">"post_tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"&lt;/span>"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> 
-    <span class="token property">"fields"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"content"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"highlight"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"pre_tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"&lt;span style='color:red'&gt;"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> 
+    <span class="token property">"post_tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"&lt;/span&gt;"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> 
+    <span class="token property">"fields"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"content"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="12-多字段查询"><a href="#12-多字段查询" class="headerlink" title="12. 多字段查询"></a>12. 多字段查询</h4><p>根据<code>gRpc</code> 关键词在 title、content字段中匹配</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"multi_match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"multi_match"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
       <span class="token property">"query"</span><span class="token operator">:</span> <span class="token string">"gRpc"</span><span class="token punctuation">,</span>
       <span class="token property">"fields"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"title"</span><span class="token punctuation">,</span><span class="token string">"content"</span><span class="token punctuation">]</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="13-filter过滤器"><a href="#13-filter过滤器" class="headerlink" title="13. filter过滤器"></a>13. filter过滤器</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">#查询 '服务' 并且 price小于<span class="token number">20</span>的
 GET /book/books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"bool"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"bool"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
       <span class="token property">"must"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token property">"term"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">"term"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
               <span class="token property">"value"</span><span class="token operator">:</span> <span class="token string">"服务"</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
       <span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token property">"filter"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-          <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"filter"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"range"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">"price"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
             <span class="token property">"lte"</span><span class="token operator">:</span> <span class="token number">20</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="14-聚合查询"><a href="#14-聚合查询" class="headerlink" title="14. 聚合查询"></a>14. 聚合查询</h4><p>根据price 进行分组统计</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /books/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"aggs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"price_group"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"terms"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"aggs"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"price_group"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"terms"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"field"</span><span class="token operator">:</span> <span class="token string">"price"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -1007,37 +1009,37 @@ GET /book/books/_search
 </li>
 </ul>
 <h4 id="1-创建索引库时-指定分词器"><a href="#1-创建索引库时-指定分词器" class="headerlink" title="1. 创建索引库时,指定分词器"></a>1. 创建索引库时,指定分词器</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">PUT /users
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"mappings"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"username"</span> <span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"mappings"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"username"</span> <span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span>
         <span class="token property">"analyzer"</span><span class="token operator">:</span> <span class="token string">"ik_max_word"</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-      <span class="token property">"nikename"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">"nikename"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span>
         <span class="token property">"analyzer"</span><span class="token operator">:</span> <span class="token string">"ik_smart"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="2-插入数据"><a href="#2-插入数据" class="headerlink" title="2. 插入数据"></a>2. 插入数据</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">POST /users/_doc/<span class="token number">1001</span>
-<span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
   <span class="token property">"username"</span><span class="token operator">:</span> <span class="token string">"i name is 管理员"</span><span class="token punctuation">,</span>
   <span class="token property">"nikename"</span> <span class="token operator">:</span> <span class="token string">"管理员"</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="3-分词查询"><a href="#3-分词查询" class="headerlink" title="3.分词查询"></a>3.分词查询</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json">GET /users/_search
-<span class="token punctuation">&#123;</span>
-  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"term"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token property">"username"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"query"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"term"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"username"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"value"</span><span class="token operator">:</span> <span class="token string">"管理"</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -1262,6 +1264,325 @@ GET /book/books/_search
     
 
     
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'la6VQEmsNdWJDzJ0VGHTDFd3-gzGzoHsz',
+        appKey: 'M30KA47YM6KfbfpCBPEAnXkg',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'robohash',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '来说点什么~',
+        enableQQ: true,
+        emojiCDN: '//i0.hdslb.com/bfs/emote/',
+        // 表情title和图片映射
+        emojiMaps: {
+            "tv_doge": "6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png",
+            "tv_亲亲": "a8111ad55953ef5e3be3327ef94eb4a39d535d06.png",
+            "tv_偷笑": "bb690d4107620f1c15cff29509db529a73aee261.png",
+            "tv_再见": "180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png",
+            "tv_冷漠": "b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png",
+            "tv_发怒": "34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png",
+            "tv_发财": "34db290afd2963723c6eb3c4560667db7253a21a.png",
+            "tv_可爱": "9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png",
+            "tv_吐血": "09dd16a7aa59b77baa1155d47484409624470c77.png",
+            "tv_呆": "fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png",
+            "tv_呕吐": "9f996894a39e282ccf5e66856af49483f81870f3.png",
+            "tv_困": "241ee304e44c0af029adceb294399391e4737ef2.png",
+            "tv_坏笑": "1f0b87f731a671079842116e0991c91c2c88645a.png",
+            "tv_大佬": "093c1e2c490161aca397afc45573c877cdead616.png",
+            "tv_大哭": "23269aeb35f99daee28dda129676f6e9ea87934f.png",
+            "tv_委屈": "d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png",
+            "tv_害羞": "a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png",
+            "tv_尴尬": "7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png",
+            "tv_微笑": "70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png",
+            "tv_思考": "90cf159733e558137ed20aa04d09964436f618a1.png",
+            "tv_惊吓": "0d15c7e2ee58e935adc6a7193ee042388adc22af.png",
+            "tv_打脸": "56ab10b624063e966bfcb76ea5dc4794d87dfd47.png",
+            "tv_抓狂": "fe31c08edad661d63762b04e17b8d5ae3c71a757.png",
+            "tv_抠鼻": "c666f55e88d471e51bbd9fab9bb308110824a6eb.png",
+            "tv_斜眼笑": "911f987aa8bc1bee12d52aafe62bc41ef4474e6c.png",
+            "tv_无奈": "ea8ed89ee9878f2fece2dda0ea8a5dbfe21b5751.png",
+            "tv_晕": "5443c22b4d07fb1907ccc610c8e6db254f2461b7.png",
+            "tv_流汗": "cead1c351ab8d79e9f369605beb90148db0fbed3.png",
+            "tv_流泪": "7e71cde7858f0cd50d74b0264aa26db612a8a167.png",
+            "tv_流鼻血": "c32d39db2737f89b904ca32700d140a9241b0767.png",
+            "tv_点赞": "f85c354995bd99e28fc76c869bfe42ba6438eff4.png",
+            "tv_生气": "26702dcafdab5e8225b43ffd23c94ac1ff932654.png",
+            "tv_生病": "8b0ec90e6b86771092a498c54f09fc94621c1900.png",
+            "tv_疑问": "0793d949b18d7be716078349c202c15ff166f314.png",
+            "tv_白眼": "c1d59f439e379ee50eef488bcb5e5378e5044ea4.png",
+            "tv_皱眉": "72ccad6679fea0d14cce648b4d818e09b8ffea2d.png",
+            "tv_目瞪口呆": "0b8cb81a68de5d5365212c99375e7ace3e7891b7.png",
+            "tv_睡着": "8b196675b53af58264f383c50ad0945048290b33.png",
+            "tv_笑哭": "1abc628f6d4f4caf9d0e7800878f4697abbc8273.png",
+            "tv_腼腆": "89712c0d4af73e67f89e35cbc518420380a7f6f4.png",
+            "tv_色": "61822c7e9aae5da76475e7892534545336b23a6f.png",
+            "tv_调侃": "4bc022533ef31544ca0d72c12c808cf4a1cce3e3.png",
+            "tv_调皮": "b9c41de8e82dd7a8515ae5e3cb63e898bf245186.png",
+            "tv_鄙视": "6e72339f346a692a495b123174b49e4e8e781303.png",
+            "tv_闭嘴": "c9e990da7f6e93975e25fd8b70e2e290aa4086ef.png",
+            "tv_难过": "87f46748d3f142ebc6586ff58860d0e2fc8263ba.png",
+            "tv_馋": "fc7e829b845c43c623c8b490ee3602b7f0e76a31.png",
+            "tv_鬼脸": "0ffbbddf8a94d124ca2f54b360bbc04feb6bbfea.png",
+            "tv_黑人问号": "45821a01f51bc867da9edbaa2e070410819a95b2.png",
+            "tv_鼓掌": "1d21793f96ef4e6f48b23e53e3b9e42da833a0f6.png"
+        },
+        requiredFields: ['nick','mail'], //设置必填项
+    });
+</script>
 
     
 
@@ -1561,7 +1882,7 @@ GET /book/books/_search
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">47.9k</span>&nbsp;字
+                class="white-color">47.1k</span>&nbsp;字
             
             
             
