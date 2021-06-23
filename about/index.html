@@ -37,9 +37,219 @@
 
 
 
+
+    <style type="text/css" lang="css"> #loading-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-height: 100vh;
+        width: 100vw;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #FFF;
+        text-align: center; /* loader页面消失采用渐隐的方式*/
+        -webkit-transition: opacity 1s ease;
+        -moz-transition: opacity 1s ease;
+        -o-transition: opacity 1s ease;
+        transition: opacity 1s ease;
+    }
+
+    .loading-image {
+        width: 120px;
+        height: 50px;
+        transform: translate(-50%);
+    }
+
+    .loading-image div:nth-child(2) {
+        -webkit-animation: pacman-balls 1s linear 0s infinite;
+        animation: pacman-balls 1s linear 0s infinite
+    }
+
+    .loading-image div:nth-child(3) {
+        -webkit-animation: pacman-balls 1s linear .33s infinite;
+        animation: pacman-balls 1s linear .33s infinite
+    }
+
+    .loading-image div:nth-child(4) {
+        -webkit-animation: pacman-balls 1s linear .66s infinite;
+        animation: pacman-balls 1s linear .66s infinite
+    }
+
+    .loading-image div:nth-child(5) {
+        -webkit-animation: pacman-balls 1s linear .99s infinite;
+        animation: pacman-balls 1s linear .99s infinite
+    }
+
+    .loading-image div:first-of-type {
+        width: 0;
+        height: 0;
+        border: 25px solid #49b1f5;
+        border-right-color: transparent;
+        border-radius: 25px;
+        -webkit-animation: rotate_pacman_half_up .5s 0s infinite;
+        animation: rotate_pacman_half_up .5s 0s infinite;
+    }
+
+    .loading-image div:nth-child(2) {
+        width: 0;
+        height: 0;
+        border: 25px solid #49b1f5;
+        border-right-color: transparent;
+        border-radius: 25px;
+        -webkit-animation: rotate_pacman_half_down .5s 0s infinite;
+        animation: rotate_pacman_half_down .5s 0s infinite;
+        margin-top: -50px;
+    }
+
+    @-webkit-keyframes rotate_pacman_half_up {
+        0% {
+            transform: rotate(270deg)
+        }
+        50% {
+            transform: rotate(1turn)
+        }
+        to {
+            transform: rotate(270deg)
+        }
+    }
+
+    @keyframes rotate_pacman_half_up {
+        0% {
+            transform: rotate(270deg)
+        }
+        50% {
+            transform: rotate(1turn)
+        }
+        to {
+            transform: rotate(270deg)
+        }
+    }
+
+    @-webkit-keyframes rotate_pacman_half_down {
+        0% {
+            transform: rotate(90deg)
+        }
+        50% {
+            transform: rotate(0deg)
+        }
+        to {
+            transform: rotate(90deg)
+        }
+    }
+
+    @keyframes rotate_pacman_half_down {
+        0% {
+            transform: rotate(90deg)
+        }
+        50% {
+            transform: rotate(0deg)
+        }
+        to {
+            transform: rotate(90deg)
+        }
+    }
+
+    @-webkit-keyframes pacman-balls {
+        75% {
+            opacity: .7
+        }
+        to {
+            transform: translate(-100px, -6.25px)
+        }
+    }
+
+    @keyframes pacman-balls {
+        75% {
+            opacity: .7
+        }
+        to {
+            transform: translate(-100px, -6.25px)
+        }
+    }
+
+    .loading-image div:nth-child(3), .loading-image div:nth-child(4), .loading-image div:nth-child(5), .loading-image div:nth-child(6) {
+        background-color: #49b1f5;
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        margin: 2px;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        transform: translateY(-6.25px);
+        top: 25px;
+        left: 100px;
+    }
+
+    .loading-text {
+        margin-bottom: 20vh;
+        text-align: center;
+        color: #2c3e50;
+        font-size: 2rem;
+        box-sizing: border-box;
+        padding: 0 10px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @media only screen and (max-width: 500px) {
+        .loading-text {
+            font-size: 1.5rem;
+        }
+    }
+
+    .fadeout {
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+    /* logo出现动画 */
+    @-webkit-keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0)
+        }
+        100% {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none
+        }
+    }
+
+    @keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+        }
+    } </style>
+<script> (function () {
+        const loaded = function () {
+            setTimeout(function () {
+                const loader = document.getElementById("loading-container");
+                loader.className = "fadeout";//使用渐隐的方法淡出loading page // document.getElementById("body-wrap").style.display="flex";
+     setTimeout(function(){ loader.style.display="none"; },2500); },1000);//强制显示loading page 1s
+     }; loaded(); })() </script>
+
+
+
 <body>
 
-    <header class="navbar-fixed">
+
+    <div id="loading-container"><p class="loading-text">嘘~ 正在从服务器偷取页面 . . . </p>
+        <div class="loading-image">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+<header class="navbar-fixed">
     <nav id="headNav" class="bg-color nav-transparent">
         <div id="navContainer" class="nav-wrapper container">
             <div class="brand-logo">
@@ -310,7 +520,7 @@
 
 </header>
 
-    <style type="text/css">
+<style type="text/css">
     /* don't remove. */
     .about-cover {
         height: 75vh;
@@ -587,7 +797,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"ElasticSearch","value":2},{"name":"Mysql系列","value":7},{"name":"面试系列","value":3},{"name":"架构搭建","value":1},{"name":"Postgresql系列","value":3},{"name":"SpringBoot系列","value":2},{"name":"Redis","value":1},{"name":"TypeScript","value":2},{"name":"Vue系列","value":5},{"name":"问题解决","value":1},{"name":"中间件","value":1},{"name":"数据结构与算法","value":5},{"name":"Postgresql系列","value":1},{"name":"BUG","value":1},{"name":"WebStorm","value":1},{"name":"RocketMQ","value":1}],
+                data: [{"name":"ElasticSearch","value":2},{"name":"Mysql系列","value":7},{"name":"面试系列","value":3},{"name":"架构搭建","value":1},{"name":"Postgresql系列","value":3},{"name":"SpringBoot系列","value":2},{"name":"Redis","value":1},{"name":"TypeScript","value":2},{"name":"Vue系列","value":5},{"name":"中间件","value":1},{"name":"问题解决","value":1},{"name":"数据结构与算法","value":5},{"name":"Postgresql系列","value":1},{"name":"BUG","value":1},{"name":"WebStorm","value":1},{"name":"RocketMQ","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -800,12 +1010,6 @@
             
             
             
-            <a href="/tags/Java%E5%9F%BA%E7%A1%80/">
-                <span class="chip center-align waves-effect waves-light chip-default">Java基础</span>
-            </a>
-            
-            
-            
             <a href="/tags/DBA/">
                 <span class="chip center-align waves-effect waves-light chip-default">DBA</span>
             </a>
@@ -816,6 +1020,12 @@
             
             <a href="/tags/Mysql/">
                 <span class="chip center-align waves-effect waves-light chip-default">Mysql</span>
+            </a>
+            
+            
+            
+            <a href="/tags/Java%E5%9F%BA%E7%A1%80/">
+                <span class="chip center-align waves-effect waves-light chip-default">Java基础</span>
             </a>
             
             
@@ -880,18 +1090,6 @@
             
             
             
-            <a href="/tags/Devtools/">
-                <span class="chip center-align waves-effect waves-light chip-default">Devtools</span>
-            </a>
-            
-            
-            
-            <a href="/tags/WebStorm/">
-                <span class="chip center-align waves-effect waves-light chip-default">WebStorm</span>
-            </a>
-            
-            
-            
             <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
                 <span class="chip center-align waves-effect waves-light chip-default">微服务</span>
             </a>
@@ -900,6 +1098,18 @@
             
             <a href="/tags/%E6%9C%8D%E5%8A%A1%E4%B8%AD%E5%BF%83/">
                 <span class="chip center-align waves-effect waves-light chip-default">服务中心</span>
+            </a>
+            
+            
+            
+            <a href="/tags/Devtools/">
+                <span class="chip center-align waves-effect waves-light chip-default">Devtools</span>
+            </a>
+            
+            
+            
+            <a href="/tags/WebStorm/">
+                <span class="chip center-align waves-effect waves-light chip-default">WebStorm</span>
             </a>
             
             
@@ -1003,7 +1213,7 @@
 </main>
 
 
-    <footer class="page-footer bg-color">
+<footer class="page-footer bg-color">
     
         <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
@@ -1037,7 +1247,7 @@
         <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
                    server="netease"
                    type="playlist"
-                   id="2904031247"
+                   id="2888085740"
                    fixed='true'
                    autoplay='false'
                    theme='#42b983'
@@ -1068,7 +1278,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">47.1k</span>&nbsp;字
+                class="white-color">47.8k</span>&nbsp;字
             
             
             
@@ -1173,7 +1383,7 @@
 <div class="progress-bar"></div>
 
 
-    <!-- 搜索遮罩框 -->
+<!-- 搜索遮罩框 -->
 <div id="searchModal" class="modal">
     <div class="modal-content">
         <div class="search-header">
@@ -1277,7 +1487,7 @@ $(function () {
 });
 </script>
 
-    <!-- 回到顶部按钮 -->
+<!-- 回到顶部按钮 -->
 <div id="backTop" class="top-scroll">
     <a class="btn-floating btn-large waves-effect waves-light" href="#!">
         <i class="fas fa-arrow-up"></i>
@@ -1285,16 +1495,16 @@ $(function () {
 </div>
 
 
-    <script src="/libs/materialize/materialize.min.js"></script>
-    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="/libs/aos/aos.js"></script>
-    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="/js/matery.js"></script>
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
 
-    <!-- Baidu Analytics -->
+<!-- Baidu Analytics -->
 
-    <!-- Baidu Push -->
+<!-- Baidu Push -->
 
 <script>
     (function () {
@@ -1310,39 +1520,40 @@ $(function () {
     })();
 </script>
 
-    
+
     <script src="/libs/others/clicklove.js" async="async"></script>
-    
-    
+
+
     <script async src="/libs/others/busuanzi.pure.mini.js"></script>
-    
 
-    
 
-    
 
-	
-    
 
-    
+
+
+
+
+
+
     
     <script type="text/javascript" size="150" alpha='0.6'
-        zIndex="-1" src="/libs/background/ribbon-refresh.min.js" async="async"></script>
-    
+            zIndex="-1" src="/libs/background/ribbon-refresh.min.js"
+            async="async"></script>
 
-    
-    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
-    
 
-    
+
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js"
+            async="async"></script>
+
+
+
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
-    
 
-    <!-- 樱花特效 -->
-    
 
-    <!--鼠标移动雪花特效-->
-    
+<!-- 樱花特效 -->
+
+
+<!--鼠标移动雪花特效-->
 
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
