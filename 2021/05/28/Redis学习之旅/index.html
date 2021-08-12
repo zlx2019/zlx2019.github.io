@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Redis学习之旅, lxz Blog">
+    <meta name="keywords" content="lxz Blog">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Redis学习之旅 | lxz Blog</title>
+    <title>lxz Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -524,12 +524,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Redis学习之旅</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -643,25 +643,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6/">
-                                <span class="chip bg-color">缓存中间件</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/Redis/" class="post-category">
-                                Redis
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -679,7 +666,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    403
+                    0
                 </div>
                 
 
@@ -709,51 +696,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Redis是一种开放源代码（BSD许可）的内存中数据结构存储，用作数据库，缓存和消息代理。Redis提供数据结构，例如字符串，哈希，列表，集合，带范围查询的排序集合，位图，超日志，地理空间索引和流。Redis具有内置的复制，Lua脚本，LRU驱逐，事务和不同级别的磁盘持久性，并通过Redis Sentinel和Redis Cluster自动分区提供了高可用性。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">wget https://download.redis.io/releases/redis-6.0.8.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>gcc需要升级到高版本</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sudo yum install centos-release-scl
-sudo yum install devtoolset-7-gcc*
-scl enable devtoolset-7 bash
-which gcc
-gcc --version<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>进入安装目录进行编译安装</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">make
-make install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>默认会将可执行文件安装到 <code>/usr/local/bin</code>目录</p>
-<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">-rwxr-xr-x 1 root root 4796344 5月  28 17:11 redis-benchmark
--rwxr-xr-x 1 root root 9059720 5月  28 17:11 redis-check-aof
--rwxr-xr-x 1 root root 9059720 5月  28 17:11 redis-check-rdb
--rwxr-xr-x 1 root root 5047424 5月  28 17:11 redis-cli
-lrwxrwxrwx 1 root root      12 5月  28 17:11 redis-sentinel -&gt; redis-server
--rwxr-xr-x 1 root root 9059720 5月  28 17:11 redis-server<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>redis-benchmark : 性能测试工具,可以在自己计算机运行,测试性能如何</p>
-<p>redis-check-aof: 修复aof文件</p>
-<p>redis-check-rdb: 修复rdb文件</p>
-<p>redis-sentinel : 集群使用</p>
-<p>redis-server: 启动服务命令</p>
-<p>redis-cli: 客户端</p>
-<p><strong>后台启动服务端</strong></p>
-<p>将配置文件拷贝到 etc目录</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">cp redis.conf /etc/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>修改redis.conf文件</p>
-<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">bind 0.0.0.0
-
-#支持后台启动
-daemonize yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>启动时指定配置文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">redis-server /etc/redis.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-
-
-<p>后续重写….</p>
-
+                
                 
             </div>
             <hr/>
@@ -816,11 +759,7 @@ daemonize yes<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6/">
-                                    <span class="chip bg-color">缓存中间件</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -1842,7 +1781,7 @@ daemonize yes<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">63.3k</span>&nbsp;字
+                class="white-color">69.2k</span>&nbsp;字
             
             
             
