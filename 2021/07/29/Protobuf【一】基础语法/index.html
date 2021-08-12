@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Protobuf【一】基础语法, lxz Blog">
+    <meta name="keywords" content="lxz Blog">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Protobuf【一】基础语法 | lxz Blog</title>
+    <title>lxz Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -524,12 +524,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Protobuf【一】基础语法</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -650,15 +650,6 @@
                 </div>
                 <div class="col s5 right-align">
                     
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/Protobuf/" class="post-category">
-                                Protobuf
-                            </a>
-                        
-                    </div>
-                    
                 </div>
             </div>
 
@@ -675,7 +666,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    324
+                    0
                 </div>
                 
 
@@ -705,45 +696,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Protocol Buffers(简称Protobuf) ，是Google出品的序列化框架，与开发语言无关，和平台无关，具有良好的可扩展性。Protobuf和所有的序列化框架一样，都可以用于数据存储、通讯协议。</p>
-<p>Portobuf的序列化的结果体积要比XML、JSON小很多，XML和JSON的描述信息太多了，导致消息要大；此外Portobuf还使用了Varint 编码，减少数据对空间的占用。</p>
-<p>Portobuf序列化和反序列化速度比XML、JSON快很多，是直接把对象和字节数组做转换，而XML和JSON还需要构建成XML或者JSON对象结构。</p>
-<h4 id="第一个protobuf"><a href="#第一个protobuf" class="headerlink" title="第一个protobuf"></a>第一个protobuf</h4><pre class="line-numbers language-protobuf" data-language="protobuf"><code class="language-protobuf"><span class="token keyword">syntax</span> <span class="token operator">=</span> <span class="token string">"proto3"</span><span class="token punctuation">;</span>
-
-<span class="token keyword">option</span> go_package <span class="token operator">=</span> <span class="token string">"/go"</span><span class="token punctuation">;</span>
-
-<span class="token keyword">message</span> <span class="token class-name">HelloRequest</span><span class="token punctuation">{</span>
-  <span class="token builtin">int64</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-  <span class="token builtin">string</span> name <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p><code>syntax</code>用来指定<code>protobuf</code>的版本,目前最为主流的为<code>proto3</code></p>
-<p><code>message</code>表示声明一个结构体,类似于Go中的<code>struct</code>和Java中的<code>class</code></p>
-<p><code>go_package</code> 将protobuf 序列化为go后的所存放目录</p>
-<p><code>go_package</code> 将protobuf 序列化为java后的所存放目录</p>
-<p>新建个文件夹存放编译后的文件</p>
-<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">├── go
-├── java
-└── proto
-    └── hello.proto<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p><strong>执行命令</strong></p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">protoc --go_out=plugins=grpc:. proto/*.proto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>将<code>proto/下的所有proto文件</code>序列化为Go相关代码</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">protoc --java_out=./java proto/*.proto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>将<code>proto/下的所有proto文件</code>序列化为Java相关代码</p>
-<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">├── go
-│&nbsp;&nbsp; └── hello.pb.go
-├── java
-│&nbsp;&nbsp; └── Hello.java 
-└── proto
-    └── hello.proto<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
-<h4 id="message"><a href="#message" class="headerlink" title="message"></a>message</h4>
+                
                 
             </div>
             <hr/>
@@ -1824,7 +1777,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">69.2k</span>&nbsp;字
+                class="white-color">68.9k</span>&nbsp;字
             
             
             
