@@ -670,14 +670,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.3k
+                    6.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    21 分
+                    24 分
                 </div>
                 
 
@@ -954,7 +954,110 @@ semaphore<span class="token punctuation">.</span><span class="token function">ac
 
 
 
-<h3 id="6-Lock"><a href="#6-Lock" class="headerlink" title="6. Lock"></a>6. Lock</h3><p><code>java.util.concurrent.locks</code>包下提供了大量关于锁的实现,如<code>ReentrantLock</code>、<code>ReentrantReadWriteLock</code>等。这些锁并不一定性能上比<code>synchronized</code>锁好,但功能上更加友好以及更完善。</p>
+<h3 id="6-Phaser"><a href="#6-Phaser" class="headerlink" title="6. Phaser"></a>6. Phaser</h3><p><code>Phaser</code>是<code>JDK1.7</code>引入的一个同步工具类,适用一些<code>多阶段</code>的任务处理,与<strong>CyclicBarrier</strong>和 <strong>CountDownLatch</strong>类似,但比他们功能更强大。由于这个东西过于复杂,我们先看两个案例,分别模拟<strong>CyclicBarrier</strong>与 <strong>CountDownLatch</strong>。</p>
+<ul>
+<li>示例一</li>
+</ul>
+<p>通过<code>Phaser</code>控制多个线程任务的开始执行时机: 有时候我们需要所有的线程到达指定点后再同时开始运行,该需求可以通过<code>CyclicBarrier</code>来实现,这里使用<code>Phaser</code>方案。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PhaserExample</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">//创建 Phaser</span>
+    <span class="token class-name">Phaser</span> phaser <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Phaser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//启用五个线程,执行任务</span>
+    <span class="token class-name">IntStream</span><span class="token punctuation">.</span><span class="token function">rangeClosed</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>i<span class="token operator">-&gt;</span><span class="token punctuation">{</span>
+      <span class="token comment">//注册各个参与者线程</span>
+      phaser<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token class-name">TimeUnit</span><span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token comment">//开启新任务</span>
+      <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">CustomTask</span><span class="token punctuation">(</span>phaser<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"Thread-"</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">CustomTask</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Phaser</span> phaser<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">CustomTask</span><span class="token punctuation">(</span><span class="token class-name">Phaser</span> phaser<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>phaser <span class="token operator">=</span> phaser<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">//阻塞等待所有注册的线程到达</span>
+      <span class="token keyword">int</span> advance <span class="token operator">=</span> phaser<span class="token punctuation">.</span><span class="token function">arriveAndAwaitAdvance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment">//do start</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"开始执行任务,currentDate:"</span> <span class="token operator">+</span>
+                         <span class="token class-name">DateTimeFormatter</span><span class="token punctuation">.</span><span class="token function">ofPattern</span><span class="token punctuation">(</span><span class="token string">"HH:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token class-name">LocalDateTime</span><span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>以上示例,创建了五个线程,每个线程启动前都通过<code>register()</code>方法注册,参与者数量为5,当其中一个线程调用<code>arriveAndAwaitAdvance()</code>方法后,<code>arrive</code>数量会加1,并且如果<code>arrive</code>未能达到参与者数量(5)的话,会处于等待状态,直到所有线程都调用了<code>arriveAndAwaitAdvance()</code> 方法后,所有等待的线程都会继续执行。</p>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">Thread-2开始执行任务,currentDate:10:23:35
+Thread-1开始执行任务,currentDate:10:23:35
+Thread-4开始执行任务,currentDate:10:23:35
+Thread-5开始执行任务,currentDate:10:23:35
+Thread-3开始执行任务,currentDate:10:23:35<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<ul>
+<li>示例二</li>
+</ul>
+<p><code>Phaser</code>也可以将执行时机掌握在手中： 如所有子任务到达指定地点后,主动打开开关,让所有子任务开始执行。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PhaserExample</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+    <span class="token comment">//创建 Phaser</span>
+    <span class="token class-name">Phaser</span> phaser <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Phaser</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//启用五个线程,执行任务</span>
+    <span class="token class-name">IntStream</span><span class="token punctuation">.</span><span class="token function">rangeClosed</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>i<span class="token operator">-&gt;</span><span class="token punctuation">{</span>
+      <span class="token comment">//注册各个参与者线程</span>
+      phaser<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment">//开启新任务</span>
+      <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">CustomTask</span><span class="token punctuation">(</span>phaser<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"Thread-"</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//模拟主动打开开关</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"是否打开开关?"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">BufferedReader</span> reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>in<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    reader<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//打开开关</span>
+    phaser<span class="token punctuation">.</span><span class="token function">arriveAndDeregister</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"main 打开了开关"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">CustomTask</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Phaser</span> phaser<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">CustomTask</span><span class="token punctuation">(</span><span class="token class-name">Phaser</span> phaser<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>phaser <span class="token operator">=</span> phaser<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">//阻塞等待所有注册的线程到达</span>
+      <span class="token keyword">int</span> advance <span class="token operator">=</span> phaser<span class="token punctuation">.</span><span class="token function">arriveAndAwaitAdvance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment">//do start</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"开始执行任务,currentDate:"</span> <span class="token operator">+</span>
+                         <span class="token class-name">DateTimeFormatter</span><span class="token punctuation">.</span><span class="token function">ofPattern</span><span class="token punctuation">(</span><span class="token string">"HH:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token class-name">LocalDateTime</span><span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">是否打开开关?1
+main 打开了开关
+Thread-2开始执行任务,currentDate:10:22:22
+Thread-3开始执行任务,currentDate:10:22:22
+Thread-5开始执行任务,currentDate:10:22:22
+Thread-1开始执行任务,currentDate:10:22:22
+Thread-4开始执行任务,currentDate:10:22:22<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>以上示例中，只有当用户按下回车之后，任务才真正开始执行。这里主线程Main相当于一个协调者，用来控制开关打开的时机，<code>arriveAndDeregister</code>方法不会阻塞，该方法会将到达数加1，同时减少一个参与者数量，最终返回线程到达时的<strong>phase</strong>值。</p>
+<p><strong>由于这个工具过于复杂,先简单记录下案例,后续再补充。</strong></p>
+<h3 id="7-Lock"><a href="#7-Lock" class="headerlink" title="7. Lock"></a>7. Lock</h3><p><code>java.util.concurrent.locks</code>包下提供了大量关于锁的实现,如<code>ReentrantLock</code>、<code>ReentrantReadWriteLock</code>等。这些锁并不一定性能上比<code>synchronized</code>锁好,但功能上更加友好以及更完善。</p>
 <h4 id="1-ReentrantLock"><a href="#1-ReentrantLock" class="headerlink" title="1. ReentrantLock"></a>1. ReentrantLock</h4><p><code>ReentrantLock</code>是一个可重入的独占锁。</p>
 <ul>
 <li>与synchronized的区别</li>
@@ -2288,18 +2391,17 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/04/12/Java%E3%80%90%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E3%80%91/">
+                <a href="/2022/04/16/Java%E3%80%90%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E3%80%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Java【高并发编程-并发工具】">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Java【高并发编程-线程池】">
                         
-                        <span class="card-title">Java【高并发编程-并发工具】</span>
+                        <span class="card-title">Java【高并发编程-线程池】</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -2309,9 +2411,9 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-12
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-16
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -2320,7 +2422,6 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -2573,7 +2674,7 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">95.1k</span>&nbsp;字
+                class="white-color">100.1k</span>&nbsp;字
             
             
             

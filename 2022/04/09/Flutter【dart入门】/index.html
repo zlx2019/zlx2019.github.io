@@ -674,14 +674,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    8.3k
+                    9.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    34 分
+                    37 分
                 </div>
                 
 
@@ -1878,6 +1878,104 @@ names<span class="token punctuation">.</span><span class="token function">addAll
   <span class="token keyword">return</span> list<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
+<h3 id="13-库"><a href="#13-库" class="headerlink" title="13. 库"></a>13. 库</h3><p><code>import</code> 和 <code>library</code> 关键字可以帮助你创建一个模块化和可共享的代码库。代码库不仅只是提供 API 而且还起到了封装的作用：以下划线（<code>_</code>）开头的成员仅在代码库中可见。 <strong>每个 Dart 程序都是一个库</strong>，即便没有使用关键字 <code>library</code> 指定。</p>
+<ul>
+<li>导入库</li>
+</ul>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token comment">//导入dart 内置库</span>
+<span class="token keyword">import</span> <span class="token string">'dart:io'</span><span class="token punctuation">;</span>
+
+<span class="token comment">//导入其他库</span>
+<span class="token keyword">import</span> <span class="token string">'package:test/test.dart'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>指定别名</li>
+</ul>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:lib1/lib1.dart'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">'package:lib2/lib2.dart'</span> <span class="token operator">as</span> lib2<span class="token punctuation">;</span>
+
+<span class="token comment">// Uses Element from lib1.</span>
+Element element1 <span class="token operator">=</span> <span class="token function">Element</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Uses Element from lib2.</span>
+lib2<span class="token punctuation">.</span>Element element2 <span class="token operator">=</span> lib2<span class="token punctuation">.</span><span class="token function">Element</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>导入库的一部分</li>
+</ul>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token comment">//只导入io库的File类</span>
+<span class="token keyword">import</span> <span class="token string">'dart:io'</span> <span class="token keyword">show</span> File<span class="token punctuation">;</span>
+
+<span class="token comment">//除了io库的File类 其他都导入</span>
+<span class="token keyword">import</span> <span class="token string">'dart:io'</span> <span class="token keyword">hide</span> File<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>懒加载库</li>
+</ul>
+<p>使用 <code>deferred as</code> 关键字来标识需要延时加载的代码库：</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:greetings/hello.dart'</span> <span class="token keyword">deferred</span> <span class="token operator">as</span> hello<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="14-空安全"><a href="#14-空安全" class="headerlink" title="14. 空安全"></a>14. 空安全</h3><p>在很多语言中,其实都没有<code>空安全</code>这个概念,如Java,任何类型都可以是<code>null</code>,这种情况下就需要大量的非空判断,但是在dart中,是不需要的,因为在高版本dart中,<code>null</code>是不允许赋值到任何类型上,如下代码</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token function">printNameSize</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//编译通过</span>
+  <span class="token function">printNameSize</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//编译不通过</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">printNameSize</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"${name.length}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在编译阶段,向方法内入参<code>null</code>是无法通过的.那么如果我们需要一个<code>可空</code>参数如何做到,其实很简单,在此之前我们也使用到多次,就是通过<code>?</code>标识符来表示该对象是允许为空。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token function">printNameSize</span><span class="token punctuation">(</span>String<span class="token operator">?</span> name<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"${name.length}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//编译不通过</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>但是,如果参数是<code>?</code>可空的,那么使用该参数的属性与方法时候,就必须要通过<code>?</code>或者<code>!</code>来使用</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token function">printNameSize</span><span class="token punctuation">(</span>String<span class="token operator">?</span> name<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"${name?.length}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><code>name?.length</code> 表示只有<code>name</code>不是<code>null</code>的情况下,才会调用length属性,否则直接返回<code>null</code>。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token function">printNameSize</span><span class="token punctuation">(</span>String<span class="token operator">?</span> name<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"${name!.length}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><code>name!.length</code>表示如果<code>name</code>是<code>null</code>的情况下,直接抛出异常。</p>
+<h3 id="15-异步编程"><a href="#15-异步编程" class="headerlink" title="15. 异步编程"></a>15. 异步编程</h3><p>dart是一门单线程编程语言,通过<code>async-await、isolate</code>实现异步概念。</p>
+<p>异步任务结果通常由两个类来包装<code>Future</code>与<code>Stream</code></p>
+<p>简单定义个异步任务看下</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token comment">//定义 异步任务</span>
+Future<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> <span class="token function">getUserNameAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">Future</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token function">Duration</span><span class="token punctuation">(</span>seconds<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token string">"满城雪"</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">//执行异步任务</span>
+  Future<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> task <span class="token operator">=</span> <span class="token function">getUserNameAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//异步任务回调函数</span>
+  task<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">'异步任务结果: ${result}'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">catchError</span><span class="token punctuation">(</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span>
+    <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"任务错误,发生了异常 ${err}"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">'main is start!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>如何已同步的方式,获取异步任务的结果,简单来说就是 任务是异步的,但我就想阻塞式的获取结果。</li>
+</ul>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span><span class="token punctuation">{</span>
+  <span class="token comment">//阻塞式等待 异步任务的结果</span>
+  <span class="token keyword">var</span> taskResult <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getUserNameAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">print</span><span class="token punctuation">(</span>taskResult<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">'main is start!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>await</code>表示同步阻塞,直到获取到任务结果,但是<code>await</code>关键字必须在异步方法中调用,也就是使用<code>async</code>修饰的方法中。</p>
+<p>await <em>表达式的返回值通常是一个 Future 对象；如果不是的话也会自动将其包裹在一个 Future 对象里。 Future 对象代表一个“承诺”， await 表达式会阻塞直到需要的对象返回。</em></p>
 
                 
             </div>
@@ -2763,12 +2861,12 @@ names<span class="token punctuation">.</span><span class="token function">addAll
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Java%E5%9F%BA%E7%A1%80/">
-                        <span class="chip bg-color">Java基础</span>
-                    </a>
-                    
                     <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
                         <span class="chip bg-color">并发编程</span>
+                    </a>
+                    
+                    <a href="/tags/Java%E5%9F%BA%E7%A1%80/">
+                        <span class="chip bg-color">Java基础</span>
                     </a>
                     
                 </div>
@@ -2967,7 +3065,7 @@ names<span class="token punctuation">.</span><span class="token function">addAll
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">95.1k</span>&nbsp;字
+                class="white-color">100.1k</span>&nbsp;字
             
             
             
