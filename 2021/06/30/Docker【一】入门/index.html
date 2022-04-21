@@ -1535,37 +1535,37 @@ $ <span class="token function">sudo</span> <span class="token function">chmod</s
 <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 3.docker-compose模板</span>
 <span class="token list punctuation">-</span> 参考文档:https://docker_practice.gitee.io/zh-cn/compose/compose_file.html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml">version: "3.0"
-services:
-  mysqldb:
-    image: mysql:5.7.19
-    container_name: mysql
-    ports:
-      - "3306:3306"
-    volumes:
-      - /root/mysql/conf:/etc/mysql/conf.d
-      - /root/mysql/logs:/logs
-      - /root/mysql/data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    networks:
-      - ems
-    depends_on:
-      - redis
+<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3.0"</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">mysqldb</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> mysql<span class="token punctuation">:</span>5.7.19
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> mysql
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">"3306:3306"</span>
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /root/mysql/conf<span class="token punctuation">:</span>/etc/mysql/conf.d
+      <span class="token punctuation">-</span> /root/mysql/logs<span class="token punctuation">:</span>/logs
+      <span class="token punctuation">-</span> /root/mysql/data<span class="token punctuation">:</span>/var/lib/mysql
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">MYSQL_ROOT_PASSWORD</span><span class="token punctuation">:</span> root
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> ems
+    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> redis
 
-  redis:
-    image: redis:4.0.14
-    container_name: redis
-    ports:
-      - "6379:6379"
-    networks:
-      - ems
-    volumes:
-      - /root/redis/data:/data
-    command: redis-server
+  <span class="token key atrule">redis</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> redis<span class="token punctuation">:</span>4.0.14
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> redis
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">"6379:6379"</span>
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> ems
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /root/redis/data<span class="token punctuation">:</span>/data
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> redis<span class="token punctuation">-</span>server
     
-networks:
-  ems:<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token key atrule">networks</span><span class="token punctuation">:</span>
+  ems<span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 4.通过docker-compose运行一组容器</span>
 <span class="token list punctuation">-</span> 参考文档:https://docker_practice.gitee.io/zh-cn/compose/commands.html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
