@@ -696,20 +696,20 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="Git-全局设置"><a href="#Git-全局设置" class="headerlink" title="Git 全局设置:"></a>Git 全局设置:</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">git config --global user.name "lx zhang"
-git config --global user.email "****@163.com"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+                <h4 id="Git-全局设置"><a href="#Git-全局设置" class="headerlink" title="Git 全局设置:"></a>Git 全局设置:</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> config --global user.name <span class="token string">"lx zhang"</span>
+<span class="token function">git</span> config --global user.email <span class="token string">"****@163.com"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h4 id="创建-git-仓库"><a href="#创建-git-仓库" class="headerlink" title="创建 git 仓库:"></a>创建 git 仓库:</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mkdir test001
-cd test001
-git init
-touch README.md
-git add README.md
-git commit -m "first commit"
-git remote add origin https://gitee.com/***/test001.git
-git push -u origin master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="已有仓库"><a href="#已有仓库" class="headerlink" title="已有仓库?"></a>已有仓库?</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">cd existing_git_repo
-git remote add origin https://gitee.com/mcxVk/test001.git
-git push -u origin master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="创建-git-仓库"><a href="#创建-git-仓库" class="headerlink" title="创建 git 仓库:"></a>创建 git 仓库:</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">mkdir</span> test001
+<span class="token builtin class-name">cd</span> test001
+<span class="token function">git</span> init
+<span class="token function">touch</span> README.md
+<span class="token function">git</span> <span class="token function">add</span> README.md
+<span class="token function">git</span> commit -m <span class="token string">"first commit"</span>
+<span class="token function">git</span> remote <span class="token function">add</span> origin https://gitee.com/***/test001.git
+<span class="token function">git</span> push -u origin master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="已有仓库"><a href="#已有仓库" class="headerlink" title="已有仓库?"></a>已有仓库?</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">cd</span> existing_git_repo
+<span class="token function">git</span> remote <span class="token function">add</span> origin https://gitee.com/mcxVk/test001.git
+<span class="token function">git</span> push -u origin master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
 

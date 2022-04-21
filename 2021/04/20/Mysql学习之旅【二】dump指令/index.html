@@ -649,12 +649,12 @@
                                 <span class="chip bg-color">DBA</span>
                             </a>
                         
-                            <a href="/tags/Mysql/">
-                                <span class="chip bg-color">Mysql</span>
-                            </a>
-                        
                             <a href="/tags/SQL/">
                                 <span class="chip bg-color">SQL</span>
+                            </a>
+                        
+                            <a href="/tags/Mysql/">
+                                <span class="chip bg-color">Mysql</span>
                             </a>
                         
                     </div>
@@ -717,23 +717,23 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="使用mysql-bin-目录下提供的mysqldump命令"><a href="#使用mysql-bin-目录下提供的mysqldump命令" class="headerlink" title="使用mysql bin/目录下提供的mysqldump命令"></a>使用mysql bin/目录下提供的mysqldump命令</h3><h4 id="1-导出数据表的结构信息和表数据"><a href="#1-导出数据表的结构信息和表数据" class="headerlink" title="1.导出数据表的结构信息和表数据"></a>1.导出数据表的结构信息和表数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h[host] -P[Port] -u[用户名] -p[用户密码]  数据库名 表名 &gt; 导出的sql文件
-mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; /usr/local/tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+                <h3 id="使用mysql-bin-目录下提供的mysqldump命令"><a href="#使用mysql-bin-目录下提供的mysqldump命令" class="headerlink" title="使用mysql bin/目录下提供的mysqldump命令"></a>使用mysql bin/目录下提供的mysqldump命令</h3><h4 id="1-导出数据表的结构信息和表数据"><a href="#1-导出数据表的结构信息和表数据" class="headerlink" title="1.导出数据表的结构信息和表数据"></a>1.导出数据表的结构信息和表数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h<span class="token punctuation">[</span>host<span class="token punctuation">]</span> -P<span class="token punctuation">[</span>Port<span class="token punctuation">]</span> -u<span class="token punctuation">[</span>用户名<span class="token punctuation">]</span> -p<span class="token punctuation">[</span>用户密码<span class="token punctuation">]</span>  数据库名 表名 <span class="token operator">&gt;</span> 导出的sql文件
+mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary<span class="token operator">&gt;</span> /usr/local/tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h4 id="2-导出多张表"><a href="#2-导出多张表" class="headerlink" title="2. 导出多张表"></a>2. 导出多张表</h4><p>通过 –tables 指定多表,以空格分隔</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db --tables users tb_salary&gt; /usr/local/users_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db --tables <span class="token function">users</span> tb_salary<span class="token operator">&gt;</span> /usr/local/users_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h4 id="3-只导出表结构"><a href="#3-只导出表结构" class="headerlink" title="3. 只导出表结构"></a>3. 只导出表结构</h4><p>通过 ‘-d’ 指令</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot -d gerry_db tb_salary&gt; /usr/local/tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot -d gerry_db tb_salary<span class="token operator">&gt;</span> /usr/local/tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h4 id="4-只导出表数据"><a href="#4-只导出表数据" class="headerlink" title="4. 只导出表数据"></a>4. 只导出表数据</h4><p>通过 ‘-t’ 指令</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot -t gerry_db tb_salary&gt; /usr/local/tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot -t gerry_db tb_salary<span class="token operator">&gt;</span> /usr/local/tb_salary.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h4 id="5-导出指定的数据库中所有表结构及数据"><a href="#5-导出指定的数据库中所有表结构及数据" class="headerlink" title="5.导出指定的数据库中所有表结构及数据"></a>5.导出指定的数据库中所有表结构及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h101.37.79.47 -P3306 -uroot -proot --databases gblog &gt; /usr/local/gblog.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="5-导出指定的数据库中所有表结构及数据"><a href="#5-导出指定的数据库中所有表结构及数据" class="headerlink" title="5.导出指定的数据库中所有表结构及数据"></a>5.导出指定的数据库中所有表结构及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h101.37.79.47 -P3306 -uroot -proot --databases gblog <span class="token operator">&gt;</span> /usr/local/gblog.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h4 id="6-导出多个的数据库中所有表结构及数据"><a href="#6-导出多个的数据库中所有表结构及数据" class="headerlink" title="6.导出多个的数据库中所有表结构及数据"></a>6.导出多个的数据库中所有表结构及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h101.37.79.47 -P3306 -uroot -proot --databases gblog zero &gt; /usr/local/gblog_zero.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="6-导出多个的数据库中所有表结构及数据"><a href="#6-导出多个的数据库中所有表结构及数据" class="headerlink" title="6.导出多个的数据库中所有表结构及数据"></a>6.导出多个的数据库中所有表结构及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h101.37.79.47 -P3306 -uroot -proot --databases gblog zero <span class="token operator">&gt;</span> /usr/local/gblog_zero.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h4 id="7-导出所有数据库的所有表结构信息及数据"><a href="#7-导出所有数据库的所有表结构信息及数据" class="headerlink" title="7.导出所有数据库的所有表结构信息及数据"></a>7.导出所有数据库的所有表结构信息及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot --all-databases &gt; /usr/local/all.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="7-导出所有数据库的所有表结构信息及数据"><a href="#7-导出所有数据库的所有表结构信息及数据" class="headerlink" title="7.导出所有数据库的所有表结构信息及数据"></a>7.导出所有数据库的所有表结构信息及数据</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mysqldump -h127.0.0.1 -P3306 -uroot -proot --all-databases <span class="token operator">&gt;</span> /usr/local/all.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -802,12 +802,12 @@ mysqldump -h127.0.0.1 -P3306 -uroot -proot gerry_db tb_salary&gt; /usr/local/tb_
                                     <span class="chip bg-color">DBA</span>
                                 </a>
                             
-                                <a href="/tags/Mysql/">
-                                    <span class="chip bg-color">Mysql</span>
-                                </a>
-                            
                                 <a href="/tags/SQL/">
                                     <span class="chip bg-color">SQL</span>
+                                </a>
+                            
+                                <a href="/tags/Mysql/">
+                                    <span class="chip bg-color">Mysql</span>
                                 </a>
                             
                         </div>

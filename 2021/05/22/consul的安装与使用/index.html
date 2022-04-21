@@ -741,54 +741,54 @@
 <ol>
 <li>agent 命令选型详解</li>
 </ol>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">-advertise=addr          Sets the advertise address to use
--advertise-wan=addr      Sets address to advertise on wan instead of advertise addr
--atlas=org/name          Sets the Atlas infrastructure name, enables SCADA.
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">-advertise<span class="token operator">=</span>addr          Sets the advertise address to use
+-advertise-wan<span class="token operator">=</span>addr      Sets address to advertise on wan instead of advertise addr
+-atlas<span class="token operator">=</span>org/name          Sets the Atlas infrastructure name, enables SCADA.
 -atlas-join              Enables auto-joining the Atlas cluster
--atlas-token=token       Provides the Atlas API token
--atlas-endpoint=1.2.3.4  The address of the endpoint for Atlas integration.
+-atlas-token<span class="token operator">=</span>token       Provides the Atlas API token
+-atlas-endpoint<span class="token operator">=</span><span class="token number">1.2</span>.3.4  The address of the endpoint <span class="token keyword">for</span> Atlas integration.
 -bootstrap               Sets server to bootstrap mode
--bind=0.0.0.0            Sets the bind address for cluster communication
--http-port=8500          Sets the HTTP API port to listen on
--bootstrap-expect=0      Sets server to expect bootstrap mode.
--client=127.0.0.1        Sets the address to bind for client access.
-                         This includes RPC, DNS, HTTP and HTTPS (if configured)
--config-file=foo         Path to a JSON file to read configuration from.
+-bind<span class="token operator">=</span><span class="token number">0.0</span>.0.0            Sets the <span class="token builtin class-name">bind</span> address <span class="token keyword">for</span> cluster communication
+-http-port<span class="token operator">=</span><span class="token number">8500</span>          Sets the HTTP API port to listen on
+-bootstrap-expect<span class="token operator">=</span><span class="token number">0</span>      Sets server to <span class="token function">expect</span> bootstrap mode.
+-client<span class="token operator">=</span><span class="token number">127.0</span>.0.1        Sets the address to <span class="token builtin class-name">bind</span> <span class="token keyword">for</span> client access.
+                         This includes RPC, DNS, HTTP and HTTPS <span class="token punctuation">(</span>if configured<span class="token punctuation">)</span>
+-config-file<span class="token operator">=</span>foo         Path to a JSON <span class="token function">file</span> to <span class="token builtin class-name">read</span> configuration from.
                          This can be specified multiple times.
--config-dir=foo          Path to a directory to read configuration files
-                         from. This will read every file ending in ".json"
-                         as configuration in this directory in alphabetical
+-config-dir<span class="token operator">=</span>foo          Path to a directory to <span class="token builtin class-name">read</span> configuration files
+                         from. This will <span class="token builtin class-name">read</span> every <span class="token function">file</span> ending <span class="token keyword">in</span> <span class="token string">".json"</span>
+                         as configuration <span class="token keyword">in</span> this directory <span class="token keyword">in</span> alphabetical
                          order. This can be specified multiple times.
--data-dir=path           Path to a data directory to store agent state
--dev                     Starts the agent in development mode.
--recursor=1.2.3.4        Address of an upstream DNS server.
+-data-dir<span class="token operator">=</span>path           Path to a data directory to store agent state
+-dev                     Starts the agent <span class="token keyword">in</span> development mode.
+-recursor<span class="token operator">=</span><span class="token number">1.2</span>.3.4        Address of an upstream DNS server.
                          Can be specified multiple times.
--dc=east-aws             Datacenter of the agent (deprecated: use 'datacenter' instead).
--datacenter=east-aws     Datacenter of the agent.
--encrypt=key             Provides the gossip encryption key
--join=1.2.3.4            Address of an agent to join at start time.
+-dc<span class="token operator">=</span>east-aws             Datacenter of the agent <span class="token punctuation">(</span>deprecated: use <span class="token string">'datacenter'</span> instead<span class="token punctuation">)</span>.
+-datacenter<span class="token operator">=</span>east-aws     Datacenter of the agent.
+-encrypt<span class="token operator">=</span>key             Provides the gossip encryption key
+-join<span class="token operator">=</span><span class="token number">1.2</span>.3.4            Address of an agent to <span class="token function">join</span> at start time.
                          Can be specified multiple times.
--join-wan=1.2.3.4        Address of an agent to join -wan at start time.
+-join-wan<span class="token operator">=</span><span class="token number">1.2</span>.3.4        Address of an agent to <span class="token function">join</span> -wan at start time.
                          Can be specified multiple times.
--retry-join=1.2.3.4      Address of an agent to join at start time with
+-retry-join<span class="token operator">=</span><span class="token number">1.2</span>.3.4      Address of an agent to <span class="token function">join</span> at start <span class="token function">time</span> with
                          retries enabled. Can be specified multiple times.
--retry-interval=30s      Time to wait between join attempts.
--retry-max=0             Maximum number of join attempts. Defaults to 0, which
+-retry-interval<span class="token operator">=</span>30s      Time to <span class="token function">wait</span> between <span class="token function">join</span> attempts.
+-retry-max<span class="token operator">=</span><span class="token number">0</span>             Maximum number of <span class="token function">join</span> attempts. Defaults to <span class="token number">0</span>, <span class="token function">which</span>
                          will retry indefinitely.
--retry-join-wan=1.2.3.4  Address of an agent to join -wan at start time with
+-retry-join-wan<span class="token operator">=</span><span class="token number">1.2</span>.3.4  Address of an agent to <span class="token function">join</span> -wan at start <span class="token function">time</span> with
                          retries enabled. Can be specified multiple times.
--retry-interval-wan=30s  Time to wait between join -wan attempts.
--retry-max-wan=0         Maximum number of join -wan attempts. Defaults to 0, which
+-retry-interval-wan<span class="token operator">=</span>30s  Time to <span class="token function">wait</span> between <span class="token function">join</span> -wan attempts.
+-retry-max-wan<span class="token operator">=</span><span class="token number">0</span>         Maximum number of <span class="token function">join</span> -wan attempts. Defaults to <span class="token number">0</span>, <span class="token function">which</span>
                          will retry indefinitely.
--log-level=info          Log level of the agent.
--node=hostname           Name of this node. Must be unique in the cluster
--protocol=N              Sets the protocol version. Defaults to latest.
+-log-level<span class="token operator">=</span>info          Log level of the agent.
+-node<span class="token operator">=</span>hostname           Name of this node. Must be unique <span class="token keyword">in</span> the cluster
+-protocol<span class="token operator">=</span>N              Sets the protocol version. Defaults to latest.
 -rejoin                  Ignores a previous leave and attempts to rejoin the cluster.
 -server                  Switches agent to server mode.
 -syslog                  Enables logging to syslog
 -ui                      Enables the built-in static web UI server
--ui-dir=path             Path to directory containing the Web UI resources
--pid-file=path           Path to file to store agent PID<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+-ui-dir<span class="token operator">=</span>path             Path to directory containing the Web UI resources
+-pid-file<span class="token operator">=</span>path           Path to <span class="token function">file</span> to store agent PID<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ol>
 <ul>
 <li>-data-dir<ul>
@@ -864,7 +864,7 @@
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">consul reload<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>通过命令查看注册的服务</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">curl -s 127.0.0.1:8500/v1/catalog/service/user-service<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> -s <span class="token number">127.0</span>.0.1:8500/v1/catalog/service/user-service<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
@@ -885,7 +885,7 @@ go get github.com/micro/micro/v3<span aria-hidden="true" class="line-numbers-row
 </ul>
 </li>
 <li><p>创建微服务</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">micro new first_micro_demo #first_micro_demo 服务名<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">micro new first_micro_demo <span class="token comment">#first_micro_demo 服务名</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>生成的项目结构</p>
 <pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">├── Dockerfile
