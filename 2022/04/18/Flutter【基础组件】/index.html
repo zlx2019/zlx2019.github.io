@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Flutter【基础组件】, lxz Blog">
+    <meta name="keywords" content="Flutter【基础组件】, Zero">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Flutter【基础组件】 | lxz Blog</title>
+    <title>Flutter【基础组件】 | Zero</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -257,7 +257,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">lxz Blog</span>
+                    <span class="logo-span">Zero</span>
                 </a>
             </div>
             
@@ -356,7 +356,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">lxz Blog</div>
+        <div class="logo-name">Zero</div>
         <div class="logo-desc">
             
             一个穿梭在0和1的世界里的小白
@@ -674,14 +674,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    6 分
                 </div>
                 
 
@@ -916,6 +916,59 @@ Widget <span class="token function">build</span><span class="token punctuation">
   <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment bottomRight <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><code>Container</code>如果不设置宽高,默认会撑满父部件宽高。</p>
+<h3 id="7-Center"><a href="#7-Center" class="headerlink" title="7. Center"></a>7. Center</h3><p><code>Center</code>部件是用来布局的<code>widget</code>。它能够让其子部件居中。如下所示</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
+    title<span class="token punctuation">:</span> <span class="token string">"App Title"</span><span class="token punctuation">,</span>
+    home<span class="token punctuation">:</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
+      appBar<span class="token punctuation">:</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
+        title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"首页"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">,</span>
+      body<span class="token punctuation">:</span> <span class="token function">TextButton</span><span class="token punctuation">(</span>
+          onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+          child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"按钮"</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>该页面body区域内容只有一个<code>TextButton</code>按钮，默认布局是最顶层最左侧依次排布。</p>
+<img src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-30/d44ab38564374d899c9e82733c27ba35.png" style="zoom:30%;">
+
+<p>但是,我们现在想要该按钮在父容器中水平且垂直居中排布,我们就可以使用<code>Center</code>来达到。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart">body<span class="token punctuation">:</span> <span class="token function">Center</span><span class="token punctuation">(</span>
+  child<span class="token punctuation">:</span> <span class="token function">TextButton</span><span class="token punctuation">(</span>
+    onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"按钮"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<img src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-30/fa257ccdd88d4e62be149460832a1ff4.png" style="zoom:30%;">
+
+
+
+<p><code>Center</code>默认是居中,但是我们可以自己选择在容器内的排布位置.<code>Center</code>继承自于<code>Align</code>,所以我们可以直接使用<code>Align</code>,它的功能更强大。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
+    title<span class="token punctuation">:</span> <span class="token string">"App Title"</span><span class="token punctuation">,</span>
+    home<span class="token punctuation">:</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
+      appBar<span class="token punctuation">:</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
+        title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"首页"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">,</span>
+      body<span class="token punctuation">:</span> <span class="token function">Align</span><span class="token punctuation">(</span>
+        alignment<span class="token punctuation">:</span> Alignment<span class="token punctuation">.</span>topCenter<span class="token punctuation">,</span> <span class="token comment">//水平居中</span>
+        child<span class="token punctuation">:</span> <span class="token function">TextButton</span><span class="token punctuation">(</span>
+            onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+            child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"按钮"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>通过<code>Align</code>的<code>alignment</code>属性来指定排布的位置。我们这里是使用的<code>Scaffold</code>容器来演示,起始无论父容器是什么容器,都是如此。</p>
 
                 
             </div>
@@ -932,7 +985,7 @@ Widget <span class="token function">build</span><span class="token punctuation">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">lxz</a>
+                    <a href="/about" rel="external nofollow noreferrer">Zero</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -955,7 +1008,7 @@ Widget <span class="token function">build</span><span class="token punctuation">
                     本博客所有文章除特別声明外，均采用
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     许可协议。转载请注明来源
-                    <a href="/about" target="_blank">lxz</a>
+                    <a href="/about" target="_blank">Zero</a>
                     !
                 </span>
             </div>
@@ -1722,18 +1775,17 @@ Widget <span class="token function">build</span><span class="token punctuation">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/04/18/Flutter%E3%80%90%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E3%80%91/">
+                <a href="/2022/04/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E3%80%90%E8%B7%B3%E8%A1%A8%E3%80%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Flutter【基础组件】">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="数据结构与算法【跳表】">
                         
-                        <span class="card-title">Flutter【基础组件】</span>
+                        <span class="card-title">数据结构与算法【跳表】</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1743,27 +1795,26 @@ Widget <span class="token function">build</span><span class="token punctuation">
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-18
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-22
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            lxz
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="post-category">
+                                    数据结构与算法
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/">
-                        <span class="chip bg-color">移动端开发</span>
-                    </a>
-                    
-                    <a href="/tags/Fultter/">
-                        <span class="chip bg-color">Fultter</span>
+                    <a href="/tags/%E8%B7%B3%E8%A1%A8/">
+                        <span class="chip bg-color">跳表</span>
                     </a>
                     
                 </div>
@@ -1799,7 +1850,7 @@ Widget <span class="token function">build</span><span class="token punctuation">
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            lxz
+                            Zero
                             
                         </span>
                     </div>
@@ -2001,13 +2052,13 @@ Widget <span class="token function">build</span><span class="token punctuation">
                 <span id="year">2021-2022</span>
             
             <span id="year">2021</span>
-            <a href="/about" target="_blank">lxz</a>
+            <a href="/about" target="_blank">Zero</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">100.1k</span>&nbsp;字
+                class="white-color">116.4k</span>&nbsp;字
             
             
             

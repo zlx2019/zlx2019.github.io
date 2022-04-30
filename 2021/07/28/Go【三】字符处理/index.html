@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Go【三】字符处理, lxz Blog">
+    <meta name="keywords" content="Go【三】字符处理, Zero">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Go【三】字符处理 | lxz Blog</title>
+    <title>Go【三】字符处理 | Zero</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -257,7 +257,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">lxz Blog</span>
+                    <span class="logo-span">Zero</span>
                 </a>
             </div>
             
@@ -356,7 +356,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">lxz Blog</div>
+        <div class="logo-name">Zero</div>
         <div class="logo-desc">
             
             一个穿梭在0和1的世界里的小白
@@ -679,14 +679,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    393
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    10 分
                 </div>
                 
 
@@ -712,15 +712,13 @@
                 <p><strong>定义一个简单字符串</strong></p>
 <pre class="line-numbers language-go" data-language="go"><code class="language-go">str <span class="token operator">:=</span> <span class="token string">"Hi满城雪"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><strong>获取一个字符串的长度</strong></p>
-<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//9</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="1-字符串长度"><a href="#1-字符串长度" class="headerlink" title="1. 字符串长度"></a>1. <strong>字符串长度</strong></h4><pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//9</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>但是我们发现,其实通过<code>len</code>获取的只是这个字符串的所占字节数,并非字符数</p>
 <p>我们需要通过<code>utf8</code>包的<code>RuneCountInString</code>函数来获取字符数</p>
 <pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>utf8<span class="token punctuation">.</span><span class="token function">RuneCountInString</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//5</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><strong>遍历字符串</strong></p>
-<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">for</span> index <span class="token operator">:=</span> <span class="token keyword">range</span> str <span class="token punctuation">{</span>
+<h4 id="2-遍历字符串"><a href="#2-遍历字符串" class="headerlink" title="2. 遍历字符串"></a>2. 遍历字符串</h4><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">for</span> index <span class="token operator">:=</span> <span class="token keyword">range</span> str <span class="token punctuation">{</span>
   fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
@@ -759,6 +757,222 @@
 4 雪 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>将字符串转为<code>rune</code>后,<code>index</code>就会是每一个字符的索引,而<code>ch</code>还是每个字符串对应的<code>Unicode</code>码,所以需要通过<code>%c</code>来进行转义.</p>
+<h4 id="3-字符串拼接"><a href="#3-字符串拼接" class="headerlink" title="3. 字符串拼接"></a>3. 字符串拼接</h4><ol>
+<li>通过<code>+</code>标识符进行拼接</li>
+</ol>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">name1 <span class="token operator">:=</span> <span class="token string">"张三"</span>
+name2 <span class="token operator">:=</span> <span class="token string">"李四"</span>
+name3 <span class="token operator">:=</span> name1 <span class="token operator">+</span> name2
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>name3<span class="token punctuation">)</span>
+
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Hello"</span> <span class="token operator">+</span> <span class="token string">"World"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在Go中<code>string</code>是不可变的,每次对字符串的修改都会产生新的字符串,所以这种方式效率较低。</p>
+<ol start="2">
+<li>通过<code>string.Join()</code>函数拼接,这种方式需要构建<code>slice</code>。</li>
+</ol>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">name1 <span class="token operator">:=</span> <span class="token string">"张三"</span>
+name2 <span class="token operator">:=</span> <span class="token string">"李四"</span>
+name3 <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span>name1<span class="token punctuation">,</span> name2<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span>
+<span class="token comment">// 使用-作为连接符</span>
+name3 <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span>name1<span class="token punctuation">,</span> name2<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"-"</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>name3<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>使用<code>bytes.Buffer</code>,更高效的方式。</li>
+</ol>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">buffer <span class="token operator">:=</span> bytes<span class="token punctuation">.</span>Buffer<span class="token punctuation">{</span><span class="token punctuation">}</span>
+buffer<span class="token punctuation">.</span><span class="token function">WriteString</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span>
+buffer<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span><span class="token string">"今天天气真不错!"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>buffer<span class="token punctuation">.</span><span class="token function">String</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//Hello今天天气真不错!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="4-字符串比较"><a href="#4-字符串比较" class="headerlink" title="4. 字符串比较"></a>4. 字符串比较</h4><ol>
+<li><code>strings.Compare(s1,s2) int</code> 返回一个整数,按照字典前后顺序比较两个字符串。</li>
+</ol>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Compare</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//0</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Compare</span><span class="token punctuation">(</span><span class="token string">"c"</span><span class="token punctuation">,</span> <span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//1</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Compare</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//-1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><code>strings.EqualFold(s1,s2) bool</code>比较两个字符的值,忽略大小写</li>
+</ol>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">EqualFold</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//true</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">EqualFold</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"World"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>使用<code>==</code>也可以比较,这种方式会区分大小写</li>
+</ol>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"hello"</span> <span class="token operator">==</span> <span class="token string">"hello"</span><span class="token punctuation">)</span> <span class="token comment">//true</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"hello"</span> <span class="token operator">==</span> <span class="token string">"Hello"</span><span class="token punctuation">)</span> <span class="token comment">//false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h4 id="5-字符串截取"><a href="#5-字符串截取" class="headerlink" title="5. 字符串截取"></a>5. 字符串截取</h4><p><strong>不包含中文的字符截取</strong></p>
+<p>如果不包含中文,可以将字符串转为<code>[]byte</code>,然后直接对<code>[]byte</code>进行切片截取。如下 截取文本中索引为1到索引3的字符。切片的截取规则是 <strong>包含起始索引元素,但不包含截止索引元素</strong></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">text <span class="token operator">:=</span> <span class="token string">"abcdef"</span>
+text <span class="token operator">=</span> <span class="token function">string</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token comment">//bc</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>包含中文的字符截取</strong></p>
+<p>如果字符包含中文,需要转为<code>[]rune</code>切片,<code>rune</code>类型中,一个字符或一个中文都占一位索引,然后对该切片截取即可。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">body <span class="token operator">:=</span> <span class="token string">"hi,今天天气真好!"</span>
+body <span class="token operator">=</span> <span class="token function">string</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">rune</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">:</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span> <span class="token comment">//今天天气真好</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="6-字符串替换"><a href="#6-字符串替换" class="headerlink" title="6. 字符串替换"></a>6. 字符串替换</h4><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">//int参数为最多替换多少个复合条件的字符,如果为 -1 表示替换全部</span>
+text <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">"ABAACCAAE"</span><span class="token punctuation">,</span> <span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span> <span class="token comment">//aBaaCCAAE</span>
+
+text <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span><span class="token string">"ABAACCAAE"</span><span class="token punctuation">,</span> <span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span> <span class="token comment">//aBaaCCaaE</span>
+
+<span class="token comment">//该方法= strings.Replace(text, oldchart, newchat, -1)</span>
+text <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">ReplaceAll</span><span class="token punctuation">(</span><span class="token string">"ABAACCAAE"</span><span class="token punctuation">,</span><span class="token string">"A"</span><span class="token punctuation">,</span><span class="token string">"a"</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span> <span class="token comment">//aBaaCCaaE</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="7-字符大小写转换"><a href="#7-字符大小写转换" class="headerlink" title="7. 字符大小写转换"></a>7. 字符大小写转换</h4><p><strong>小写转大写</strong></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">ToUpper</span><span class="token punctuation">(</span><span class="token string">"abcD"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//ABCD</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>大写转小写</strong></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">ToLower</span><span class="token punctuation">(</span><span class="token string">"ABDC"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//abdc</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="8-字符是否包含子串"><a href="#8-字符是否包含子串" class="headerlink" title="8. 字符是否包含子串"></a>8. 字符是否包含子串</h4><p><code>strings.Contains(s1,s2) bool</code> 查询一个字符串是否包含另一个字符串。区分大小写。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Contains</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"H"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//true</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Contains</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"h"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><code>strings.ContainsAny(s1, s2) bool</code> 查询一个字符串是否包含另一个字符串任意字符。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">ContainsAny</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"o"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment">//true</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">ContainsAny</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment">//false</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">ContainsAny</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"oa"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><code>strings.ContainsRune(s1, rune)</code>查询字符串中是否包含指定的<code>rune</code>。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">ContainsRune</span><span class="token punctuation">(</span><span class="token string">"今天天气真不错!"</span><span class="token punctuation">,</span> <span class="token string">'天'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//true</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">ContainsRune</span><span class="token punctuation">(</span><span class="token string">"今天天气真不错!"</span><span class="token punctuation">,</span> <span class="token string">'气'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h4 id="9-统计子串出现次数"><a href="#9-统计子串出现次数" class="headerlink" title="9. 统计子串出现次数"></a>9. 统计子串出现次数</h4><p><code>strings.Count(s1,s2)int</code>统计一个字符在一个字符串中出现的次数。如果s2为空字符串,则返回s1的(字符数量 +1)</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span><span class="token string">"我也想过过过儿过过的生活"</span><span class="token punctuation">,</span> <span class="token string">"过"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//5</span>
+<span class="token comment">//如果s2为空字符,返回的是 utf8.RuneCountinStrings(s1) + 1</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span><span class="token string">"我也想过过过儿过过的生活"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//12 + 1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="10-查询字符串"><a href="#10-查询字符串" class="headerlink" title="10. 查询字符串"></a>10. 查询字符串</h4><p><code>strings.Index(s1,s2)int</code>  返回s2在s1中首次出现的索引,如果不存在则返回-1。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Index</span><span class="token punctuation">(</span><span class="token string">"Hello,World!"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment">//8</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Index</span><span class="token punctuation">(</span><span class="token string">"Hrello,World!rrr"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><code>strings.LastIndex(s1,s2)int 返回最后一次出现的索引,不存在返回-1</code>，如果s2为空字符串则返回s1的长度。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">LastIndex</span><span class="token punctuation">(</span><span class="token string">"Hello,World!"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment">//8</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">LastIndex</span><span class="token punctuation">(</span><span class="token string">"Hello,World!rrr"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//14</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">LastIndex</span><span class="token punctuation">(</span><span class="token string">"Hello,World!rrr"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//15</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 在 s 中查找 sep 的第一次出现，返回第一次出现的索引</span>
+<span class="token keyword">func</span> <span class="token function">Index</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> sep <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+<span class="token comment">// 在 s 中查找字节 c 的第一次出现，返回第一次出现的索引</span>
+<span class="token keyword">func</span> <span class="token function">IndexByte</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> c <span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+<span class="token comment">// chars 中任何一个 Unicode 代码点在 s 中首次出现的位置</span>
+<span class="token keyword">func</span> <span class="token function">IndexAny</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> chars <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+<span class="token comment">// 查找字符 c 在 s 中第一次出现的位置，其中 c 满足 f(c) 返回 true</span>
+<span class="token keyword">func</span> <span class="token function">IndexFunc</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> f <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+<span class="token comment">// Unicode 代码点 r 在 s 中第一次出现的位置</span>
+<span class="token keyword">func</span> <span class="token function">IndexRune</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> r <span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+
+<span class="token comment">// 有三个对应的查找最后一次出现的位置</span>
+<span class="token keyword">func</span> <span class="token function">LastIndex</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> sep <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+<span class="token keyword">func</span> <span class="token function">LastIndexByte</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> c <span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+<span class="token keyword">func</span> <span class="token function">LastIndexAny</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> chars <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+<span class="token keyword">func</span> <span class="token function">LastIndexFunc</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> f <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>获取字符串中文所在位置</strong></p>
+<p>获取首个中文字符所在字节索引。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">//过滤函数: 判断单个rune 是否为中文汉字</span>
+filter <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>r <span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> unicode<span class="token punctuation">.</span><span class="token function">Is</span><span class="token punctuation">(</span>unicode<span class="token punctuation">.</span>Han<span class="token punctuation">,</span> r<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">//获取首个中文位置,返回-1 表示不包含中文</span>
+index <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">IndexFunc</span><span class="token punctuation">(</span><span class="token string">"HelloWorld啊"</span><span class="token punctuation">,</span> filter<span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span> <span class="token comment">//10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>获取最末尾个中文字符所在字节索引。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">index <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">LastIndexFunc</span><span class="token punctuation">(</span><span class="token string">"HelloWorld啊哈"</span><span class="token punctuation">,</span> filter<span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span> <span class="token comment">//13</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
+
+
+
+
+
+<h4 id="11-字符串分割"><a href="#11-字符串分割" class="headerlink" title="11. 字符串分割"></a>11. 字符串分割</h4><ol>
+<li><p><code>strings.Fields(s)</code> ：根据空格进行字符串切割,返回字符串切片,如果字符串只包含空格,则返回空切片。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Fields</span><span class="token punctuation">(</span><span class="token string">"hi zero say"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//[hi zero say]</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Fields</span><span class="token punctuation">(</span><span class="token string">"     "</span><span class="token punctuation">)</span><span class="token punctuation">)</span>       <span class="token comment">//[]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li><p><code>strings.Split(s1,sep)</code>:根据指定的字符进行分割</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Split</span><span class="token punctuation">(</span><span class="token string">"hi,今天天气,真不错!"</span><span class="token punctuation">,</span> <span class="token string">","</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment">//[hi 今天天气 真不错!]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>该方式等同于<code>strings.SplitN(s1,sep,-1)</code></p>
+</li>
+<li><p><code>strings.SplitAfter(s,sep)</code>: 根据指定的字符分割,并且保留分隔符。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">SplitAfter</span><span class="token punctuation">(</span><span class="token string">"hi,今天天气,真不错!"</span><span class="token punctuation">,</span> <span class="token string">","</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//[hi, 今天天气, 真不错!]</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">SplitAfterN</span><span class="token punctuation">(</span><span class="token string">"hi,今天天气,真不错!"</span><span class="token punctuation">,</span> <span class="token string">","</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//[hi, 今天天气, 真不错!]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+</ol>
+<h4 id="12-字符前后缀匹配"><a href="#12-字符前后缀匹配" class="headerlink" title="12. 字符前后缀匹配"></a>12. 字符前后缀匹配</h4><ol>
+<li><p><code>strings.HasPrefix(s,prefix)</code>s的前缀是否为prefix。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">HasPrefix</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"h"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//false</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">HasPrefix</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"H"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li><p><code>strings.HasSuffix(s,suffix)</code>s的后缀是否为suffix。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">HasSuffix</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"o"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//true</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">HasSuffix</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"O"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+</ol>
+<h4 id="13-字符串叠加"><a href="#13-字符串叠加" class="headerlink" title="13. 字符串叠加"></a>13. 字符串叠加</h4><pre class="line-numbers language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Repeat</span><span class="token punctuation">(</span><span class="token string">"哈"</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//哈哈哈哈</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="14-字符串映射处理"><a href="#14-字符串映射处理" class="headerlink" title="14. 字符串映射处理"></a>14. 字符串映射处理</h4><p>通过<code>strings.Map(func,str)</code>能够实现以上很多功能,该函数就是针对每个<code>rune</code>字符都进行一遍过滤,其过滤逻辑由我们自定义的函数为准。如下所示</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">mapping <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>r <span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">rune</span> <span class="token punctuation">{</span>
+	<span class="token keyword">switch</span> <span class="token punctuation">{</span>
+	<span class="token comment">//如果是大写字符,就过转为小写</span>
+	<span class="token keyword">case</span> unicode<span class="token punctuation">.</span><span class="token function">IsUpper</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> unicode<span class="token punctuation">.</span><span class="token function">ToLower</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span>
+	<span class="token comment">//如果为小写字符,则不做处理,直接返回</span>
+	<span class="token keyword">case</span> unicode<span class="token punctuation">.</span><span class="token function">IsLower</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> r
+	<span class="token comment">//如果为中文字符,则转为换行符</span>
+	<span class="token keyword">case</span> unicode<span class="token punctuation">.</span><span class="token function">Is</span><span class="token punctuation">(</span>unicode<span class="token punctuation">.</span>Han<span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> <span class="token string">'\n'</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">//其他任何非字母、汉子的字符全部排除掉</span>
+	<span class="token comment">// 返回-1 表示抛弃掉该rune</span>
+	<span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token punctuation">}</span>
+str <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Map</span><span class="token punctuation">(</span>mapping<span class="token punctuation">,</span> <span class="token string">"Hello你#￥%……\n（'World\n,好Hello^(&amp;(*界gopher..."</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="15-字符串修剪"><a href="#15-字符串修剪" class="headerlink" title="15. 字符串修剪"></a>15. 字符串修剪</h4><p><code>strings.Trim(s,cutset)</code></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">//去除字符前后的空格</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Trim</span><span class="token punctuation">(</span><span class="token string">" hi,你好  "</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//hi,你好</span>
+<span class="token comment">//如果字符前后缀与要清除的字符一致,则清除两端,否则不作处理</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Trim</span><span class="token punctuation">(</span><span class="token string">"为所欲为"</span><span class="token punctuation">,</span> <span class="token string">"为"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>   <span class="token comment">//所欲</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>strings<span class="token punctuation">.</span><span class="token function">Trim</span><span class="token punctuation">(</span><span class="token string">"s为所欲为s"</span><span class="token punctuation">,</span> <span class="token string">"为"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//s为所欲为s</span>
+
+<span class="token comment">//只清除左侧或右侧</span>
+strings<span class="token punctuation">.</span><span class="token function">TrimLeft</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+strings<span class="token punctuation">.</span><span class="token function">TrimRight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 将 s 左侧和右侧中匹配 cutset 中的任一字符的字符去掉</span>
+<span class="token keyword">func</span> <span class="token function">Trim</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> cutset <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token comment">// 将 s 左侧的匹配 cutset 中的任一字符的字符去掉</span>
+<span class="token keyword">func</span> <span class="token function">TrimLeft</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> cutset <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token comment">// 将 s 右侧的匹配 cutset 中的任一字符的字符去掉</span>
+<span class="token keyword">func</span> <span class="token function">TrimRight</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> cutset <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token comment">// 如果 s 的前缀为 prefix 则返回去掉前缀后的 string , 否则 s 没有变化。</span>
+<span class="token keyword">func</span> <span class="token function">TrimPrefix</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> prefix <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token comment">// 如果 s 的后缀为 suffix 则返回去掉后缀后的 string , 否则 s 没有变化。</span>
+<span class="token keyword">func</span> <span class="token function">TrimSuffix</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> suffix <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token comment">// 将 s 左侧和右侧的间隔符去掉。常见间隔符包括：'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL)</span>
+<span class="token keyword">func</span> <span class="token function">TrimSpace</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token comment">// 将 s 左侧和右侧的匹配 f 的字符去掉</span>
+<span class="token keyword">func</span> <span class="token function">TrimFunc</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> f <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token comment">// 将 s 左侧的匹配 f 的字符去掉</span>
+<span class="token keyword">func</span> <span class="token function">TrimLeftFunc</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> f <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token comment">// 将 s 右侧的匹配 f 的字符去掉</span>
+<span class="token keyword">func</span> <span class="token function">TrimRightFunc</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> f <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token builtin">string</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
                 
             </div>
@@ -775,7 +989,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">lxz</a>
+                    <a href="/about" rel="external nofollow noreferrer">Zero</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -798,7 +1012,7 @@
                     本博客所有文章除特別声明外，均采用
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     许可协议。转载请注明来源
-                    <a href="/about" target="_blank">lxz</a>
+                    <a href="/about" target="_blank">Zero</a>
                     !
                 </span>
             </div>
@@ -1587,7 +1801,7 @@
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            lxz
+                            Zero
                             
                         </span>
                     </div>
@@ -1842,13 +2056,13 @@
                 <span id="year">2021-2022</span>
             
             <span id="year">2021</span>
-            <a href="/about" target="_blank">lxz</a>
+            <a href="/about" target="_blank">Zero</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">100.1k</span>&nbsp;字
+                class="white-color">116.4k</span>&nbsp;字
             
             
             

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java【高并发编程-并发工具】, lxz Blog">
+    <meta name="keywords" content="Java【高并发编程-并发工具】, Zero">
     <meta name="description" content="一个穿梭在0和1的世界里的小白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java【高并发编程-并发工具】 | lxz Blog</title>
+    <title>Java【高并发编程-并发工具】 | Zero</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -257,7 +257,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">lxz Blog</span>
+                    <span class="logo-span">Zero</span>
                 </a>
             </div>
             
@@ -356,7 +356,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">lxz Blog</div>
+        <div class="logo-name">Zero</div>
         <div class="logo-desc">
             
             一个穿梭在0和1的世界里的小白
@@ -670,14 +670,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    6.2k
+                    6.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    24 分
+                    27 分
                 </div>
                 
 
@@ -1222,7 +1222,7 @@ readWriteLock<span class="token punctuation">.</span><span class="token function
 <span class="token comment">//查询给定condition 是否有线程正在等待获取</span>
 readWriteLock<span class="token punctuation">.</span><span class="token function">hasWaiters</span><span class="token punctuation">(</span>condition<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="3-Condition"><a href="#3-Condition" class="headerlink" title="3. Condition"></a>3. Condition</h4><p><code>Condition</code>是为了结合<code>ReentrantLock</code> 实现 <code>synchronized</code>搭配<code>wait</code>和<code>notify</code>实现线程在条件不满足时阻塞及唤醒的工具。</p>
+<h4 id="3-Condition"><a href="#3-Condition" class="headerlink" title="3. Condition"></a>3. Condition</h4><p><code>Condition</code>是为了结合<code>ReentrantLock</code> 实现 <code>synchronized</code>搭配<code>wait</code>和<code>notify</code>实现线程在条件不满足时阻塞及唤醒的工具,它是基于<code>LockSupport</code>实现的。</p>
 <ul>
 <li>实现一个简单的生产者消费者模式</li>
 </ul>
@@ -1590,6 +1590,57 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
 stamped <span class="token operator">=</span> LOCK<span class="token punctuation">.</span><span class="token function">tryConvertToOptimisticRead</span><span class="token punctuation">(</span>stamped<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
+
+<h4 id="5-LockSupport"><a href="#5-LockSupport" class="headerlink" title="5. LockSupport"></a>5. LockSupport</h4><p><strong>LockSupport是一个工具类，提供了基本的线程阻塞和唤醒功能</strong>，它是创建锁和其他同步组件的基础工具，内部是使用sun.misc.Unsafe类实现的。<code>LockSupport</code>与资源关联一个许可证概念,与<code>Semaphor</code>类似,但是不同的是<code>LockSupport</code>不能累计许可证,最多只能一个。线程的挂起与唤醒就是根据这个许可证而控制。</p>
+<ul>
+<li><p>API</p>
+<p>**park()**：该方法表示获取许可证,如果没有许可证则阻塞当前线程。直到获取到许可证或线程中断。</p>
+<p><strong>park(Object blocker)：</strong> 同park()方法，多了一个阻塞对象blocker参数。</p>
+<p><strong>parkNanos(long nanos)：</strong> 同park方法，nanos表示最长阻塞超时时间，超时后自动唤起当前线程。</p>
+<p><strong>parkNanos(Object blocker, long nanos)：</strong> 同parkNanos(long nanos)方法，多了一个阻塞对象blocker参数。</p>
+<p><strong>parkUntil(long deadline)：</strong> 同park()方法，deadline参数表示最长阻塞到某一个时间点，当到达这个时间点，park方法将自动返回。（该时间为从1970年到现在某一个时间点的毫秒数。</p>
+<p><strong>parkUntil(Object blocker, long deadline)：</strong> 同parkUntil(long deadline)方法，多了一个阻塞对象blocker参数。</p>
+<p><strong>unpark(Thread t)</strong>: 唤醒处于阻塞状态的线程thread。</p>
+</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">Thread</span> lockThread <span class="token operator">=</span> <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token punctuation">{</span>
+        <span class="token class-name">TimeUnit</span><span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      
+        <span class="token comment">//唤起指定线程</span>
+        <span class="token class-name">LockSupport</span><span class="token punctuation">.</span><span class="token function">unpark</span><span class="token punctuation">(</span>lockThread<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//挂起当前线程</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"挂起main线程..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">LockSupport</span><span class="token punctuation">.</span><span class="token function">park</span><span class="token punctuation">(</span>blocker<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"main线程已恢复..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//挂起线程,直到调用了 unpark方法</span>
+<span class="token class-name">LockSupport</span><span class="token punctuation">.</span><span class="token function">park</span><span class="token punctuation">(</span>blocker<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//挂起当前线程三秒</span>
+<span class="token class-name">LockSupport</span><span class="token punctuation">.</span><span class="token function">parkNanos</span><span class="token punctuation">(</span>blocker<span class="token punctuation">,</span><span class="token class-name">TimeUnit</span><span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">toNanos</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//挂起当前线程三秒</span>
+<span class="token class-name">LockSupport</span><span class="token punctuation">.</span><span class="token function">parkUntil</span><span class="token punctuation">(</span>blocker<span class="token punctuation">,</span><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>blocker参数有什么作用呢?</strong></p>
+<p>挂起线程时设置的blocker参数 在线程堆栈信息中可以被观察到,利于问题定位。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token punctuation">{</span>
+            <span class="token class-name">LockSupport</span><span class="token punctuation">.</span><span class="token function">park</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"Hello Lock!"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token string">"t1"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token string">"t1"</span> #<span class="token number">11</span> prio<span class="token operator">=</span><span class="token number">5</span> os_prio<span class="token operator">=</span><span class="token number">31</span> tid<span class="token operator">=</span><span class="token number">0x00007fa4dc9b7000</span> nid<span class="token operator">=</span><span class="token number">0x9d47</span> waiting on condition <span class="token punctuation">[</span><span class="token number">0x0000000306fce000</span><span class="token punctuation">]</span>
+   <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>Thread<span class="token punctuation">.</span>State</span><span class="token operator">:</span> WAITING <span class="token punctuation">(</span>parking<span class="token punctuation">)</span>
+	at <span class="token class-name"><span class="token namespace">sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span></span>Unsafe</span><span class="token punctuation">.</span><span class="token function">park</span><span class="token punctuation">(</span><span class="token class-name">Native</span> <span class="token class-name">Method</span><span class="token punctuation">)</span>
+	<span class="token operator">-</span> parking <span class="token keyword">to</span> <span class="token namespace">wait</span> <span class="token keyword">for</span>  <span class="token generics"><span class="token punctuation">&lt;</span>0x000000076b166778<span class="token punctuation">&gt;</span></span> <span class="token punctuation">(</span>a <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>String</span><span class="token punctuation">)</span>
+	at <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>locks<span class="token punctuation">.</span></span>LockSupport</span><span class="token punctuation">.</span><span class="token function">park</span><span class="token punctuation">(</span><span class="token class-name">LockSupport</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">175</span><span class="token punctuation">)</span>
+	at <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>zero<span class="token punctuation">.</span>java8<span class="token punctuation">.</span>current<span class="token punctuation">.</span>lock<span class="token punctuation">.</span></span>LockSupportExample</span><span class="token punctuation">.</span>lambda$main$<span class="token function">0</span><span class="token punctuation">(</span><span class="token class-name">LockSupportExample</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">12</span><span class="token punctuation">)</span>
+	at <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>zero<span class="token punctuation">.</span>java8<span class="token punctuation">.</span>current<span class="token punctuation">.</span>lock<span class="token punctuation">.</span></span>LockSupportExample</span>$$<span class="token class-name">Lambda</span>$<span class="token number">1</span><span class="token operator">/</span><span class="token number">1452126962.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">Unknown</span> <span class="token class-name">Source</span><span class="token punctuation">)</span>
+	at <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>Thread</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">748</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
                 
             </div>
             <hr/>
@@ -1605,7 +1656,7 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">lxz</a>
+                    <a href="/about" rel="external nofollow noreferrer">Zero</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -1628,7 +1679,7 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
                     本博客所有文章除特別声明外，均采用
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     许可协议。转载请注明来源
-                    <a href="/about" target="_blank">lxz</a>
+                    <a href="/about" target="_blank">Zero</a>
                     !
                 </span>
             </div>
@@ -2417,7 +2468,7 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            lxz
+                            Zero
                             
                         </span>
                     </div>
@@ -2462,7 +2513,7 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            lxz
+                            Zero
                             
                         </span>
                     </div>
@@ -2668,13 +2719,13 @@ stamped <span class="token operator">=</span> LOCK<span class="token punctuation
                 <span id="year">2021-2022</span>
             
             <span id="year">2021</span>
-            <a href="/about" target="_blank">lxz</a>
+            <a href="/about" target="_blank">Zero</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">100.1k</span>&nbsp;字
+                class="white-color">116.4k</span>&nbsp;字
             
             
             
