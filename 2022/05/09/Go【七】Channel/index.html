@@ -679,7 +679,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2k
+                    2.1k
                 </div>
                 
 
@@ -896,12 +896,12 @@ main.main()
 <li>同步与异步</li>
 </ol>
 <p>等等..</p>
-<h4 id="8-for-channel"><a href="#8-for-channel" class="headerlink" title="8. for channel"></a>8. for channel</h4><p>当需要不断从channel中获取数据时,可以通过<code>for-range</code>来读取,当channel为关闭状态时,for循环会自动退出</p>
+<h4 id="8-循环读取channel"><a href="#8-循环读取channel" class="headerlink" title="8. 循环读取channel"></a>8. 循环读取channel</h4><p>当需要不断从channel中获取数据时,可以通过<code>for-range</code>来读取,当channel为关闭状态时,for循环会自动退出</p>
 <pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">for</span> x <span class="token operator">:=</span> <span class="token keyword">range</span> ch<span class="token punctuation">{</span>
     fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="9-channel-is-close"><a href="#9-channel-is-close" class="headerlink" title="9. channel is close?"></a>9. channel is close?</h4><p>通过<code>select case</code>可以检测到 <strong>channel</strong>是否已关闭.</p>
+<h4 id="9-判断通道是否关闭"><a href="#9-判断通道是否关闭" class="headerlink" title="9. 判断通道是否关闭"></a>9. 判断通道是否关闭</h4><p>通过<code>select case</code>可以检测到 <strong>channel</strong>是否已关闭.</p>
 <pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	<span class="token comment">//创建两个通道</span>
 	c1 <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> any<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
@@ -940,7 +940,7 @@ main.main()
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="10-channel-time-out"><a href="#10-channel-time-out" class="headerlink" title="10. channel time out"></a>10. channel time out</h4><p>使用<code>select case</code> + <code>time.After</code>可以做到模拟超时效果.</p>
+<h4 id="10-通道超时"><a href="#10-通道超时" class="headerlink" title="10. 通道超时"></a>10. 通道超时</h4><p>使用<code>select case</code> + <code>time.After</code>可以做到模拟超时效果.</p>
 <pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	channel <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> any<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
 	<span class="token keyword">for</span> <span class="token punctuation">{</span>
@@ -953,7 +953,7 @@ main.main()
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="11-信号通信"><a href="#11-信号通信" class="headerlink" title="11. 信号通信"></a>11. 信号通信</h4><p>使用 <strong>Channel</strong>作为同步信号时,推荐使用<code>struct{}</code>作为元素,性能更为高效。</p>
+<h4 id="11-信号通信"><a href="#11-信号通信" class="headerlink" title="11. 信号通信"></a>11. 信号通信</h4><p>使用 <strong>Channel</strong>作为同步信号时,推荐使用<code>&amp;struct{}</code>作为元素,性能更为高效。</p>
 <pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	<span class="token comment">//作为信号,控制main退出的退出</span>
 	flag <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> any<span class="token punctuation">)</span>
@@ -962,7 +962,7 @@ main.main()
 		<span class="token comment">//TODO 执行任务</span>
 		time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">)</span>
 		<span class="token comment">//子任务执行完成,发送信号,让main函数退出</span>
-		f <span class="token operator">&lt;-</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+		f <span class="token operator">&lt;-</span> <span class="token operator">&amp;</span><span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
 	<span class="token punctuation">}</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span>
 	<span class="token comment">//等待协程的执行完成</span>
 	<span class="token operator">&lt;-</span>flag
@@ -1771,18 +1771,17 @@ main.main()
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/05/09/Go%E3%80%90%E4%B8%83%E3%80%91Channel/">
+                <a href="/2022/05/10/Go%E3%80%90%E5%85%AB%E3%80%91context/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Go【七】Channel">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Go【八】context">
                         
-                        <span class="card-title">Go【七】Channel</span>
+                        <span class="card-title">Go【八】context</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1792,9 +1791,9 @@ main.main()
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-09
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-10
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1807,7 +1806,6 @@ main.main()
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -2060,7 +2058,7 @@ main.main()
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">124.2k</span>&nbsp;字
+                class="white-color">125.9k</span>&nbsp;字
             
             
             
