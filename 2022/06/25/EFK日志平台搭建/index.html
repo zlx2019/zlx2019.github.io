@@ -687,14 +687,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.3k
+                    2.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    11 分
                 </div>
                 
 
@@ -723,6 +723,19 @@
 <p>接下来就是本章的主角: <code>EFK</code>,它于<code>ELK</code>不同的是使用了<code>FileBeat</code>替换了<code>Logstash</code>。</p>
 <p>本章就简单记录一下如何使用<code>EFK</code>整合日志文件,实现一个实时的日志查询平台。</p>
 <p>注: <code>EFK</code>使用版本为<code>7.6.0</code>。</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p>EFK的流程是与程序解耦的。</p>
+<ol>
+<li><p>无需与项目程序集成,项目只需要按照一定的规则输出日志文件即可。</p>
+</li>
+<li><p>FileBeat读取项目产生的日志文件。</p>
+</li>
+<li><p>通过配置的日志前缀规则 解析成一句一句完整的日志信息。</p>
+</li>
+<li><p>然后通过ElasticSearch的pipeline 将日志信心解析为一个json文档。</p>
+</li>
+<li><p>通过定义好的ElasticSearch Template结构最终会json文档放入索引库。</p>
+</li>
+</ol>
 <h3 id="ElasticSearch安装"><a href="#ElasticSearch安装" class="headerlink" title="ElasticSearch安装"></a>ElasticSearch安装</h3><p><a target="_blank" rel="noopener" href="https://www.elastic.co/cn/downloads/past-releases/elasticsearch-7-6-0">ES下载地址</a></p>
 <p>下载解压即可使用.</p>
 <p>如果有需要修改配置,可直接修改<code>config/elasticsearch.yml</code>文件。</p>
@@ -951,7 +964,7 @@ PUT /_ingest/pipeline/zeus_music_pipeline
 <span class="token punctuation">{</span>
   <span class="token comment">//描述</span>
   <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"zeus_music_pipeline"</span><span class="token punctuation">,</span>
-  <span class="token comment">//处理过程</span>
+  <span class="token comment">//处理链过程</span>
   <span class="token property">"processors"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
     <span class="token punctuation">{</span>
       <span class="token property">"grok"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
@@ -964,25 +977,26 @@ PUT /_ingest/pipeline/zeus_music_pipeline
           <span class="token property">"ALL_CODE"</span><span class="token operator">:</span> <span class="token string">"(\n)*"</span>
         <span class="token punctuation">}</span>
       <span class="token punctuation">}</span><span class="token punctuation">,</span>
-      <span class="token comment">//删除 filebeat自带的时间戳字段</span>
+      <span class="token comment">//删除 filebeat自带的时间戳字段@timestamp</span>
       <span class="token property">"remove"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"field"</span><span class="token operator">:</span> <span class="token string">"@timestamp"</span>
       <span class="token punctuation">}</span>
     <span class="token punctuation">}</span><span class="token punctuation">,</span>
     <span class="token punctuation">{</span>
-      <span class="token comment">// 使用自己日志中的时间</span>
+      <span class="token comment">// 格式化grok解析出的timestamp属性,然后重新生成@timestamp属性 并且将格式化完的时间赋值到 @timestamp中</span>
       <span class="token property">"date"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"field"</span><span class="token operator">:</span> <span class="token string">"timestamp"</span><span class="token punctuation">,</span>
         <span class="token property">"formats"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"yyyy-MM-dd HH:mm:ss"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
         <span class="token property">"timezone"</span><span class="token operator">:</span> <span class="token string">"Asia/Shanghai"</span><span class="token punctuation">,</span>
         <span class="token property">"target_field"</span><span class="token operator">:</span> <span class="token string">"@timestamp"</span>
       <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token comment">// 移除timestamp属性。</span>
       <span class="token property">"remove"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
         <span class="token property">"field"</span><span class="token operator">:</span> <span class="token string">"timestamp"</span>
       <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
   <span class="token punctuation">]</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="3-创建所需配置文件"><a href="#3-创建所需配置文件" class="headerlink" title="3. 创建所需配置文件"></a>3. 创建所需配置文件</h4><p>在<code>filebeat</code>目录下创建一个<code>yml</code>文件,作为启动时配置。</p>
 <pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">touch zeus_music.yml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -1098,8 +1112,9 @@ PUT /_ingest/pipeline/zeus_music_pipeline
 
 
 <h4 id="5-踩坑重点"><a href="#5-踩坑重点" class="headerlink" title="5. 踩坑重点"></a>5. 踩坑重点</h4><ol>
-<li>使用Grok解析日志一定要用日志文件内的日志信息为例,控制台与文件内的格式可能有些不同。</li>
+<li>通过Grok解析日志一定要用日志文件内的日志信息为例,控制台与文件内的格式可能有些不同。</li>
 <li>通过Grok解析日志抽取的字段名称与ES模板中的字段名是对应的。切记！切记！切记! 我叼nmd。</li>
+<li>Grok结构与日志结构一定要一模一样,一个标点符号都不能差,空格也不行!!!</li>
 </ol>
 <h3 id="使用Kibana美化日志查询"><a href="#使用Kibana美化日志查询" class="headerlink" title="使用Kibana美化日志查询"></a>使用Kibana美化日志查询</h3><p>进入索引模式</p>
 <img src="https://img2022.cnblogs.com/blog/2875476/202206/2875476-20220625193911675-162165114.png" style="zoom:50%;">
@@ -1120,6 +1135,9 @@ PUT /_ingest/pipeline/zeus_music_pipeline
 
 <p>进入查看页面</p>
 <p><img src="https://img2022.cnblogs.com/blog/2875476/202206/2875476-20220625194026239-964381426.png"></p>
+<p><strong>切记:</strong> 记得给kibana设置时区为 <code>Asia/Shanghai</code>,否则看到的日志时间与索引库中的数据不一致。</p>
+<p>如果有需要同样可以自定义时间格式。</p>
+<img src="https://img2022.cnblogs.com/blog/2875476/202206/2875476-20220626080117702-887739352.png" style="zoom:50%;">
 
                 
             </div>
@@ -1922,18 +1940,17 @@ PUT /_ingest/pipeline/zeus_music_pipeline
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/06/25/EFK%E6%97%A5%E5%BF%97%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA/">
+                <a href="/2022/06/26/ElasticSearch%E3%80%90%E4%B8%89%E3%80%91%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="EFK日志平台搭建">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="ElasticSearch【三】高级特性">
                         
-                        <span class="card-title">EFK日志平台搭建</span>
+                        <span class="card-title">ElasticSearch【三】高级特性</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1943,9 +1960,9 @@ PUT /_ingest/pipeline/zeus_music_pipeline
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-25
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-26
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1954,24 +1971,15 @@ PUT /_ingest/pipeline/zeus_music_pipeline
                                     ElasticSearch
                                 </a>
                             
-                            <a href="/categories/ElasticSearch/FileBeat/" class="post-category">
-                                    FileBeat
-                                </a>
-                            
-                            <a href="/categories/ElasticSearch/FileBeat/Kibana/" class="post-category">
-                                    Kibana
-                                </a>
-                            
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/EFK/">
-                        <span class="chip bg-color">EFK</span>
+                    <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/">
+                        <span class="chip bg-color">搜索引擎</span>
                     </a>
                     
                 </div>
@@ -2219,7 +2227,7 @@ PUT /_ingest/pipeline/zeus_music_pipeline
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">144k</span>&nbsp;字
+                class="white-color">158.4k</span>&nbsp;字
             
             
             
