@@ -683,14 +683,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.2k
+                    3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    13 分
                 </div>
                 
 
@@ -1121,6 +1121,166 @@
 <span class="token class-name">PayFactory</span> factory<span class="token punctuation">;</span>
 factory<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">"alipay"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 factory<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">"wechat"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="8-单元测试"><a href="#8-单元测试" class="headerlink" title="8.单元测试"></a>8.单元测试</h3><ol>
+<li>导入相关依赖</li>
+</ol>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>io.quarkus<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>quarkus-junit5<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">&gt;</span></span>test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>io.rest-assured<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>rest-assured<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">&gt;</span></span>test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>quarkus-junit5</code>是测试所必需的，因为它提供了<code>@QuarkusTest</code>控制测试框架的注释。<code>rest-assured</code>不是必需的，但它是测试 HTTP 端点的便捷方式，我们还提供自动设置正确 URL 的集成，因此无需配置。</p>
+<p>虽然 Quarkus 将<code>8080</code>默认侦听端口，但在运行测试时它默认为<code>8081</code>. 这允许您在让应用程序并行运行的同时运行测试。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">quarkus</span><span class="token punctuation">:</span>
+  <span class="token key atrule">http</span><span class="token punctuation">:</span>
+    <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">18001</span>
+    <span class="token key atrule">cors</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token comment"># 指定测试环境http端口号</span>
+    <span class="token key atrule">test-port</span><span class="token punctuation">:</span> <span class="token number">28001</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>测试端点接口(Controller)</strong></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@QuarkusTest</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExampleResourceTest</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Inject</span>
+    <span class="token class-name">UserService</span> userService<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testUserAdd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 测试新增</span>
+        <span class="token class-name">SysUser</span> sysUser <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SysUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span><span class="token string">"1001"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setUserName</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setPassWord</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">setNickName</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAge</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">setCreateTime</span><span class="token punctuation">(</span><span class="token class-name">LocalDateTime</span><span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Assertions</span><span class="token punctuation">.</span><span class="token function">assertTrue</span><span class="token punctuation">(</span>userService<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 测试查询</span>
+        <span class="token class-name">Assertions</span><span class="token punctuation">.</span><span class="token function">assertEquals</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>userService<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 测试修改</span>
+        sysUser<span class="token punctuation">.</span><span class="token function">setUserName</span><span class="token punctuation">(</span><span class="token string">"newTest"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Assertions</span><span class="token punctuation">.</span><span class="token function">assertTrue</span><span class="token punctuation">(</span>userService<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 测试删除</span>
+        <span class="token class-name">Assertions</span><span class="token punctuation">.</span><span class="token function">assertTrue</span><span class="token punctuation">(</span>userService<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="9-封装实体绑定参数"><a href="#9-封装实体绑定参数" class="headerlink" title="9.封装实体绑定参数"></a>9.封装实体绑定参数</h3><p><code>@BeanParam</code>将请求中的数据(Path参数、Query参数、From参数、Header参数)注入该实体中。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@POST</span>
+<span class="token annotation punctuation">@Path</span><span class="token punctuation">(</span><span class="token string">"/parse"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">Result</span> <span class="token function">parse</span><span class="token punctuation">(</span><span class="token annotation punctuation">@BeanParam</span> <span class="token class-name">EntityRequest</span> request<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token class-name">Result<span class="token punctuation">.</span>Success</span><span class="token punctuation">(</span><span class="token class-name">State</span><span class="token punctuation">.</span>UN<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在实体中使用相关注解 按照规则注入不同的属性中。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 绑定Query中的state值
+ */</span>
+<span class="token annotation punctuation">@RestQuery</span> <span class="token class-name">String</span> state<span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 绑定header中的token值
+ */</span>
+<span class="token annotation punctuation">@RestHeader</span> <span class="token class-name">String</span> token<span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 绑定Path中的id值
+ */</span>
+<span class="token annotation punctuation">@RestPath</span>
+<span class="token class-name">String</span> id<span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 绑定Form中的submit值
+ */</span>
+<span class="token annotation punctuation">@RestForm</span>
+<span class="token class-name">String</span> submit<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="10-文件上传下载"><a href="#10-文件上传下载" class="headerlink" title="10.文件上传下载"></a>10.文件上传下载</h3><p><strong>所需依赖</strong></p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token comment">&lt;!--Web File--&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>io.quarkus<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>quarkus-resteasy-multipart<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+<span class="token comment">&lt;!-- 引入 multipart 文件上传支持--&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>org.jboss.resteasy<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>resteasy-multipart-provider<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-上传"><a href="#1-上传" class="headerlink" title="1.上传"></a>1.上传</h4><p><strong>创建一个映射体,用来解析请求中的文件</strong></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FileEntity</span> <span class="token punctuation">{</span>
+  <span class="token comment">/**
+   * 上传的文件
+   * 指定请求表单中的属性名及数据类型为流
+   */</span>
+  <span class="token annotation punctuation">@FormParam</span><span class="token punctuation">(</span><span class="token string">"file"</span><span class="token punctuation">)</span>
+  <span class="token annotation punctuation">@PartType</span><span class="token punctuation">(</span><span class="token class-name">MediaType</span><span class="token punctuation">.</span>APPLICATION_OCTET_STREAM<span class="token punctuation">)</span>
+  <span class="token keyword">public</span> <span class="token class-name">InputPart</span> file<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>上传接口定义</strong></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 文件上传接口
+ * 指定接收媒体类型 MULTIPART_FORM_DATA
+ */</span>
+<span class="token annotation punctuation">@POST</span>
+<span class="token annotation punctuation">@Path</span><span class="token punctuation">(</span><span class="token string">"upload"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Consumes</span><span class="token punctuation">(</span><span class="token class-name">MediaType</span><span class="token punctuation">.</span>MULTIPART_FORM_DATA<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">Result</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> <span class="token function">fileUpload</span><span class="token punctuation">(</span><span class="token annotation punctuation">@MultipartForm</span> <span class="token class-name">FileEntity</span> entity<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 获取文件流</span>
+  <span class="token class-name">InputStream</span> fileStream <span class="token operator">=</span> entity<span class="token punctuation">.</span><span class="token function">getFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBody</span><span class="token punctuation">(</span><span class="token class-name">InputStream</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// 获取文件名</span>
+  <span class="token class-name">String</span> fileName <span class="token operator">=</span> <span class="token function">getFileName</span><span class="token punctuation">(</span>entity<span class="token punctuation">.</span><span class="token function">getFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"上传的文件名称:{}"</span><span class="token punctuation">,</span>fileName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"上传文件内容:{}"</span><span class="token punctuation">,</span> <span class="token class-name">IOUtils</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>fileStream<span class="token punctuation">,</span> <span class="token class-name">StandardCharsets</span><span class="token punctuation">.</span>UTF_8<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token class-name">Result<span class="token punctuation">.</span>Success</span><span class="token punctuation">(</span><span class="token string">"ok"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/**
+  * 根据文件对象 获取实际文件名
+  * @param file  文件对象
+  * @return      文件名
+  */</span>
+<span class="token keyword">private</span> <span class="token class-name">String</span> <span class="token function">getFileName</span><span class="token punctuation">(</span><span class="token class-name">InputPart</span> file<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> contentDisposition <span class="token operator">=</span> file<span class="token punctuation">.</span><span class="token function">getHeaders</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token string">"Content-Disposition"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">";"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token class-name">String</span> fileName <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> filename <span class="token operator">:</span> contentDisposition<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>filename<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">"filename"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> name <span class="token operator">=</span> filename<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">"="</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      fileName <span class="token operator">=</span> name<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">replaceAll</span><span class="token punctuation">(</span><span class="token string">"\""</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> fileName<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-下载"><a href="#2-下载" class="headerlink" title="2.下载"></a>2.下载</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 文件下载接口
+ * @return 响应文件流
+ */</span>
+<span class="token annotation punctuation">@GET</span>
+<span class="token annotation punctuation">@Path</span><span class="token punctuation">(</span><span class="token string">"/download"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Produces</span><span class="token punctuation">(</span><span class="token class-name">MediaType</span><span class="token punctuation">.</span>APPLICATION_OCTET_STREAM<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">Response</span> <span class="token function">fileDownload</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token comment">// 加载要下载的文件</span>
+  <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token class-name">FileUtils</span><span class="token punctuation">.</span><span class="token function">getFile</span><span class="token punctuation">(</span><span class="token string">"/Users/zero/Desktop/你好.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// 对文件名称进行编码,防止下载后中文乱码</span>
+  <span class="token class-name">String</span> fileName <span class="token operator">=</span> <span class="token class-name">URLEncoder</span><span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">StandardCharsets</span><span class="token punctuation">.</span>UTF_8<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// 将文件以流形式响应客户端</span>
+  <span class="token keyword">return</span> <span class="token class-name">Response</span><span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">header</span><span class="token punctuation">(</span><span class="token string">"content-disposition"</span><span class="token punctuation">,</span> <span class="token string">"attachment; filename=\""</span> <span class="token operator">+</span> fileName <span class="token operator">+</span> <span class="token string">"\""</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">header</span><span class="token punctuation">(</span><span class="token string">"Content-Length"</span><span class="token punctuation">,</span> file<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -1928,18 +2088,17 @@ factory<span class="token punctuation">.</span><span class="token function">getI
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/07/13/Quarkus%E3%80%90%E4%B8%89%E3%80%91%E6%9E%84%E5%BB%BA%E4%BC%A0%E7%BB%9FWeb%E6%9C%8D%E5%8A%A1/">
+                <a href="/2022/07/18/Java%E3%80%90Io%E5%B7%A5%E5%85%B7%E7%B1%BB%E8%AF%A6%E8%A7%A3%E3%80%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Quarkus【三】构建传统Web服务">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Java【Io工具类详解】">
                         
-                        <span class="card-title">Quarkus【三】构建传统Web服务</span>
+                        <span class="card-title">Java【Io工具类详解】</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1949,31 +2108,26 @@ factory<span class="token punctuation">.</span><span class="token function">getI
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-13
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-18
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Quarkus/" class="post-category">
-                                    Quarkus
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Zero
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
-                        <span class="chip bg-color">微服务</span>
+                    <a href="/tags/%E5%B7%A5%E5%85%B7%E7%B1%BB/">
+                        <span class="chip bg-color">工具类</span>
                     </a>
                     
-                    <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">
-                        <span class="chip bg-color">云原生</span>
+                    <a href="/tags/IO/">
+                        <span class="chip bg-color">IO</span>
                     </a>
                     
                 </div>
@@ -2225,7 +2379,7 @@ factory<span class="token punctuation">.</span><span class="token function">getI
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">158.4k</span>&nbsp;字
+                class="white-color">162k</span>&nbsp;字
             
             
             
