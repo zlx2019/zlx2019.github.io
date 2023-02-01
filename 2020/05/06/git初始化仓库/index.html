@@ -643,12 +643,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Git/">
+                                <span class="chip bg-color">Git</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Git/" class="post-category">
+                                Git
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -666,7 +679,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    81
+                    139
                 </div>
                 
 
@@ -696,10 +709,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="Git-全局设置"><a href="#Git-全局设置" class="headerlink" title="Git 全局设置:"></a>Git 全局设置:</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> config --global user.name <span class="token string">"lx zhang"</span>
+                <h3 id="Git-全局设置"><a href="#Git-全局设置" class="headerlink" title="Git 全局设置:"></a>Git 全局设置:</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> config --global user.name <span class="token string">"lx zhang"</span>
 <span class="token function">git</span> config --global user.email <span class="token string">"****@163.com"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h4 id="创建-git-仓库"><a href="#创建-git-仓库" class="headerlink" title="创建 git 仓库:"></a>创建 git 仓库:</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">mkdir</span> test001
+<h3 id="使用Gitee"><a href="#使用Gitee" class="headerlink" title="使用Gitee"></a>使用Gitee</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">mkdir</span> test001
 <span class="token builtin class-name">cd</span> test001
 <span class="token function">git</span> init
 <span class="token function">touch</span> README.md
@@ -712,9 +725,16 @@
 <span class="token function">git</span> push -u origin master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
-
-
-
+<h3 id="使用Github"><a href="#使用Github" class="headerlink" title="使用Github"></a>使用Github</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">echo</span> <span class="token string">"# test001"</span> <span class="token operator">&gt;&gt;</span> README.md
+<span class="token function">git</span> init
+<span class="token function">git</span> <span class="token function">add</span> README.md
+<span class="token function">git</span> commit -m <span class="token string">"first commit"</span>
+<span class="token function">git</span> branch -M main
+<span class="token function">git</span> remote <span class="token function">add</span> origin https://github.com/zlx2019/test001.git
+<span class="token function">git</span> push -u origin main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="已有仓库-1"><a href="#已有仓库-1" class="headerlink" title="已有仓库?"></a>已有仓库?</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> remote <span class="token function">add</span> origin https://github.com/zlx2019/test001.git
+<span class="token function">git</span> branch -M main
+<span class="token function">git</span> push -u origin main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -798,7 +818,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/Git/">
+                                    <span class="chip bg-color">Git</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -1607,13 +1631,25 @@
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Zero
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Git/" class="post-category">
+                                    Git
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Git/">
+                        <span class="chip bg-color">Git</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -1800,7 +1836,7 @@
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2021-2022</span>
+                <span id="year">2021-2023</span>
             
             <span id="year">2021</span>
             <a href="/about" target="_blank">Zero</a>
@@ -1809,7 +1845,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">162k</span>&nbsp;字
+                class="white-color">197.6k</span>&nbsp;字
             
             
             

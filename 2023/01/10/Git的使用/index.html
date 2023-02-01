@@ -1,0 +1,3046 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Git的使用, Zero">
+    <meta name="description" content="一个穿梭在0和1的世界里的小白">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Git的使用 | Zero</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+
+
+    <style type="text/css" lang="css"> #loading-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-height: 100vh;
+        width: 100vw;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #FFF;
+        text-align: center; /* loader页面消失采用渐隐的方式*/
+        -webkit-transition: opacity 1s ease;
+        -moz-transition: opacity 1s ease;
+        -o-transition: opacity 1s ease;
+        transition: opacity 1s ease;
+    }
+
+    .loading-image {
+        width: 120px;
+        height: 50px;
+        transform: translate(-50%);
+    }
+
+    .loading-image div:nth-child(2) {
+        -webkit-animation: pacman-balls 1s linear 0s infinite;
+        animation: pacman-balls 1s linear 0s infinite
+    }
+
+    .loading-image div:nth-child(3) {
+        -webkit-animation: pacman-balls 1s linear .33s infinite;
+        animation: pacman-balls 1s linear .33s infinite
+    }
+
+    .loading-image div:nth-child(4) {
+        -webkit-animation: pacman-balls 1s linear .66s infinite;
+        animation: pacman-balls 1s linear .66s infinite
+    }
+
+    .loading-image div:nth-child(5) {
+        -webkit-animation: pacman-balls 1s linear .99s infinite;
+        animation: pacman-balls 1s linear .99s infinite
+    }
+
+    .loading-image div:first-of-type {
+        width: 0;
+        height: 0;
+        border: 25px solid #49b1f5;
+        border-right-color: transparent;
+        border-radius: 25px;
+        -webkit-animation: rotate_pacman_half_up .5s 0s infinite;
+        animation: rotate_pacman_half_up .5s 0s infinite;
+    }
+
+    .loading-image div:nth-child(2) {
+        width: 0;
+        height: 0;
+        border: 25px solid #49b1f5;
+        border-right-color: transparent;
+        border-radius: 25px;
+        -webkit-animation: rotate_pacman_half_down .5s 0s infinite;
+        animation: rotate_pacman_half_down .5s 0s infinite;
+        margin-top: -50px;
+    }
+
+    @-webkit-keyframes rotate_pacman_half_up {
+        0% {
+            transform: rotate(270deg)
+        }
+        50% {
+            transform: rotate(1turn)
+        }
+        to {
+            transform: rotate(270deg)
+        }
+    }
+
+    @keyframes rotate_pacman_half_up {
+        0% {
+            transform: rotate(270deg)
+        }
+        50% {
+            transform: rotate(1turn)
+        }
+        to {
+            transform: rotate(270deg)
+        }
+    }
+
+    @-webkit-keyframes rotate_pacman_half_down {
+        0% {
+            transform: rotate(90deg)
+        }
+        50% {
+            transform: rotate(0deg)
+        }
+        to {
+            transform: rotate(90deg)
+        }
+    }
+
+    @keyframes rotate_pacman_half_down {
+        0% {
+            transform: rotate(90deg)
+        }
+        50% {
+            transform: rotate(0deg)
+        }
+        to {
+            transform: rotate(90deg)
+        }
+    }
+
+    @-webkit-keyframes pacman-balls {
+        75% {
+            opacity: .7
+        }
+        to {
+            transform: translate(-100px, -6.25px)
+        }
+    }
+
+    @keyframes pacman-balls {
+        75% {
+            opacity: .7
+        }
+        to {
+            transform: translate(-100px, -6.25px)
+        }
+    }
+
+    .loading-image div:nth-child(3), .loading-image div:nth-child(4), .loading-image div:nth-child(5), .loading-image div:nth-child(6) {
+        background-color: #49b1f5;
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        margin: 2px;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        transform: translateY(-6.25px);
+        top: 25px;
+        left: 100px;
+    }
+
+    .loading-text {
+        margin-bottom: 20vh;
+        text-align: center;
+        color: #2c3e50;
+        font-size: 2rem;
+        box-sizing: border-box;
+        padding: 0 10px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @media only screen and (max-width: 500px) {
+        .loading-text {
+            font-size: 1.5rem;
+        }
+    }
+
+    .fadeout {
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+    /* logo出现动画 */
+    @-webkit-keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0)
+        }
+        100% {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none
+        }
+    }
+
+    @keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+        }
+    } </style>
+<script> (function () {
+        const loaded = function () {
+            setTimeout(function () {
+                const loader = document.getElementById("loading-container");
+                loader.className = "fadeout";//使用渐隐的方法淡出loading page // document.getElementById("body-wrap").style.display="flex";
+     setTimeout(function(){ loader.style.display="none"; },2500); },1000);//强制显示loading page 1s
+     }; loaded(); })() </script>
+
+
+
+<body>
+
+
+    <div id="loading-container"><p class="loading-text">嘘~ 正在从服务器偷取页面 . . . </p>
+        <div class="loading-image">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Zero</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Zero</div>
+        <div class="logo-desc">
+            
+            一个穿梭在0和1的世界里的小白
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Git的使用</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Git/">
+                                <span class="chip bg-color">Git</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Git/" class="post-category">
+                                Git
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-01-10
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    10.5k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    42 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一直没有对<strong>Git</strong>做深入的学习,平常有问题了也是直接百度,以至于每次都会创建个仓库等简单琐事耽误大量时间,所以记录下这次学习笔记。</p>
+<h4 id="Git是什么"><a href="#Git是什么" class="headerlink" title="Git是什么"></a><strong>Git</strong>是什么</h4><p>Git是目前世界上最流行最先进的分布式版本控制系统。</p>
+<h4 id="Git的诞生"><a href="#Git的诞生" class="headerlink" title="Git的诞生"></a>Git的诞生</h4><p><strong>Git</strong>的作者就是大名鼎鼎的Linus,没错就是Linux系统的开源者。</p>
+<p>Linus在1991年创建了Linux,从此Linux系统迅速发展,但是Linux不只是Linus自己一个人不断完善,而是世界各地的开源参与者不断贡献代码。</p>
+<p>在2002年以前，世界各地的志愿者把源代码文件通过diff的方式发给Linus，然后由Linus本人通过手工方式合并代码.额…看到这里你可能会难以想象,这是多么大的工作量。</p>
+<p>但是尽管如此Linus也不想使用当时的一些版本控制系统,如 <strong>CVS</strong>、<strong>SVN</strong>等。觉得这些系统效率太差,而且收费，不符合开源精神。随着代码量的不断增加,Linus已经很难通过手工方式进行管理,然后Linus花费了两周写了一个分布式版本管理系统,这就是<strong>Git</strong>!</p>
+<h4 id="Git的安装"><a href="#Git的安装" class="headerlink" title="Git的安装"></a>Git的安装</h4><p>暂时不写了,后面再补录。</p>
+<h3 id="基本使用流程"><a href="#基本使用流程" class="headerlink" title="基本使用流程"></a>基本使用流程</h3><h4 id="1-创建版本库"><a href="#1-创建版本库" class="headerlink" title="1. 创建版本库"></a>1. 创建版本库</h4><p>版本库又被称为仓库(<strong>Repository</strong>),用来存储我们所要管理的多个文件。你可以理解为一个目录,这个目录里的所有文件都可以被Git管理起来,每个文件的修改、删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻可以“还原”。</p>
+<p>如何创建呢?很简单,找到我们想作为仓库的目录。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">mkdir repo01
+cd repo01<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>通过<code>git init</code>命令将当前目录变成Git可管理的仓库。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git init
+Initialized empty Git repository in /usr/local/myproject/git-project/repo01/.git/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>这样就把仓库创建好了,提示你目前还是一个空的仓库<code>empty Git repository</code>。</p>
+<p>然后我们来看下目录的变化:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% ls -a
+.	..	.git<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>注意: <strong>你会发现多了一个<code>.git</code>隐藏目录,这个是用来跟踪Git版本库的,千万不要乱动该目录的文件,很容易破坏掉仓库。</strong></p>
+<h4 id="2-添加到暂存区"><a href="#2-添加到暂存区" class="headerlink" title="2. 添加到暂存区"></a>2. 添加到暂存区</h4><p>当我们对仓库内的文件做了调整之后,需要把它们添加到暂存区中,如下创建一个新的文件<code>a.txt</code></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">touch a.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>并且写入以下内容:</p>
+<pre class="line-numbers language-tex" data-language="tex"><code class="language-tex">Hello Git!<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后就可以通过<code>git add a.txt</code>命令将<code>a.txt</code>文件添加到暂存区</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git add a.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>执行上面的命令，没有任何显示，这就对了，Unix的哲学是“没有消息就是好消息”，说明添加成功。</p>
+<h4 id="3-提交到版本库"><a href="#3-提交到版本库" class="headerlink" title="3. 提交到版本库"></a>3. 提交到版本库</h4><p>当我们把调整后的文件添加到暂存区并且确认没问题后,就可以通过<code>git commit</code>命令进一步提交到版本库。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git commit -m 'add first file'
+
+[main (root-commit) a1c80ed] add first file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 a.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>-m</code>表示后面的文本是本次提交的说明,可以任意输入内容,注意:这很重要,通常在公司协同开发时,提交的说明有很多规范,对自己对同事阅读都很重要。</p>
+<p><code> 1 file changed</code>: 有一个文件被改动,也就是我们新添加了一个<code>a.txt</code>文件。</p>
+<p><code>1 insertion(+)</code>: 插入了一行内容,也就是<code>Hello Git!</code>。</p>
+<p>为什么Git添加文件需要<code>add</code>，<code>commit</code>一共两步呢？因为<code>commit</code>可以一次提交很多文件，所以你可以多次<code>add</code>不同的文件，比如：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git add 101.txt
+git add 102.txt 103.txt
+
+git commit -m 'add 3 files.'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>不过我们后续会使用一些开发工具,可以直接一步直接<code>git commit</code>掉。</p>
+<p>通过<code>git add .</code>命令可以一键将当前目录下所修改过的文件全部添加到暂存区。</p>
+<h3 id="仓库状态查看"><a href="#仓库状态查看" class="headerlink" title="仓库状态查看"></a>仓库状态查看</h3><p>通过<code>git status</code>命令可以查看当前仓库的状态:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git status  
+
+On branch main
+nothing to commit, working tree clean<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这表示没有任何文件进行修改。</p>
+<p>现在我们对一个文件进行修改,然后再次查看:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git status
+On branch main
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+	modified:   test01/101.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>modified: test01/101.txt</code>指出了我们所修改但是还未提交到暂存区的文件。</p>
+<p>虽然Git告诉我们<code>101.txt</code>被修改了，但如果能看看具体修改了什么内容，自然是很好的。比如你休假两周从国外回来，，已经记不清上次怎么修改的<code>101.txt</code>，所以，需要用<code>git diff</code>这个命令看看：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">zero@Zero repo01 % git diff
+diff --git a/test01/101.txt b/test01/101.txt
+index 72943a1..92b5f31 100644
+--- a/test01/101.txt
++++ b/test01/101.txt
+@@ -1 +1,2 @@
+ aaa
++添加一句话!
+\ No newline at end of file<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到,这个文件内的改动<code>+添加一句话!</code>。</p>
+<p>然后我们将修改后的文件提交到暂存区</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git add 101.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后再次查看状态</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git status     
+On branch main
+Changes to be committed:
+  (use "git restore --staged &lt;file&gt;..." to unstage)
+	modified:   101.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>表示暂存区里可以提交的文件有<code>101.txt</code>。接下来我们就可以<code>git commit</code>了</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git commit -m 'test add'
+[main e2fef7c] test add
+ 1 file changed, 1 insertion(+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>提交成功后,我们在使用<code>git status</code>查看一下：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git status
+On branch main
+nothing to commit, working tree clean<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>Git告诉我们当前没有需要提交的修改，而且，工作目录是干净（working tree clean）的。</p>
+<p><strong>小结</strong>：</p>
+<ul>
+<li>通过<code>git status</code>命令 查看仓库状态</li>
+<li>通过<code>git diff</code>命令查看被修改过文件的改动内容</li>
+</ul>
+<h3 id="时间回溯"><a href="#时间回溯" class="headerlink" title="时间回溯"></a>时间回溯</h3><h4 id="1-版本回退"><a href="#1-版本回退" class="headerlink" title="1. 版本回退"></a>1. 版本回退</h4><p>到目前为止,我们已经学会如何创建仓库、如何将文件放入<strong>暂存区</strong>,然后再提交到版本库。每一次的<code>commit</code>你可以理解为一个<strong>版本</strong>或者<strong>快照</strong>,这些<strong>版本</strong>Git都会进行记录和跟踪,一旦你哪一步把文件改乱了,或者误删了什么东西,还可以直接回退到一个<code>commmit</code>的<strong>版本</strong>。那么该如何操作?</p>
+<p>现在我们再次创建一个仓库,如何创建就不过多赘述,可以翻看之前的教程.然后在仓库内创建一个文件:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">touch README.md<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>模拟第一次工作提交:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh"># 将文本追加到README.md 文件
+echo "2023年01月01日第一次提交" &gt;&gt; README.md
+
+# 添加到暂存区
+% git add README.md 
+# 确认提交大版本库
+% git commit -m '第一次提交'
+[main (root-commit) 6d02308] 第一次提交
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>模拟第二次工作提交:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% echo "2023年01月05日第二次提交" &gt;&gt; README.md 
+% git add README.md 
+% git commit -m '第二次提交'
+[main 1c2c2fa] 第二次提交
+ 1 file changed, 1 insertion(+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>模拟第三次提交:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% echo "2023年01月08日第三次提交" &gt;&gt; README.md
+% git add README.md                           
+% git commit -m '第三次提交'                  
+[main 1f3fc92] 第三次提交
+ 1 file changed, 1 insertion(+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>通过<code>git log</code>命令可以查看仓库内的<code>commit</code>命令提交历史记录。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git log
+
+commit 1f3fc924d51a3a4d0e314f7e826c38f4a8ecf887 (HEAD -&gt; main)
+Author: Zero &lt;15133024857@163.com&gt;
+Date:   Wed Jan 11 14:50:07 2023 +0800
+
+    第三次提交
+
+commit 1c2c2fac60534cc44cdae3ed5016b80bc2434941
+Author: Zero &lt;15133024857@163.com&gt;
+Date:   Wed Jan 11 14:49:03 2023 +0800
+
+    第二次提交
+
+commit 6d02308ab464740274741fd9cb165fe7c44442d6
+Author: Zero &lt;15133024857@163.com&gt;
+Date:   Wed Jan 11 14:47:15 2023 +0800
+
+    第一次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>git log</code>命令显示提交时间由近到远的记录。我们可以看到一共有三次<code>commit</code>,最近的一次也就是最上面<code>14:50:07</code>提交的那次.</p>
+<p>信息内容为:<code>commit</code>记录的id,然后是提交者的名字其次是提交时间。</p>
+<p>如果觉得内容显示的太多有些眼花缭乱,那么可以加上<code>--pretty=oneline</code>参数进行查看:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git log --pretty=oneline
+
+1f3fc924d51a3a4d0e314f7e826c38f4a8ecf887 (HEAD -&gt; main) 第三次提交
+1c2c2fac60534cc44cdae3ed5016b80bc2434941 第二次提交
+6d02308ab464740274741fd9cb165fe7c44442d6 第一次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样只会显示<code>commit</code>id和提交时的<code>-m</code>备注参数。</p>
+<p>在Git中<code>HEAD</code>表示当前版本,也就是最近一次的提交版本,上一个版本可以用<code>HEAD^</code>表示,上上个版本则为<code>HEAD^^</code>,显然一个<code>^</code>符表示向上翻一个版本,当然如果版本过多的话,也可以简写,比如前100个版本: <code>HEAD~100</code>。</p>
+<p>那么先的版本的id尾号为<code>f887</code> 并且内容为:</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">% cat README.md 
+
+2023年01月01日第一次提交
+2023年01月05日第二次提交
+2023年01月08日第三次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>接下来我们让版本回退到上一个版本,也就是id尾号为<code>4941</code>的第二次提交版本:</p>
+<p>通过<code>git reset --hard 回退的版本</code>命令</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git reset --hard HEAD^
+HEAD is now at 1c2c2fa 第二次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>回退完成,现在让我们再次查看下提交历史记录和文件内容:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git log --pretty=oneline
+
+1c2c2fac60534cc44cdae3ed5016b80bc2434941 (HEAD -&gt; main) 第二次提交
+6d02308ab464740274741fd9cb165fe7c44442d6 第一次提交
+
+% cat README.md 
+2023年01月01日第一次提交
+2023年01月05日第二次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到第三次提交的记录和提交的内容已经全部不见,完全回退到了第二次提交记录时的阶段。</p>
+<p>但是…如果想再次回到第三次提交可以不可以呢？其实还是可以的只要你记录着第三次提交的<code>commit</code>id就可以：</p>
+<p>版本号没必要写全，前几位就可以了，Git会自动去找。当然也不能只写前一两位，因为Git可能会找到多个版本号，就无法确定是哪一个了。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git reset --hard 1f3f
+HEAD is now at 1f3fc92 第三次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>然后再次查看历史记录和文件内容:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git log --pretty=oneline
+1f3fc924d51a3a4d0e314f7e826c38f4a8ecf887 (HEAD -&gt; main) 第三次提交
+1c2c2fac60534cc44cdae3ed5016b80bc2434941 第二次提交
+6d02308ab464740274741fd9cb165fe7c44442d6 第一次提交
+
+% cat README.md 
+2023年01月01日第一次提交
+2023年01月05日第二次提交
+2023年01月08日第三次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>果然,又滚回来了…在版本之间来回横跳,有这样强大的回退功能,再也不需要担心代码出现问题。第一时间回滚到上一次没有问题的版本即可。</p>
+<p>假如现在回退到了第一个版本:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git reset --hard HEAD^^
+HEAD is now at 6d02308 第一次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>然后我们几天后又想回退到第三个版本,但是已经找不到commit-id了那该如何?</p>
+<p>在Git中，总是有后悔药可以吃的。Git提供了一个命令<code>git reflog</code>用来记录你的每一次命令：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git reflog
+
+6d02308 (HEAD -&gt; main) HEAD@{0}: reset: moving to HEAD^^
+1f3fc92 HEAD@{1}: reset: moving to 1f3f
+1c2c2fa HEAD@{2}: reset: moving to HEAD^
+1f3fc92 HEAD@{3}: commit: 第三次提交
+1c2c2fa HEAD@{4}: commit: 第二次提交
+6d02308 (HEAD -&gt; main) HEAD@{5}: commit (initial): 第一次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>该命令记录了你所有的<code>commit</code>和<code>reset</code>命令记录。可以从这里找到第三次commit的id为<code>1f3fc92</code>,然后就可以再次回退到第三个提交版本:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git reset --hard 1f3fc92
+HEAD is now at 1f3fc92 第三次提交
+
+% git log --pretty=oneline
+1f3fc924d51a3a4d0e314f7e826c38f4a8ecf887 (HEAD -&gt; main) 第三次提交
+1c2c2fac60534cc44cdae3ed5016b80bc2434941 第二次提交
+6d02308ab464740274741fd9cb165fe7c44442d6 第一次提交
+
+% cat README.md 
+2023年01月01日第一次提交
+2023年01月05日第二次提交
+2023年01月08日第三次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>小结</strong>:</p>
+<ul>
+<li><code>HEAD</code>指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令<code>git reset --hard commit_id</code>。</li>
+<li>穿梭前，用<code>git log</code>可以查看提交历史，以便确定要回退到哪个版本。</li>
+<li>要重返未来，用<code>git reflog</code>查看命令历史，以便确定要回到未来的哪个版本。</li>
+</ul>
+<h4 id="2-工作区撤销"><a href="#2-工作区撤销" class="headerlink" title="2. 工作区撤销"></a>2. 工作区撤销</h4><p>假如我们对一个文件进行了操作,如下:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% echo "修改了文件内容...." &gt;&gt; README.md 
+
+% cat README.md 
+2023年01月01日第一次提交
+2023年01月05日第二次提交
+2023年01月08日第三次提交
+修改了文件内容....<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>但是我们并没有通过<code>add</code>命令添加到暂存区中,现在想恢复操作之前该如何?</p>
+<p>当然,如果是一些简单的改动,你自然可以手动恢复,但是如果你做了大量的改动,导致你自己都无法恢复,这个时候可以通过Git进行撤销操作。</p>
+<p>通过<code>git checkout --要撤销的文件</code>命令,将该文件在工作区内的所有改动进行撤销。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh"># 进行撤销
+% git checkout -- README.md 
+
+# 查看仓库状态
+% git status
+On branch main
+nothing to commit, working tree clean
+# 查看文件内容
+% cat README.md 
+2023年01月01日第一次提交
+2023年01月05日第二次提交
+2023年01月08日第三次提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>或者通过<code>git checkout -- .</code>撤销所有文件在工作空间的改动。</p>
+<p>新版本的Git也可以使用如下命令完成同样的操作:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh"># 撤销文件工作区内的改动
+git restore file
+
+# 撤销所有文件工作区内的改动
+git restore .<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="3-暂存区撤销"><a href="#3-暂存区撤销" class="headerlink" title="3. 暂存区撤销"></a>3. 暂存区撤销</h4><p>如果我们对文件进行了修改,而且还添加到了暂存区:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% echo '测试撤销暂存区' &gt;&gt; README.md 
+
+% git add README.md 
+
+% cat README.md 
+2023年01月01日第一次提交
+2023年01月05日第二次提交
+2023年01月08日第三次提交
+测试撤销暂存区<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>想要丢弃修改的话需要如下操作:</p>
+<ol>
+<li>使用命令撤销暂存区:<code>git reset HEAD README.md</code></li>
+<li>然后使用撤销工作区的命令: <code>git checkout -- README.md</code></li>
+</ol>
+<p>这样就完成了暂存区的撤销。</p>
+<p>或者使用另一种方法,通过<code>git restore</code></p>
+<ol>
+<li>撤销暂存区的修改: <code>git restore --staged README.md</code></li>
+<li>撤销工作区的修改: <code>git restore READMO.md</code></li>
+</ol>
+<p><strong>restore命令的解释</strong></p>
+<p><code>git restore --worktree readme.txt</code></p>
+<p>表示把当前工作区恢复到上一次添加到暂存区时的样子。</p>
+<p>通俗点来讲就是: 将本文件上一次<code>add</code>添加暂存区之后的所有修改全部撤销。</p>
+<br>
+
+<p><code>git restore --staged readme.txt</code></p>
+<p>表示把当前暂存区恢复到当前分支的版本。</p>
+<p>通俗点来讲就是: 将本文件上一次<code>commit</code>之后所有的<code>add</code>到暂存区的内容全部撤销。</p>
+<br>
+
+<p><code>git restore --source=HEAD --staged --worktree readme.txt</code></p>
+<p>同时撤销暂存区和工作区的变动。</p>
+<p>其实就是分别执行了上面两条命令。</p>
+<p><strong>小结</strong>:</p>
+<p>撤销工作区命令:</p>
+<ul>
+<li><p><code>git restore --worktree &lt;file&gt;</code> 简写: <code>git restore &lt;file&gt;</code></p>
+</li>
+<li><p><code>git checkout -- &lt;file&gt;</code></p>
+<p>效果一样。</p>
+</li>
+</ul>
+<p>撤销暂存区命令:</p>
+<ul>
+<li><p><code>git restore --staged &lt;file&gt;</code></p>
+</li>
+<li><p><code>git reset HEAD &lt;file&gt;</code></p>
+<p>效果一样。</p>
+</li>
+</ul>
+<h4 id="4-删除文件"><a href="#4-删除文件" class="headerlink" title="4. 删除文件"></a>4. 删除文件</h4><p>删除文件很简单,就正常删除后,然后<code>commit</code>即可.</p>
+<p>问题是如果你误删了文件,那么也可以通过撤销的方式恢复回来</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% rm -rf README.md
+
+% git status
+On branch main
+Changes not staged for commit:
+  (use "git add/rm &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+	deleted:    README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>恢复文件:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git restore README.md
+% ls
+
+README.md<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>注意：从来没有被添加到版本库就被删除的文件，是无法恢复的！</strong></p>
+<h3 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h3><p>Git是支持托管到远程仓库的,这也是Git的杀手锏之一。通常我们都会托管到 <a target="_blank" rel="noopener" href="https://github.com/">Github</a>这个神奇的地方。</p>
+<p>如何注册Github账号就不多赘述,请自行解决。</p>
+<p>由于本地的Git与Github的传输时通过SSH加密的,所以我们要生成SSH公私秘钥,并且把公钥设置到Github中。</p>
+<ol>
+<li><p><strong>生成SSH公私秘钥</strong></p>
+<p>进入当前用户目录下,看看有没有<code>.ssh</code>目录,如果有在查看是否目录内有<code>id_rsa</code>和<code>id_rsa.pub</code>这两个文件。如果有就证明已经生成过,直接跳到下一步即可。</p>
+<p>如果没有,请打开终端,输入一下指令,创建SSH Key:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ssh-keygen -t rsa -C "zero9501@example.com"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>将邮箱换成你自己的邮箱,然后一路回车使用默认值就可以,也无需设置密码。</p>
+<p>执行完之后你会在用户目录下看到<code>.ssh</code>目录,以及目录内的<code>id_rsa</code>和<code>id_rsa.pub</code>文件。<code>id_rsa</code>是私钥，不能泄露出去，<code>id_rsa.pub</code>是公钥，可以放心地告诉任何人。</p>
+</li>
+<li><p><strong>将公钥设置到Github</strong></p>
+<p>登录Github 打开”Settings”设置中的 “SSH and GPG keys” 选择项。</p>
+<p>然后点击 “New SSH key” 创建一个新的SSH Key。</p>
+<img src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/%E8%AE%BE%E7%BD%AEssh2.png" style="zoom:50%;"></li>
+</ol>
+<p>Title随意填写,然后将刚刚生成的<code>id_rsa.pub</code>文件的内容复制到”Key”文本框中 点击”Add SSH key”,有可能需要输入密码验证一下,输入即可。</p>
+<img src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/%E8%AE%BE%E7%BD%AE%E5%85%AC%E9%92%A5.png" style="zoom:50%;">
+
+<p>为什么GitHub需要SSH Key呢？因为GitHub需要识别出你推送的提交确实是你推送的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了你的公钥，就可以确认只有你自己才能推送。</p>
+<p>当然，GitHub允许你添加多个Key。假定你有若干电脑，你一会儿在公司提交，一会儿在家里提交，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。</p>
+<p>最后友情提示，在GitHub上免费托管的Git仓库，任何人都可以看到喔（但只有你自己才能改）。所以，不要把敏感信息放进去。</p>
+<p>如果你不想让别人看到Git库，有两个办法，一个是交点保护费，让GitHub把公开的仓库变成私有的，这样别人就看不见了（不可读更不可写）。另一个办法是自己动手，搭一个Git服务器，因为是你自己的Git服务器，所以别人也是看不见的。这个方法我们后面会讲到的，相当简单，公司内部开发必备。</p>
+<p>确保你拥有一个GitHub账号后，我们就即将开始远程仓库的学习。</p>
+<h4 id="1-绑定远程仓库"><a href="#1-绑定远程仓库" class="headerlink" title="1. 绑定远程仓库"></a>1. 绑定远程仓库</h4><p>通常我们会在本地创建一个Git仓库后,然后再Github创建一个远程仓库,并且把它们关联起来进行远程同步,这样Github的远程仓库既可以作为备份使用,也支持其他人协同工作。</p>
+<p>首先我们在Github中创建一个远程仓库:</p>
+<img src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/Github%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93.png" style="zoom:50%;">
+
+<p>创建完成后,你会得到一个创建地址: <code>https://github.com/****/first_repo.git</code>或者<code>git@github.com:****/first_repo.git</code></p>
+<p>目前这个仓库是空的,一般空的仓库Github会给出对应的提示,如何绑定到你的本地仓库。</p>
+<p>现在我们在本地创建一个仓库,并且对它进行初始化:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% mkdir first_repo
+% cd first_repo
+% git init
+
+Initialized empty Git repository in /usr/local/myproject/git-project/first_repo/.git/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后通过<code>git remote add</code>命令绑定到远程仓库中:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git remote add origin git@github.com:****/first_repo.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><code>origin</code>表示远程库的名字,因为一个本地库可以绑定多个远程库,然后分别推送到不同的远程库中。<code>origin</code>是Git默认远程库的叫法。</p>
+<p>然后我们可以通过<code>git remote -v</code>命令查看当前已绑定的远程库有哪些:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git remote -v
+
+origin	git@github.com:****/first_repo.git (fetch)
+origin	git@github.com:****/first_repo.git (push)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>接下来,就可以通过<code>git push</code>命令把本地库的推送到远程库之中:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git push -u origin main<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>该命令会将本地仓库的<code>main</code>分支的所有内容推送到<code>origin</code>这个远程仓库的<code>main</code>分支上。</p>
+<p>因为是第一次推送所以要加上<code>-u</code>参数，表示不但推送内容,而且会把本地库<code>main</code>分支和远程库的<code>main</code>所关联起来,只有关联起来才可以推送。</p>
+<p>执行该命令后可能出现报错:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git push -u origin main
+
+error: src refspec main does not match any
+error: failed to push some refs to 'https://github.com/zlx2019/first_repo.git'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这个错误的解决方案非常简单，首先尝试在该目录中创建一个文件，然后提交并推送到远程服务器。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% touch a.txt
+% git add a.txt 
+% git commit -m 'init'
+
+# 再次推送即可
+% git push -u origin main
+
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 197 bytes | 197.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:zlx2019/first_repo.git
+ * [new branch]      main -&gt; main
+Branch 'main' set up to track remote branch 'main' from 'origin'.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>注意:<strong>这里仓库地址优先推送使用ssh方式,如果选用https方式需要输入用户名和密码,但是用户名和密码Github已不再支持.</strong></p>
+<p>第一次推送关联完成之后,以后<code>commit</code>之后只需要直接执行如下命令进行推送即可:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git push origin main<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后我们可以看一下目前的本地分支情况:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git branch -v
+
+* main c861a79 init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到，推送的同时已经为我们自动创建了<code>main</code>分支。</p>
+<p>查看本地和远程分支:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git branch -a
+
+* main
+  remotes/origin/main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>本地和远程分别有一个<code>main</code>分支。</p>
+<p><strong>以上情况属于本地库和远程库都是空的情况下,如果本地库和远程仓库都有各自的文件,这样推送是无法直接推送的。如下所示:</strong></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git push -u origin main                
+
+To github.com:zlx2019/first_repo.git
+ ! [rejected]        main -&gt; main (fetch first)
+error: failed to push some refs to 'github.com:zlx2019/first_repo.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这种情况下,我们先需要通过<code>git pull</code>命令拉取远程库的内容:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh"># 拉取 origin远程库 的main分支
+git pull origin main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>然后你会发现,依然会报错</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), 177 bytes | 88.00 KiB/s, done.
+From github.com:zlx2019/first_repo
+ * branch            main       -&gt; FETCH_HEAD
+ * [new branch]      main       -&gt; origin/main
+fatal: refusing to merge unrelated histories<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这表示github 的仓库和本地的没有一个共同的 commit 所以 git 不让提交.需要添加 <code>--allow-unrelated-histories</code> 告诉 git 允许不相关历史合并。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git pull origin main --allow-unrelated-histories<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样就先把远程库的内容拉取了下来,然后就可以<code>push</code>上去了.</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git push origin main
+
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 444 bytes | 444.00 KiB/s, done.
+Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:zlx2019/first_repo.git
+   c861a79..46bf665  main -&gt; main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-移除远程仓库"><a href="#2-移除远程仓库" class="headerlink" title="2. 移除远程仓库"></a>2. 移除远程仓库</h4><p>如果添加错误了仓库地址,也可以删除。</p>
+<p>建议先查看绑定了哪些远程仓库:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git remote -v
+
+origin	git@github.com:****/first_repo.git (fetch)
+origin	git@github.com:****/first_repo.git (push)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后就可以根据仓库名进行删除:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git remote rm origin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="3-修改远程仓库"><a href="#3-修改远程仓库" class="headerlink" title="3. 修改远程仓库"></a>3. 修改远程仓库</h4><p>通过如下命令可以修改已绑定的仓库地址:</p>
+<p><code>git remote set-url &lt;repo-name&gt; &lt;url&gt;</code></p>
+<p>例如:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git remote set-url origin git@github.com:zlx2019/****.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="4-克隆仓库"><a href="#4-克隆仓库" class="headerlink" title="4. 克隆仓库"></a>4. 克隆仓库</h4><p>通常我们团队协作开发,建立一个新的项目时,会先建立远程仓库,然后所有参与人员把仓库<strong>克隆</strong>下来。</p>
+<p>假设你现在建立好了远程仓库,只需要通过如下命令就可以克隆下来:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git clone git@github.com:zlx2019/****.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>Git支持多种协议，包括<code>https</code>，但<code>ssh</code>协议速度最快。</p>
+<p><strong>小结:</strong></p>
+<ul>
+<li>绑定一个远程仓库: <code>git remote add &lt;origin&gt; &lt;git-url&gt;</code>关联一个远程库时必须给远程库指定一个名字，<code>origin</code>是默认习惯命名。</li>
+<li>关联后，使用命令<code>git push -u origin main</code>第一次推送main分支的所有内容。</li>
+<li>此后，每次本地提交后，只要有必要，就可以使用命令<code>git push origin main</code>推送最新修改。</li>
+<li>要克隆一个仓库，首先必须知道仓库的地址，然后使用<code>git clone</code>命令克隆。</li>
+</ul>
+<h3 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h3><p>分支是Git中最为重要最为核心的一个概念,一个仓库可以有多个分支,每个分支都是相互独立的,但是分支之间是可以进行合并的。</p>
+<p>在具体的工作过程中,分支通常会这样使用:</p>
+<p>分支在实际中有什么用呢？假设你准备开发一个新功能，但是需要两周才能完成，第一周你写了50%的代码，如果立刻提交，由于代码还没写完，不完整的代码库会导致别人不能干活了。如果等代码全部写完再一次提交，又存在丢失每天进度的巨大风险。</p>
+<p>现在有了分支，就不用怕了。你创建了一个属于你自己的分支，别人看不到，还继续在原来的分支上正常工作，而你在自己的分支上干活，想提交就提交，直到开发完毕后，再一次性合并到原来的分支上，这样，既安全，又不影响别人工作。</p>
+<h4 id="1-创建合并分支"><a href="#1-创建合并分支" class="headerlink" title="1. 创建合并分支"></a>1. 创建合并分支</h4><p>我们先创建一个仓库:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% mkdir three
+% cd three 
+% git init
+
+Initialized empty Git repository in /usr/local/myproject/git-project/three/.git/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后新建一个文本文件,并且写入内容:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% touch title.txt
+% echo 'main分支新建的文件' &gt;&gt; title.txt 
+% cat title.txt 
+
+main分支新建的文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>注意: 这个时候仓库还没有任何分支,是无法创建新的分支的,我们需要先生成默认的<code>main</code>分支才可以,只需要进行一次<code>commit</code>指令,就会默认生成一个主分支。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git add title.txt 
+% git commit -m 'init branch'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>然后查看目前的分支信息:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git branch 
+ 
+* main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到,目前只有一个<code>main</code>分支,也就是主分支。<code>*</code>表示当前处于的分支。</p>
+<p>接下来我们以当前分支为基准,新建一个新的分支(新建的分支将拥有当前分支的所有内容),并且切换到新的分支上:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git branch dev
+% git checkout dev
+
+Switched to branch 'dev'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>该命令可以简写为:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git checkout -b dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后再次查看下分支信息:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git branch    
+
+* dev
+  main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样就创建好了一个<code>dev</code>分支,并且切换到了该分支上。不但如此,该分支还持有<code>main</code>分支的所有内容:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% ls
+title.txt
+
+% cat title.txt 
+main分支新建的文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后我们就可以在<code>dev</code>分支上正常工作,如创建一个新的文件,并且写入内容:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% touch body.txt
+% echo 'dev分支新建的文件' &gt;&gt; body.txt 
+% cat body.txt 
+
+dev分支新建的文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后进行提交</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git add body.txt 
+% git commit -m 'init dev'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>现在<code>dev</code>分支上的工作完成,我们就可以切回到<code>main</code>分支上:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git checkout main
+Switched to branch 'main'
+
+% git branch 
+  dev
+* main
+
+% ls
+title.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>切换回来后我们发现,刚刚在<code>dev</code>上新建的<code>body.txt</code>文件不见了,这是因为那个提交是在<code>dev</code>分支上,与<code>main</code>分支此刻的提交并没有改变。</p>
+<p>现在我们把<code>dev</code>分支合并到当前所在的<code>main</code>分支上:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git merge dev
+
+Updating cf0982a..96be53c
+Fast-forward
+ body.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 body.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>git merge &lt;branch_name&gt;</code> 命令可以将指定的分支合并到当前所在的分支中。</p>
+<p><code>Fast-forward</code>表示此次合并为 <strong>快进模式</strong>,因为没有<strong>冲突</strong>,所以直接把<code>main</code>指向<code>dev</code>的当前提交。</p>
+<p>合并完我们就可以查看一下当前<code>main</code>分支的内容:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% ls 
+body.txt	title.txt
+
+% cat body.txt 
+dev分支新建的文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后我们就可以放心删除<code>dev</code>分支:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git branch -d dev
+Deleted branch dev (was 96be53c).
+
+% git branch 
+* main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>删除完在查看,发现只剩下<code>main</code>分支。</p>
+<p><strong>注意:</strong> 如果要删除一个没有被合并过的分支,如果删除，将丢失掉修改，如果要强行删除，需要使用大写的<code>-D</code>参数。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git branch -D dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+
+
+<p>在Git新版本中提供了新命令来创建切换分支,因为<code>checkout</code>与之前的撤销命令有些冲突,使用起来有些迷惑。</p>
+<p>创建新的分支并且切换到新的分支上,可以使用:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git switch -c dev
+
+Switched to a new branch 'dev'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>切换到已有分支上,可以使用:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git switch main
+
+Switched to branch 'main'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>使用新的<code>git switch</code>命令，比<code>git checkout</code>要更容易理解。</p>
+<p><strong>小结:</strong></p>
+<ul>
+<li>查看分支：<code>git branch</code></li>
+<li>创建分支：<code>git branch &lt;name&gt;</code></li>
+<li>切换分支：<code>git checkout &lt;name&gt;</code>或者<code>git switch &lt;name&gt;</code></li>
+<li>创建+切换分支：<code>git checkout -b &lt;name&gt;</code>或者<code>git switch -c &lt;name&gt;</code></li>
+<li>合并某分支到当前分支：<code>git merge &lt;name&gt;</code></li>
+<li>删除分支：<code>git branch -d &lt;name&gt;</code></li>
+</ul>
+<h4 id="2-解决冲突"><a href="#2-解决冲突" class="headerlink" title="2. 解决冲突"></a>2. 解决冲突</h4><p>关于解决冲突,是合并分支时经常遇到的问题,因为尽管工作时是按照功能或者模块进行划分,但是也避免不了多个人同时修改了同一个文件的内容,这个时候就需要手动解决一下冲突,将两个人修改的内容手动合并到一起,或者删除一方的修改内容。</p>
+<p>接下来我们通过一起模拟一个案例来学习如何使用最基本的Git终端命令解决冲突。</p>
+<p>首先我们在<code>main</code>分支创建一个<code>main.go</code>文件.</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后进行提交</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git add main.go 
+% git commit -m 'main create main.go'
+
+[main bde9db7] main create main.go
+ 1 file changed, 5 insertions(+)
+ create mode 100644 main.go<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>接下来我们建立一个新的分支<code>dev</code>。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git switch -c dev
+
+Switched to a new branch 'dev'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>在<code>dev</code>分支上修改<code>main.go</code>文件为如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  name <span class="token operator">:=</span> <span class="token string">"张三"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后在<code>dev</code>分支上进行提交。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git add main.go 
+% git commit -m 'dev edit main.go'
+
+[dev 0c33e2d] dev edit main.go
+ 1 file changed, 1 insertion(+), 1 deletion(-)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>提交完成后,切回<code>main</code>分支。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git switch main
+Switched to branch 'main'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>注意: 先不要进行合并,假设出于某些原因,在你建立<code>dev</code>分支之后,你又对<code>main</code>分支的<code>main.go</code>文件进行了修改,修改内容如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  age <span class="token operator">:=</span> <span class="token number">18</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后在<code>main</code>分支进行提交:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git add main.go 
+% git commit -m 'main edit main.go'
+
+[main 7a8c1a2] main edit main.go
+ 1 file changed, 1 insertion(+), 1 deletion(-)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>现在<code>dev</code>分支和<code>main</code>分支同时对<code>main.go</code>文件进行了修改.</p>
+<p>如果这种情况下把<code>dev</code>合并到<code>main</code>分支,则会产生冲突,如下:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git merge dev
+
+Auto-merging main.go
+CONFLICT (content): Merge conflict in main.go
+Automatic merge failed; fix conflicts and then commit the result.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Git提示我们：<code>main.go</code>文件自动合并失败,必须手动解决冲突后再提交。</p>
+<p>此时,通过<code>git status</code>也可以提示我们需要解决冲突的文件。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git status
+
+On branch main
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add &lt;file&gt;..." to mark resolution)
+	both modified:   main.go
+
+no changes added to commit (use "git add" and/or "git commit -a")<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>接下来我们开始手动解决冲突,打开要解决冲突的文件:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<span class="token operator">&lt;&lt;</span><span class="token operator">&lt;&lt;</span><span class="token operator">&lt;&lt;</span><span class="token operator">&lt;</span> HEAD
+  age <span class="token operator">:=</span> <span class="token number">18</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">=</span>
+  name <span class="token operator">:=</span> <span class="token string">"张三"</span>
+<span class="token operator">&gt;&gt;</span><span class="token operator">&gt;&gt;</span><span class="token operator">&gt;&gt;</span><span class="token operator">&gt;</span> dev
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>每一处冲突的地方,<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>到<code>=======</code>中间的部分都为本分支的冲突区域.</p>
+<p>而<code>=======</code>到<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; dev</code>中间的部分都为要合并过来分支的冲突区域.</p>
+<p>这里我们是想要保留两个分支的修改内容,所以修改如下即可:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  age <span class="token operator">:=</span> <span class="token number">18</span>
+  name <span class="token operator">:=</span> <span class="token string">"张三"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后再次进行提交:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git add main.go 
+% git commit -m '解决冲突完成.'
+
+[main 9d3c354] 解决冲突完成.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>当然这是最原生的解决冲突方案,如果修改的范围非常小,自然没问题,但是我们通常冲突的范围都很广,可能涉及到几十上百个文件,这种情况使用这种方案会累死人的…</p>
+<p>一般都会使用一些工具进行解决冲突,如本人最喜欢使用 IntelliJ IDEA解决冲突.下面会介绍一下这种方式。</p>
+<h4 id="3-IDEA解决冲突"><a href="#3-IDEA解决冲突" class="headerlink" title="3. IDEA解决冲突"></a>3. IDEA解决冲突</h4><p>当通过IDEA合并时发生冲突后,会弹出如下界面:</p>
+<img src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/%E9%9C%80%E8%A6%81%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81%E7%9A%84%E6%96%87%E4%BB%B6.png" style="zoom:50%;">
+
+<p>中间的文本框内的文件是需要解决冲突的文件,需要一个一个把冲突手动处理掉。</p>
+<p><code>Accept Yours</code>:就是直接选取本地的代码，覆盖掉远程仓库的</p>
+<p><code>Accept Theirs</code>:是直接选取远程仓库的，覆盖掉自己本地的</p>
+<p><code>Merge</code>:是表示手动合并,这也是我们最常使用的方式。</p>
+<p>选中要解决冲突的文件,然后直接点击<code>Merge</code>,开始手动合并,会看到如下界面:</p>
+<img src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81%E7%95%8C%E9%9D%A2.png" style="zoom:40%;">
+
+<p>左边部分就是本地仓库代码or当前分支代码。</p>
+<p>右边部分就是远程仓库代码or被合并分支代码。</p>
+<p>中间部分就是我们手动合并后的结果。</p>
+<p>左下角的<code>Accept Left</code> 和<code>Accept Right</code>其实就相当于是之前的 <code>Accept Yours</code> 和 <code>Accept Theirs </code>。</p>
+<p>修改完成后，点击Apply，冲突就解决了。</p>
+<p>如果取消合并后,代码就会变成原生Git解决冲突那种</p>
+<p>修改完成后，对冲突的文件进行 git add 操作，之后 git commit，最后 git push 到远程，这样冲突就解决了。</p>
+<h4 id="4-stash储存工作区"><a href="#4-stash储存工作区" class="headerlink" title="4. stash储存工作区"></a>4. stash储存工作区</h4><p>当你接到一个序号102的Bug修复任务时,你不自觉的就像以往一样,打算创建一个<code>issue-101</code>来修复它,但是你突然发现目前正在<code>dev</code>分支进行开发,并且任务已经完成了一半,由于才进行到一半还无法提交,但是Bug要求两个小时内修复,这该如何?</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">zero@Zero codes % git status
+On branch main
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+	modified:   mian.go
+
+no changes added to commit (use "git add" and/or "git commit -a")<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>幸好，Git还提供了一个<code>stash</code>功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">zero@Zero codes % git stash 
+Saved working directory and index state WIP on main: 357a36b init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>现在我们在查看工作空间,发现是干净的.</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">zero@Zero codes % git status
+On branch main
+nothing to commit, working tree clean<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>刚才的工作区哪去了? 这个时候我们通过<code>git stash list</code>可以看看:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">zero@Zero codes % git stash list
+stash@{0}: WIP on main: 357a36b init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>可以看到,这就是我们刚刚的工作区状态。</p>
+<p>假如我们现在修复完bug了,只需要把状态恢复如初即可:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">zero@Zero codes % git stash apply 
+
+On branch main
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+	modified:   mian.go
+
+no changes added to commit (use "git add" and/or "git commit -a")<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样工作区就恢复了,可以继续正常工作了.</p>
+<p>当然我们要删除一下之前存储的工作区:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">zero@Zero codes % git stash drop
+Dropped refs/stash@{0} (8cf18604954a0d7ff1d4a8967b3f5ace3ab3eb19)
+
+git stash list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>再用<code>git stash list</code>查看，就看不到任何stash内容了。</p>
+<p>也可以简写为<code>git stash pop</code>,恢复的同时也会把内容直接删除。</p>
+<h4 id="5-cherry-pick"><a href="#5-cherry-pick" class="headerlink" title="5. cherry-pick"></a>5. cherry-pick</h4><p>假如我们从<code>main</code>分支开辟一个<code>dev</code>分支,几天后突然在<code>main</code>分支发现一个bug,然后由其他工作人员建立了一个新的<code>issue</code>分支修复了,但是仔细想想我们的的<code>dev</code>分支也是由<code>main</code>分支出来的,那么显然我们的分支也存在这个bug,那该如何处理呢?</p>
+<p>如果<code>main</code>分支只是修补了这个bug也好,直接合并过来即可,但是如果这几天内,有一些其他分支也都合并到<code>main</code>分支后并且上线了,那么显然直接合并过来是行不通的。</p>
+<p>为了方便操作，Git专门提供了一个<code>cherry-pick</code>命令，让我们能复制一个特定的提交到当前分支：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git cherry-pick &lt;commit_id&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在master分支上修复的bug，想要合并到当前dev分支，可以用<code>git cherry-pick &lt;commit&gt;</code>命令，把bug提交的修改“复制”到当前分支，避免重复劳动。</p>
+<h4 id="6-协同开发"><a href="#6-协同开发" class="headerlink" title="6. 协同开发"></a>6. 协同开发</h4><p>当你从一个远程库克隆到本地时,Git会先把目录创建为本地仓库,再创建一个默认分支<code>main</code>并且和远程仓库的<code>main</code>分支关联起来,并且默认的远程库名称为<code>origin</code>。</p>
+<p>查看远程库信息:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git remote 
+origin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>或者使用更详细的命令查看:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git remote -v
+
+origin	git@github.com:zlx2019/codes.git (fetch)
+origin	git@github.com:zlx2019/codes.git (push)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>显示持有<code>origin</code>远程库的拉取(pull)和推送(push)权限。如果没有推送权限则看不到push地址。</p>
+<p><strong>推送分支</strong></p>
+<p>推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git push origin main<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>或者新建一个分支,直接推送到远程仓库中:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git switch -c dev
+Switched to a new branch 'dev'
+
+
+% git push origin dev
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+remote: 
+remote: Create a pull request for 'dev' on GitHub by visiting:
+remote:      https://github.com/****/codes/pull/new/dev
+remote: 
+To github.com:****/codes.git
+ * [new branch]      dev -&gt; dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>但是请注意,并不是所有的分支都一定要推送到远程仓库,如果把一些不必要的分支也推送上去,到头来还是要一个一个删除,否则仓库会显得很杂乱。</p>
+<ul>
+<li><code>main</code>分支是主分支,这个不用多说肯定要实时同步的。</li>
+<li><code>test</code>测试分支一般也是需要实时同步的,如果你不完整同步的话,你的同事很可能因为你的代码推送不完整而无法使用测试环境。</li>
+<li><code>dev</code>分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；</li>
+<li>一般修复bug的分支,除了一些非必要情况,一般不会推到远程库。</li>
+<li>feat分支是否推送,取决于你和同事之间的需求。</li>
+</ul>
+<p><strong>抓取远程分支</strong></p>
+<p>当你从一个远程库克隆下来后,默认情况下,你只能看到<code>main</code>分支,如果需要<code>dev</code>分支,则需要执行如下命令:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git switch -c dev origin/dev
+
+Branch 'dev' set up to track remote branch 'dev' from 'origin'.
+Switched to a new branch 'dev'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>抓取到远程的<code>dev</code>分支。</p>
+<p>然后就可以正常开发、提交、推送了。</p>
+<p>注意: 推送之前先<code>pull</code>一下代码,看有没有小伙伴提交了新的代码,然后解决下冲突再<code>push</code>。</p>
+<h3 id="标签管理"><a href="#标签管理" class="headerlink" title="标签管理"></a>标签管理</h3><p>发布一个版本时，我们通常先在版本库中打一个标签（tag），这样，就唯一确定了打标签时刻的版本。将来无论什么时候，取某个标签的版本，就是把那个打标签的时刻的历史版本取出来。所以，标签也是版本库的一个快照。</p>
+<h4 id="1-创建标签"><a href="#1-创建标签" class="headerlink" title="1. 创建标签"></a>1. 创建标签</h4><p>在Git中打一个tag很简单,只要切换到要打tag的分支上,执行如下命令即可:</p>
+<p><code>git tag &lt;版本号&gt;</code></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git tag v1.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样一个版本为<code>v1.0</code>的标签就打好了。下面查看一下标签:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git tag   
+v1.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>标签默认打包的是,当前分支最新的commit上的,当然也可以根据指定的<code>commit</code>的id进行打标签</p>
+<p>通过<code>git log</code>指令找到你要打标签的commit-id</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git log --pretty=oneline --abbrev-commit
+
+0f8fa7b (HEAD -&gt; dev, tag: v1.0, origin/dev) aaa
+23b20a4 (origin/main, origin/HEAD, main) Initial commit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>比如根据<code>23b20a4</code>这个commit进行打包:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git tag v0.9 23b20a4
+% git tag
+v0.9
+v1.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后可以使用<code>git show &lt;tagName&gt;</code>查看一个标签的具体信息:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git show v1.0
+
+commit 0f8fa7bda229e5f5799fd2650ec56ddf29e0ccf3 (HEAD -&gt; dev, tag: v1.0, origin/dev)
+Author: Zero &lt;15133024857@163.com&gt;
+Date:   Sat Jan 14 19:14:57 2023 +0800
+
+    aaa
+
+diff --git a/README.md b/README.md
+index 8c583d4..edcd17c 100644
+--- a/README.md
++++ b/README.md
+@@ -1 +1,2 @@
+-# codes
+\ No newline at end of file
++# codes
++aaa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>标签自然也可以带有说明,如下创建:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git tag -a v2.0 -m 'tag_desc' 23b20a4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><code>-a</code> 表示标签名称</p>
+<p><code>-m</code> 表示标签说明</p>
+<h4 id="2-推送标签"><a href="#2-推送标签" class="headerlink" title="2. 推送标签"></a>2. 推送标签</h4><p>推送某个tag到远程库:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git push origin v1.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>一次性将全部未推送的tag推送上去:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git push origin --tags<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="3-删除标签"><a href="#3-删除标签" class="headerlink" title="3. 删除标签"></a>3. 删除标签</h4><p>如果标签打错了,也可以进行删除:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git tag -d v1.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>删除远程仓库的标签:</p>
+<p>1.先删除本地的标签</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git tag -d v0.9
+Deleted tag 'v0.9' (was 23b20a4)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>然后推送</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% git push origin :refs/tags/v0.9
+To github.com:zlx2019/codes.git
+ - [deleted]         v0.9<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p><strong>小结:</strong></p>
+<ul>
+<li><p>命令<code>git tag &lt;tagname&gt;</code>用于新建一个标签，默认为<code>HEAD</code>，也可以指定一个commit id；</p>
+</li>
+<li><p>命令<code>git tag -a &lt;tagname&gt; -m "blablabla..."</code>可以指定标签信息；</p>
+</li>
+<li><p>命令<code>git tag</code>可以查看所有标签。</p>
+</li>
+<li><p>命令<code>git push origin &lt;tagname&gt;</code>可以推送一个本地标签；</p>
+</li>
+<li><p>命令<code>git push origin --tags</code>可以推送全部未推送过的本地标签；</p>
+</li>
+<li><p>命令<code>git tag -d &lt;tagname&gt;</code>可以删除一个本地标签；</p>
+</li>
+<li><p>命令<code>git push origin :refs/tags/&lt;tagname&gt;</code>可以删除一个远程标签。</p>
+</li>
+</ul>
+<h3 id="分支命名规范"><a href="#分支命名规范" class="headerlink" title="分支命名规范"></a>分支命名规范</h3><ul>
+<li>main（主分支，永远是可用的稳定版本，不能直接在该分支上开发</li>
+<li>test (测试分支,只有在本分支测试通过后才可以合并到main分支)</li>
+<li>develop（开发主分支，所有新功能以这个分支来创建自己的开发分支，该分支只做只合并操作，不能直接在该分支上开发）</li>
+<li>feature-xxx(新功能开发分支,在develop上创建分支，以自己开发功能模块命名，功能测试正常后合并到develop分支)</li>
+<li>Hotfix-xxx(紧急线上bug修复分支,从main分支创建,修复完后再合并到main分支)</li>
+</ul>
+<h3 id="提交命名规范"><a href="#提交命名规范" class="headerlink" title="提交命名规范"></a>提交命名规范</h3><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">&lt;type&gt; &lt;scope&gt;: &lt;subject&gt;
+// 空一行
+&lt;info&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li><p><code>type</code>用于表示本次提交的类别:</p>
+<p>feature : 新功能。<br>fix : 修复bug。<br>docs : 文档改变。<br>style : 代码格式改变,不影响代码运行的变动。<br>refactor : 某个已有功能重构<br>perf : 性能优化<br>test : 增加测试<br>build : 改变了build工具 如 grunt换成了 npm<br>revert : 撤销上一次的 commit<br>chore : 构建过程或辅助工具的变动</p>
+</li>
+<li><p><code>scope</code>用于说明 commit 影响的范围，比如数据层、控制层、视图层等等，视项目不同而不同。</p>
+</li>
+<li><p><code>subject</code>是 commit 目的的简短描述，不超过50个字符。</p>
+</li>
+<li><p><code>info</code>是对本次提交的详细描述。</p>
+</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Zero</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://zlx2019.github.io/2023/01/10/Git%E7%9A%84%E4%BD%BF%E7%94%A8/">https://zlx2019.github.io/2023/01/10/Git%E7%9A%84%E4%BD%BF%E7%94%A8/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Zero</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Git/">
+                                    <span class="chip bg-color">Git</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'la6VQEmsNdWJDzJ0VGHTDFd3-gzGzoHsz',
+        appKey: 'M30KA47YM6KfbfpCBPEAnXkg',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'robohash',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '来说点什么~',
+        enableQQ: true,
+        emojiCDN: '//i0.hdslb.com/bfs/emote/',
+        enableQQ: true,
+        // 表情title和图片映射
+        emojiMaps: {
+            "12周年":"8a80589462a38e04716ebcbc6c4764d9d25b1dd0.png",
+            "藏狐":"ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png",
+            "doge":"3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+            "doge-春节":"feb9abf68df628803ff69a244e744470c2b7e136.png",
+            "doge-圣诞":"1afb5eb96846e0876071eeecb47be95dbf55f08d.png",
+            "doge-愚人节":"8ab62b33061d20bc27beec798a2f73c639e8bb6e.png",
+            "微笑":"685612eadc33f6bc233776c6241813385844f182.png",
+            "微笑-春节":"f32e5d367c81fbb88b54d7fe46366de04fe4f38f.png",
+            "微笑-愚人节":"774d19d2416eb5b30ac66b02ac580b1b0ca92a80.png",
+            "OK":"4683fd9ffc925fa6423110979d7dcac5eda297f4.png",
+            "OK-春节":"ad17fceba45996104c8b8e2e3f4efd7e2f588368.png",
+            "OK-圣诞":"75d1c99cce001d6d103a8fd406616be9f51621ab.png",
+            "OK-愚人节":"76cc9da7f4a054cb02aad900f0ca3d3fda9c9667.png",
+            "星星眼":"63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+            "星星眼-春节":"f6f01068ac7f6548779b0e16daa61974f9299b17.png",
+            "星星眼-圣诞":"195641c30c55f34f9cd82c5e5c32d66a425c7723.png",
+            "星星眼-愚人节":"270e85c95c1ad919848b415601ed3a879bd08127.png",
+            "妙啊":"b4cb77159d58614a9b787b91b1cd22a81f383535.png",
+            "妙啊-春节":"692f196da6a623a1634ea305618d37709c2c87f0.png",
+            "妙啊-圣诞":"1cdb10e4b6c6743a1ec96f1579e3ef3045a8f225.png",
+            "妙啊-愚人节":"5675a5d2f3e7fb6b29db0ca8c7703237a18c4271.png",
+            "辣眼睛":"35d62c496d1e4ea9e091243fa812866f5fecc101.png",
+            "辣眼睛-春节":"1ad7c9d351bd64332cc8520c165ee0b32a6e82fa.png",
+            "辣眼睛-圣诞":"8080adfe5acdfd0b6b09bd91db24ea7334ac7b44.png",
+            "辣眼睛-愚人节":"65ed9509df4d509a1cdf22e75a6d3b708f4e9afb.png",
+            "吃瓜":"4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+            "吃瓜-春节":"fbd58fe2465d84d32f37800af0fe6f25711ef397.png",
+            "吃瓜-圣诞":"aa6a3022e47b441c7f84d02cacc063a728a561e0.png",
+            "吃瓜-愚人节":"f05344578512ef18878de01d188657fbf81d31c8.png",
+            "滑稽":"d15121545a99ac46774f1f4465b895fe2d1411c3.png",
+            "滑稽-春节":"e56b466b43dd6930756d5caf4c22bef4f963dd35.png",
+            "滑稽-圣诞":"5874276ea716d0e9797f827dcfca4332acf8f0de.png",
+            "滑稽-愚人节":"e8c1b263949c2617e6395b190d185b2f8cdf0747.png",
+            "呲牙":"b5a5898491944a4268360f2e7a84623149672eb6.png",
+            "呲牙-春节":"6ae3b1008d2fee7e15b5eb447b2ccff18e664b88.png",
+            "呲牙-圣诞":"ae4395c1e29e9a2db0c9ccc4c0db05c414816e68.png",
+            "呲牙-愚人节":"299e5867bb79f42d8553023909f42e89707cb500.png",
+            "打call":"431432c43da3ee5aab5b0e4f8931953e649e9975.png",
+            "打call-春节":"bf990016e43b7111cab4566dea194ba837a1a88f.png",
+            "打call-圣诞":"2b04dd2d0e55d978ee485e1f7f3c5e355493ab78.png",
+            "打call-愚人节":"49240d8643d7702519fc4cc468e0003a7623c0e3.png",
+            "歪嘴":"4384050fbab0586259acdd170b510fe262f08a17.png",
+            "歪嘴-愚人节":"6cc4c091d3f2cc540f64d8f10ffe516fd2f4ea2b.png",
+            "调皮":"8290b7308325e3179d2154327c85640af1528617.png",
+            "调皮-愚人节":"a09481ceb0644f799d94805446fd52dce775b022.png",
+            "嗑瓜子":"28a91da1685d90124cfeead74622e1ebb417c0eb.png",
+            "嗑瓜子-春节":"d2f9910f2d6e52ead3bf1ee29754cd1176f5fc2e.png",
+            "笑哭":"c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+            "笑哭-春节":"29ce59fb7f14351d195609ef297d30e336bdb240.png",
+            "脱单doge":"bf7e00ecab02171f8461ee8cf439c73db9797748.png",
+            "给心心":"1597302b98827463f5b75c7cac1f29ea6ce572c4.png",
+            "嘟嘟":"abd7404537d8162720ccbba9e0a8cdf75547e07a.png",
+            "喜欢":"8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png",
+            "酸了":"92b1c8cbceea3ae0e8e32253ea414783e8ba7806.png",
+            "哦呼":"362bded07ea5434886271d23fa25f5d85d8af06c.png",
+            "嫌弃":"de4c0783aaa60ec03de0a2b90858927bfad7154b.png",
+            "大哭":"2caafee2e5db4db72104650d87810cc2c123fc86.png",
+            "害羞":"9d2ec4e1fbd6cb1b4d12d2bbbdd124ccb83ddfda.png",
+            "疑惑":"b7840db4b1f9f4726b7cb23c0972720c1698d661.png",
+            "喜极而泣":"485a7e0c01c2d70707daae53bee4a9e2e31ef1ed.png",
+            "奸笑":"bb84906573472f0a84cebad1e9000eb6164a6f5a.png",
+            "笑":"81edf17314cea3b48674312b4364df44d5c01f17.png",
+            "偷笑":"6c49d226e76c42cd8002abc47b3112bc5a92f66a.png",
+            "惊讶":"f8e9a59cad52ae1a19622805696a35f0a0d853f3.png",
+            "捂脸":"6921bb43f0c634870b92f4a8ad41dada94a5296d.png",
+            "捂脸-圣诞":"9af59557383770c398daac81583e6c4d27d83da7.png",
+            "阴险":"ba8d5f8e7d136d59aab52c40fd3b8a43419eb03c.png",
+            "囧":"12e41d357a9807cc80ef1e1ed258127fcc791424.png",
+            "呆":"33ad6000d9f9f168a0976bc60937786f239e5d8c.png",
+            "抠鼻":"cb89184c97e3f6d50acfd7961c313ce50360d70f.png",
+            "大笑":"ca94ad1c7e6dac895eb5b33b7836b634c614d1c0.png",
+            "惊喜":"0afecaf3a3499479af946f29749e1a6c285b6f65.png",
+            "无语":"44667b7d9349957e903b1b62cb91fb9b13720f04.png",
+            "点赞":"1a67265993913f4c35d15a6028a30724e83e7d35.png",
+            "鼓掌":"895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+            "尴尬":"cb321684ed5ce6eacdc2699092ab8fe7679e4fda.png",
+            "灵魂出窍":"43d3db7d97343c01b47e22cfabeca84b4251f35a.png",
+            "委屈":"d2f26cbdd6c96960320af03f5514c5b524990840.png",
+            "傲娇":"010540d0f61220a0db4922e4a679a1d8eca94f4e.png",
+            "疼":"905fd9a99ec316e353b9bd4ecd49a5f0a301eabf.png",
+            "冷":"cb0ebbd0668640f07ebfc0e03f7a18a8cd00b4ed.png",
+            "生病":"0f25ce04ae1d7baf98650986454c634f6612cb76.png",
+            "吓":"9c10c5ebc7bef27ec641b8a1877674e0c65fea5d.png",
+            "吐":"06946bfe71ac48a6078a0b662181bb5cad09decc.png",
+            "捂眼":"c5c6d6982e1e53e478daae554b239f2b227b172b.png",
+            "嘘声":"e64af664d20716e090f10411496998095f62f844.png",
+            "思考":"cfa9b7e89e4bfe04bbcd34ccb1b0df37f4fa905c.png",
+            "再见":"fc510306bae26c9aec7e287cdf201ded27b065b9.png",
+            "翻白眼":"eba54707c7168925b18f6f8b1f48d532fe08c2b1.png",
+            "哈欠":"888d877729cbec444ddbd1cf4c9af155a7a06086.png",
+            "奋斗":"bb2060c15dba7d3fd731c35079d1617f1afe3376.png",
+            "墨镜":"3a03aebfc06339d86a68c2d893303b46f4b85771.png",
+            "难过":"a651db36701610aa70a781fa98c07c9789b11543.png",
+            "撇嘴":"531863568e5668c5ac181d395508a0eeb1f0cda4.png",
+            "抓狂":"4c87afff88c22439c45b79e9d2035d21d5622eba.png",
+            "生气":"3195714219c4b582a4fb02033dd1519913d0246d.png",
+            "口罩":"3ad2f66b151496d2a5fb0a8ea75f32265d778dd3.png",
+            "牛年":"9275275ff1f2659310648221107d20bc4970f106.png",
+            "2021":"14d8996128d46dabd3a2ed6c172c8af918d7a5d2.png",
+            "2020":"dc709fac0d361370bcf0d36d32adb97df7c95824.png",
+            "水稻":"d530fcaa5100ba12a17a79b55bad342d530c54e3.png",
+            "福到了":"5de5373d354c373cf1617b6b836f3a8d53c5a655.png",
+            "鸡腿":"c7860392815d345fa69c4f00ef18d67dccfbd574.png",
+            "月饼":"89b19c5730e08d6f12fadf6996de5bc2e52f81fe.png",
+            "雪花":"a41813c4edf8782047e172c884ebd4507ce5e449.png",
+            "视频卫星":"dce6fc7d6dfeafff01241924db60f8251cca5307.png",
+            "11周年":"d3b2d5dc028c75ae4df379f4c3afbe186d0f6f9b.png",
+            "十周年":"1eacd3f7816e70aff9c1b1a2e9605240466f599b.png",
+            "干杯":"8da12d5f55a2c7e9778dcc05b40571979fe208e6.png",
+            "爱心":"ed04066ea7124106d17ffcaf75600700e5442f5c.png",
+            "锦鲤":"643d6c19c8164ffd89e3e9cdf093cf5d773d979c.png",
+            "胜利":"b49fa9f4b1e7c3477918153b82c60b114d87347c.png",
+            "加油":"c7aaeacb21e107292d3bb053e5abde4a4459ed30.png",
+            "抱拳":"89516218158dbea18ab78e8873060bf95d33bbbe.png",
+            "响指":"1b5c53cf14336903e1d2ae3527ca380a1256a077.png",
+            "保佑":"fafe8d3de0dc139ebe995491d2dac458a865fb30.png",
+            "支持":"3c210366a5585706c09d4c686a9d942b39feeb50.png",
+            "拥抱":"41780a4254750cdaaccb20735730a36044e98ef3.png",
+            "跪了":"f2b3aee7e521de7799d4e3aa379b01be032698ac.png",
+            "怪我咯":"07cc6077f7f7d75b8d2c722dd9d9828a9fb9e46d.png",
+            "黑洞":"e90ec4c799010f25391179118ccd9f66b3b279ba.png",
+            "老鼠":"8e6fb491eb1bb0d5862e7ec8ccf9a3da12b6c155.png",
+            "来古-沉思":"4ee07ff03266d62b246be0b950bebb2abf3d997c.png",
+            "来古-呆滞":"9a70b365e523f2379f395031ceefcebb75a45903.png",
+            "来古-疑问":"032fdc0d9d9fe6334776f6c39518a959b73b98f4.png",
+            "来古-震撼":"8b40f228675602a317d32007de6b795c101135ec.png",
+            "来古-注意":"4b671ba32a2581cf40e5cd41c67b111eb8010de0.png",
+            "凛冬-生气":"d90bd2fbc13a3cb8d313f6d675f20caf109f60a7.png",
+            "W-哈哈":"83d527303c8f62f494e6971c48836487e7d87b1b.png",
+            "霜叶-疑问":"ada3aea8594e724511c1daad15fb3b23900d8e24.png",
+            "煌-震撼":"7bb39ac289bc97fe52af047020a9bf324ecdebe1.png",
+            "哭泣":"a61abafb8c39defc323b045f30072198007b1c89.png",
+            "哈哈":"e6449b0bae13b8c97cc65976ff8cdc2c16be0015.png",
+            "狗子":"6a997106af5bf490f22c80a7acf3be813ee755fc.png",
+            "羞羞":"f4f9171e4d8c3f30827a8b96ea1ce1beb825ad50.png",
+            "亲亲":"2f72bae7b834d499f259c833f7011d5ed8748fd1.png",
+            "耍帅":"d7a38b08d1f1cc35b19c35041f29ffcc48808e87.png",
+            "气愤":"069b029d17a086ab475fd331697a649e234850bb.png",
+            "高兴":"416570a8aca7be12fb2c36e4b846906653f6d294.png",
+            "粽子":"177999fb7d70d891fbf63b161f26b272e08dc1de.png",
+            "加油武汉":"eb966aaa5b690d3f9308a9f936f5b5a72a7f956b.png",
+            "画风突变":"ba4de7a3f97644038b15195bdc9f82a8fd118e77.png",
+            "福":"802429a301ac5b35a0480d9526a070ce67cd8097.png",
+            "tv-白眼":"c1d59f439e379ee50eef488bcb5e5378e5044ea4.png",
+            "tv-doge":"6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png",
+            "tv-坏笑":"1f0b87f731a671079842116e0991c91c2c88645a.png",
+            "tv-难过":"87f46748d3f142ebc6586ff58860d0e2fc8263ba.png",
+            "tv-生气":"26702dcafdab5e8225b43ffd23c94ac1ff932654.png",
+            "tv-委屈":"d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png",
+            "tv-斜眼笑":"911f987aa8bc1bee12d52aafe62bc41ef4474e6c.png",
+            "tv-呆":"fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png",
+            "tv-发怒":"34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png",
+            "tv-惊吓":"0d15c7e2ee58e935adc6a7193ee042388adc22af.png",
+            "tv-呕吐":"9f996894a39e282ccf5e66856af49483f81870f3.png",
+            "tv-思考":"90cf159733e558137ed20aa04d09964436f618a1.png",
+            "tv-微笑":"70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png",
+            "tv-疑问":"0793d949b18d7be716078349c202c15ff166f314.png",
+            "tv-大哭":"23269aeb35f99daee28dda129676f6e9ea87934f.png",
+            "tv-鼓掌":"1d21793f96ef4e6f48b23e53e3b9e42da833a0f6.png",
+            "tv-抠鼻":"c666f55e88d471e51bbd9fab9bb308110824a6eb.png",
+            "tv-亲亲":"a8111ad55953ef5e3be3327ef94eb4a39d535d06.png",
+            "tv-调皮":"b9c41de8e82dd7a8515ae5e3cb63e898bf245186.png",
+            "tv-笑哭":"1abc628f6d4f4caf9d0e7800878f4697abbc8273.png",
+            "tv-晕":"5443c22b4d07fb1907ccc610c8e6db254f2461b7.png",
+            "tv-点赞":"f85c354995bd99e28fc76c869bfe42ba6438eff4.png",
+            "tv-害羞":"a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png",
+            "tv-睡着":"8b196675b53af58264f383c50ad0945048290b33.png",
+            "tv-色":"61822c7e9aae5da76475e7892534545336b23a6f.png",
+            "tv-吐血":"09dd16a7aa59b77baa1155d47484409624470c77.png",
+            "tv-无奈":"ea8ed89ee9878f2fece2dda0ea8a5dbfe21b5751.png",
+            "tv-再见":"180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png",
+            "tv-流汗":"cead1c351ab8d79e9f369605beb90148db0fbed3.png",
+            "tv-偷笑":"bb690d4107620f1c15cff29509db529a73aee261.png",
+            "tv-抓狂":"fe31c08edad661d63762b04e17b8d5ae3c71a757.png",
+            "tv-黑人问号":"45821a01f51bc867da9edbaa2e070410819a95b2.png",
+            "tv-困":"241ee304e44c0af029adceb294399391e4737ef2.png",
+            "tv-打脸":"56ab10b624063e966bfcb76ea5dc4794d87dfd47.png",
+            "tv-闭嘴":"c9e990da7f6e93975e25fd8b70e2e290aa4086ef.png",
+            "tv-鄙视":"6e72339f346a692a495b123174b49e4e8e781303.png",
+            "tv-腼腆":"89712c0d4af73e67f89e35cbc518420380a7f6f4.png",
+            "tv-馋":"fc7e829b845c43c623c8b490ee3602b7f0e76a31.png",
+            "tv-可爱":"9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png",
+            "tv-发财":"34db290afd2963723c6eb3c4560667db7253a21a.png",
+            "tv-生病":"8b0ec90e6b86771092a498c54f09fc94621c1900.png",
+            "tv-流鼻血":"c32d39db2737f89b904ca32700d140a9241b0767.png",
+            "tv-尴尬":"7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png",
+            "tv-大佬":"093c1e2c490161aca397afc45573c877cdead616.png",
+            "tv-流泪":"7e71cde7858f0cd50d74b0264aa26db612a8a167.png",
+            "tv-冷漠":"b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png",
+            "tv-皱眉":"72ccad6679fea0d14cce648b4d818e09b8ffea2d.png",
+            "tv-鬼脸":"0ffbbddf8a94d124ca2f54b360bbc04feb6bbfea.png",
+            "tv-调侃":"4bc022533ef31544ca0d72c12c808cf4a1cce3e3.png",
+            "tv-目瞪口呆":"0b8cb81a68de5d5365212c99375e7ace3e7891b7.png",
+            "tv-白眼-动图":"48f75163437445665a9be80bb316e4cb252c5415.gif",
+            "tv-doge-动图":"302d6c88c63ed162c81a49cafe7ed2709e6fb955.gif",
+            "tv-坏笑-动图":"5d2572efd09aab5dde9e2a198bb3f9ac1e2a982e.gif",
+            "tv-难过-动图":"9c6b41008a67755410f712334c64313df5f91b3f.gif",
+            "tv-生气-动图":"1902a5a2df5b5c931d88c12f0feb264b1e109d0d.gif",
+            "tv-委屈-动图":"af5a5853edb43a8178a8cb5df707fa5e88143699.gif",
+            "tv-斜眼笑-动图":"c66568b471192ca1f62f6ed4384dc1b283ab7508.gif",
+            "tv-呆-动图":"d3fa91e4db9215eb1e20ab9da44f1214aa4bda7b.gif",
+            "tv-发怒-动图":"3959eb81b952e4fa8d269d98f9e3639172d84073.gif",
+            "tv-惊吓-动图":"13549060757fcd92b11d0657d9b3b6038f97abb6.gif",
+            "tv-呕吐-动图":"db58e9442aae26694af18cc1683607cca3a16763.gif",
+            "tv-思考-动图":"b63f9146bfd985af014f8d6d4bdb498805be48f9.gif",
+            "tv-微笑-动图":"b98656855d782f61cb8edc7f7fca6563ecafff7e.gif",
+            "tv-疑问-动图":"fce1b1a0f3b0e39a2dc16a18508dba7b91e929f4.gif",
+            "tv-大哭-动图":"cba61f05f3039b02a7ffc0dfcd9d7995df9fdd74.gif",
+            "tv-鼓掌-动图":"be106e6b265883a9f28fbe10f7b765701e2618d4.gif",
+            "tv-抠鼻-动图":"696d9f93e722144dc2a78aeffc569418fdf3d565.gif",
+            "tv-亲亲-动图":"3534ea44ab74bd20352b88c245a06c4b4c46d271.gif",
+            "tv-调皮-动图":"fcd967395fd14e4dd5829fa7e8a967ce23205e52.gif",
+            "tv-笑哭-动图":"1c2fd1e8c9dde12812f86e5d4cbddd8993d98082.gif",
+            "tv-晕-动图":"030040ec5c9ddc9e3d067658c4139e7314ab42f8.gif",
+            "tv-点赞-动图":"30ecff401245fb56bcc1cf588d1809ac1ab1607c.gif",
+            "tv-害羞-动图":"411a3e459e8580f5bfd9f639a408247c4b509935.gif",
+            "tv-睡着-动图":"3c8b5e293261287a6203597e29b3de07df4d18c6.gif",
+            "tv-色-动图":"a0c6d99ab0ab63b8648f5283ff72cec04b604828.gif",
+            "tv-吐血-动图":"e17e4539e169d14a3389ff147afea760cebe5de5.gif",
+            "tv-无奈-动图":"eb4cb5f07cfd177c7e6a7914316717e56d9cc1d0.gif",
+            "tv-再见-动图":"344f61609ecce2008520dc8a977b6169215748a9.gif",
+            "tv-流汗-动图":"390bccec65eaff536bd5bb2a0c5b8b0bdea47334.gif",
+            "tv-偷笑-动图":"7f11e6f7f63e79112b833bd41fa13a83d7cd8474.gif",
+            "tv-抓狂-动图":"a476b93ecd8e94ac3257323fd822f91cef212de2.gif",
+            "tv-黑人问号-动图":"b609adf664be33224a9923262031165ae3e34cd2.gif",
+            "tv-困-动图":"91c2bf34ecf842d7016c01d841db3d4074bd281f.gif",
+            "tv-打脸-动图":"b0fad4856e59c1240e448437da3287bb5ce547e5.gif",
+            "tv-闭嘴-动图":"a3fc5388b09e945be3f18fe23bfed5874a0285b7.gif",
+            "tv-鄙视-动图":"293b5d459e6264ecf314d20937a936fa672ccd1e.gif",
+            "tv-腼腆-动图":"30984e8264324f901d19bea85dada7103b695534.gif",
+            "tv-馋-动图":"2525c5703c594e5f0752f68db8948773caebde47.gif",
+            "tv-可爱-动图":"f92d20f76258bc5f33fc9d7c5e2a1d41fef19a7c.gif",
+            "tv-发财-动图":"76131e52c9b033681b4c896c6024d29ef7ec7ec2.gif",
+            "tv-生病-动图":"beb94829fe04f1a41bd6ca611e1f6ca9ca169afa.gif",
+            "tv-流鼻血-动图":"8ef473f74a849420da712487b2f56ecca1f695f5.gif",
+            "tv-尴尬-动图":"e0b84ef5ee3e5b8978e584c7c5a6550c51d15f84.gif",
+            "tv-大佬-动图":"14ca0c05382b8741940942b2430b7a8d55c02f7e.gif",
+            "酷仔":"390100ada4659b4516984d386499fb22c0025084.png",
+            "赞了":"40ded585bbd6328fc390076b5de224fd38b46793.png",
+            "暗中观察":"80a752e0718db211e4135b4ba821813f4c151e2c.png",
+            "么么哒":"2f418440776e88605ddc426eac898202c1f5fa4d.png",
+            "哭哭":"cbf36e518f1d50618f6d054aa69993ecc339fe8f.png",
+            "饿了":"ff91ea94adf7c5b04db305c18d17b444f7360059.png",
+            "问号":"a905b58b32016a1f0ff7d9193b62749f0d491707.png",
+            "嘿嘿":"8a15a45e228179f912ce11dbd5478f6ad54e9854.png",
+            "卖萌":"a0d37b43d1e786ba811d9b0ae590c479dcce6c44.png",
+            "喵":"eb46e78c9d86ccbe9842f0235c7cb4f4e0e80a57.png",
+            // "tv_doge": "6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png",
+            // "tv_亲亲": "a8111ad55953ef5e3be3327ef94eb4a39d535d06.png",
+            // "tv_偷笑": "bb690d4107620f1c15cff29509db529a73aee261.png",
+            // "tv_再见": "180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png",
+            // "tv_冷漠": "b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png",
+            // "tv_发怒": "34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png",
+            // "tv_发财": "34db290afd2963723c6eb3c4560667db7253a21a.png",
+            // "tv_可爱": "9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png",
+            // "tv_吐血": "09dd16a7aa59b77baa1155d47484409624470c77.png",
+            // "tv_呆": "fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png",
+            // "tv_呕吐": "9f996894a39e282ccf5e66856af49483f81870f3.png",
+            // "tv_困": "241ee304e44c0af029adceb294399391e4737ef2.png",
+            // "tv_坏笑": "1f0b87f731a671079842116e0991c91c2c88645a.png",
+            // "tv_大佬": "093c1e2c490161aca397afc45573c877cdead616.png",
+            // "tv_大哭": "23269aeb35f99daee28dda129676f6e9ea87934f.png",
+            // "tv_委屈": "d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png",
+            // "tv_害羞": "a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png",
+            // "tv_尴尬": "7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png",
+            // "tv_微笑": "70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png",
+            // "tv_思考": "90cf159733e558137ed20aa04d09964436f618a1.png",
+            // "tv_惊吓": "0d15c7e2ee58e935adc6a7193ee042388adc22af.png",
+            // "tv_打脸": "56ab10b624063e966bfcb76ea5dc4794d87dfd47.png",
+            // "tv_抓狂": "fe31c08edad661d63762b04e17b8d5ae3c71a757.png",
+            // "tv_抠鼻": "c666f55e88d471e51bbd9fab9bb308110824a6eb.png",
+            // "tv_斜眼笑": "911f987aa8bc1bee12d52aafe62bc41ef4474e6c.png",
+            // "tv_无奈": "ea8ed89ee9878f2fece2dda0ea8a5dbfe21b5751.png",
+            // "tv_晕": "5443c22b4d07fb1907ccc610c8e6db254f2461b7.png",
+            // "tv_流汗": "cead1c351ab8d79e9f369605beb90148db0fbed3.png",
+            // "tv_流泪": "7e71cde7858f0cd50d74b0264aa26db612a8a167.png",
+            // "tv_流鼻血": "c32d39db2737f89b904ca32700d140a9241b0767.png",
+            // "tv_点赞": "f85c354995bd99e28fc76c869bfe42ba6438eff4.png",
+            // "tv_生气": "26702dcafdab5e8225b43ffd23c94ac1ff932654.png",
+            // "tv_生病": "8b0ec90e6b86771092a498c54f09fc94621c1900.png",
+            // "tv_疑问": "0793d949b18d7be716078349c202c15ff166f314.png",
+            // "tv_白眼": "c1d59f439e379ee50eef488bcb5e5378e5044ea4.png",
+            // "tv_皱眉": "72ccad6679fea0d14cce648b4d818e09b8ffea2d.png",
+            // "tv_目瞪口呆": "0b8cb81a68de5d5365212c99375e7ace3e7891b7.png",
+            // "tv_睡着": "8b196675b53af58264f383c50ad0945048290b33.png",
+            // "tv_笑哭": "1abc628f6d4f4caf9d0e7800878f4697abbc8273.png",
+            // "tv_腼腆": "89712c0d4af73e67f89e35cbc518420380a7f6f4.png",
+            // "tv_色": "61822c7e9aae5da76475e7892534545336b23a6f.png",
+            // "tv_调侃": "4bc022533ef31544ca0d72c12c808cf4a1cce3e3.png",
+            // "tv_调皮": "b9c41de8e82dd7a8515ae5e3cb63e898bf245186.png",
+            // "tv_鄙视": "6e72339f346a692a495b123174b49e4e8e781303.png",
+            // "tv_闭嘴": "c9e990da7f6e93975e25fd8b70e2e290aa4086ef.png",
+            // "tv_难过": "87f46748d3f142ebc6586ff58860d0e2fc8263ba.png",
+            // "tv_馋": "fc7e829b845c43c623c8b490ee3602b7f0e76a31.png",
+            // "tv_鬼脸": "0ffbbddf8a94d124ca2f54b360bbc04feb6bbfea.png",
+            // "tv_黑人问号": "45821a01f51bc867da9edbaa2e070410819a95b2.png",
+            // "tv_鼓掌": "1d21793f96ef4e6f48b23e53e3b9e42da833a0f6.png"
+        },
+        requiredFields: ['nick'], //设置必填项
+    });
+</script>
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/02/01/SpringBoot3%E3%80%90%E4%B8%80%E3%80%91Native/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="SpringBoot3【一】Native">
+                        
+                        <span class="card-title">SpringBoot3【一】Native</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/SpringBoot/" class="post-category">
+                                    SpringBoot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/SpringBoot3-%E5%BE%AE%E6%9C%8D%E5%8A%A1-%E4%BA%91%E5%8E%9F%E7%94%9F/">
+                        <span class="chip bg-color">SpringBoot3 微服务 云原生</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/12/26/Python%E3%80%90%E4%B8%80%E3%80%91%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Python【一】基础入门">
+                        
+                        <span class="card-title">Python【一】基础入门</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Python/" class="post-category">
+                                    Python
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python/">
+                        <span class="chip bg-color">Python</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+<footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="41220530"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2021-2023</span>
+            
+            <span id="year">2021</span>
+            <a href="/about" target="_blank">Zero</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">197.6k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2021";
+                    var startMonth = "4";
+                    var startDate = "10";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/zlx2019" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1143967454@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1143967454" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1143967454" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Baidu Analytics -->
+
+<!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+    <script src="/libs/others/clicklove.js" async="async"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+
+
+    
+    <script type="text/javascript" size="150" alpha='0.6'
+            zIndex="-1" src="/libs/background/ribbon-refresh.min.js"
+            async="async"></script>
+
+
+
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js"
+            async="async"></script>
+
+
+
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+
+
+<!-- 樱花特效 -->
+
+
+<!--鼠标移动雪花特效-->
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
