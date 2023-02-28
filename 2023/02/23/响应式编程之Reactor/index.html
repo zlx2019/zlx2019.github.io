@@ -683,14 +683,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.2k
+                    5.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    16 分
+                    23 分
                 </div>
                 
 
@@ -978,7 +978,7 @@
 <span class="token comment">//消费数据: 5</span>
 <span class="token comment">//消费结束!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ul>
-<h2 id="操作符讲述"><a href="#操作符讲述" class="headerlink" title="操作符讲述"></a>操作符讲述</h2><h3 id="buffer-收集"><a href="#buffer-收集" class="headerlink" title="buffer(收集)"></a>buffer(收集)</h3><p>**buffer()**操作符进行元素收集,将指定数量的元素分别收集到多个<code>Flux&lt;List&gt;</code>序列中,并且会全部发布出去。</p>
+<h2 id="操作符讲述"><a href="#操作符讲述" class="headerlink" title="操作符讲述"></a>操作符讲述</h2><h3 id="分割操作符"><a href="#分割操作符" class="headerlink" title="分割操作符"></a>分割操作符</h3><h4 id="buffer-收集"><a href="#buffer-收集" class="headerlink" title="buffer(收集)"></a>buffer(收集)</h4><p>**buffer()**操作符进行元素收集,将指定数量的元素分别收集到多个<code>Flux&lt;List&gt;</code>序列中,并且会全部发布出去。</p>
 <p>使用如下:</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 将序列中的元素按5个一组收集为新的序列</span>
 <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">buffer</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -988,7 +988,7 @@
 <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">13</span><span class="token punctuation">,</span> <span class="token number">14</span><span class="token punctuation">]</span>
 <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="window-收集"><a href="#window-收集" class="headerlink" title="window(收集)"></a>window(收集)</h3><p>与**buffer()**类似,但是是将元素收集为一个新的<code>Flux&lt;Flux&lt;T&gt;&gt;</code>类型。</p>
+<h4 id="window-收集"><a href="#window-收集" class="headerlink" title="window(收集)"></a>window(收集)</h4><p>与**buffer()**类似,但是是将元素收集为一个新的<code>Flux&lt;Flux&lt;T&gt;&gt;</code>类型。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 将序列中的元素,按2个一组,收集为新的序列</span>
 <span class="token class-name">Flux</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Flux</span><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span><span class="token punctuation">&gt;</span></span> flux <span class="token operator">=</span> <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">window</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 flux<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>f<span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
@@ -1003,11 +1003,11 @@ flux<span class="token punctuation">.</span><span class="token function">subscri
 <span class="token operator">--</span><span class="token operator">-</span>
 <span class="token number">5</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="map-转换"><a href="#map-转换" class="headerlink" title="map(转换)"></a>map(转换)</h3><p>可以将<strong>序列</strong>中的<strong>元素</strong>转换为另一种<strong>元素</strong>。</p>
+<h3 id="转换操作符"><a href="#转换操作符" class="headerlink" title="转换操作符"></a>转换操作符</h3><h4 id="map-转换"><a href="#map-转换" class="headerlink" title="map(转换)"></a>map(转换)</h4><p>可以将<strong>序列</strong>中的<strong>元素</strong>转换为另一种<strong>元素</strong>。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 将integer序列转换为String序列</span>
 <span class="token class-name">Flux</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> flux <span class="token operator">=</span> <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token class-name">Object</span><span class="token operator">::</span><span class="token function">toString</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="flatMap-转换"><a href="#flatMap-转换" class="headerlink" title="flatMap(转换)"></a><strong>flatMap(转换)</strong></h3><p>可以将序列中的元素,映射为一个新的流,然后将流中的元素合并为一个新的流。</p>
+<h4 id="flatMap-转换"><a href="#flatMap-转换" class="headerlink" title="flatMap(转换)"></a><strong>flatMap(转换)</strong></h4><p>可以将序列中的元素,映射为一个新的流,然后将流中的元素合并为一个新的流。</p>
 <p>有些复杂,简单举个栗子: 我们根据一组<code>userIds</code>,获取所有的用户名称(一个人可能有多个名字),然后将这些名字合并为一个<strong>Flux</strong>序列.如下所示:</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 根据三个id,获取所有的名字,并且合并到一个序列中</span>
 <span class="token class-name">Flux</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> map <span class="token operator">=</span> <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token string">"1001"</span><span class="token punctuation">,</span> <span class="token string">"1002"</span><span class="token punctuation">,</span> <span class="token string">"1003"</span><span class="token punctuation">)</span>
@@ -1018,25 +1018,247 @@ flux<span class="token punctuation">.</span><span class="token function">subscri
 
 <span class="token comment">//[1001的第一个名字, 1001的第二个名字, 1002的第一个名字, 1002的第二个名字, 1003的第一个名字, 1003的第二个名字]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="filter-过滤"><a href="#filter-过滤" class="headerlink" title="filter(过滤)"></a>filter(过滤)</h3><h2 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h2><p>onErrorReturn()</p>
-<p>只需在观察到任何 Flux错误时发出的默认值</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Mono</span><span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">onErrorReturn</span><span class="token punctuation">(</span><span class="token string">"DefaultValue"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h3 id="过滤元素操作符"><a href="#过滤元素操作符" class="headerlink" title="过滤元素操作符"></a>过滤元素操作符</h3><h4 id="filter-过滤"><a href="#filter-过滤" class="headerlink" title="filter(过滤)"></a>filter(过滤)</h4><p>根据给定的谓词条件,如果谓词为<code>true</code>则发布元素.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 获取元素为偶数的</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>i<span class="token operator">-&gt;</span> i <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment">//DefaultValue</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token number">2</span>
+<span class="token number">4</span>
+<span class="token number">6</span>
+<span class="token number">8</span>
+<span class="token number">10</span>
+<span class="token number">12</span>
+<span class="token number">14</span>
+<span class="token number">16</span>
+<span class="token number">18</span>
+<span class="token number">20</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="BlockFirst"><a href="#BlockFirst" class="headerlink" title="BlockFirst()"></a>BlockFirst()</h4><p><strong>永久阻塞式</strong>订阅上游发布第一个元素。如果 <strong>Flux</strong> 为空，则返回 null。</p>
+<p>每个 blockFirst（） 都会触发一个新的订阅：换句话说，结果可能会错过来自热门发布者的信号。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 阻塞式获取第一个元素.</span>
+<span class="token class-name">Mono</span><span class="token punctuation">.</span><span class="token function">justOrEmpty</span><span class="token punctuation">(</span><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">blockLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="BlockFirst-timeout"><a href="#BlockFirst-timeout" class="headerlink" title="BlockFirst(timeout)"></a>BlockFirst(timeout)</h4><p>带有超时时间的订阅上游发布的第一个元素。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 阻塞获取第一个元素,如果超过3s则超时。</span>
+<span class="token class-name">Flux</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Long</span><span class="token punctuation">&gt;</span></span> flux <span class="token operator">=</span> <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">interval</span><span class="token punctuation">(</span><span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Long</span> first <span class="token operator">=</span> flux<span class="token punctuation">.</span><span class="token function">blockFirst</span><span class="token punctuation">(</span><span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>first<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="last"><a href="#last" class="headerlink" title="last()"></a>last()</h4><p>订阅<strong>Flux</strong>序列的最后一个元素作为<strong>Mono</strong>发出，或者如果源为空，则发出 NoSuchElementException 错误。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 获取序列最后一个元素。</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">last</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="last-defaultValue"><a href="#last-defaultValue" class="headerlink" title="last(defaultValue)"></a>last(defaultValue)</h4><p>订阅<strong>Flux</strong>最后一个元素作为<strong>Mono</strong>发出，或者如果源为空则发射defaultValue。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 获取最后一个元素,如果订阅失败,则使用默认值。</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">last</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="blockLast"><a href="#blockLast" class="headerlink" title="blockLast()"></a><strong>blockLast()</strong></h4><p>与**blockFirst()**一致。</p>
+<h4 id="blockLast-timeout"><a href="#blockLast-timeout" class="headerlink" title="blockLast(timeout)"></a><strong>blockLast(timeout)</strong></h4><p>与**blockFirst(tiemout)**一致。</p>
+<h4 id="skip-long-skipped"><a href="#skip-long-skipped" class="headerlink" title="skip(long skipped)"></a>skip(long skipped)</h4><p>从<strong>Flux</strong>序列头部跳过指定数量的元素,然后发送剩余的元素。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 跳过第一个元素</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">skip</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">2</span>
+<span class="token number">3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="skip-Duration"><a href="#skip-Duration" class="headerlink" title="skip(Duration)"></a>skip(Duration)</h4><p>指定时间内,序列中发送的元素,全部跳过.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 序列开始后,跳过前5秒时间内发送元素</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">interval</span><span class="token punctuation">(</span><span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">skip</span><span class="token punctuation">(</span><span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">4</span>
+<span class="token number">5</span>
+<span class="token number">6</span>
+<span class="token number">7</span>
+<span class="token number">8</span>
+<span class="token number">9</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
-<h2 id="操作案例"><a href="#操作案例" class="headerlink" title="操作案例"></a>操作案例</h2><h3 id="1-连接两个数据流连接为一个"><a href="#1-连接两个数据流连接为一个" class="headerlink" title="1. 连接两个数据流连接为一个"></a>1. 连接两个数据流连接为一个</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">concatWith</span><span class="token punctuation">(</span><span class="token class-name">Mono</span><span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"最后追加一个异常!"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">,</span><span class="token class-name">System</span><span class="token punctuation">.</span>err<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="skipLast-long-skipped"><a href="#skipLast-long-skipped" class="headerlink" title="skipLast(long skipped)"></a><strong>skipLast(long skipped)</strong></h4><p>从<strong>Flux</strong>序列尾部跳过指定数量的元素。发送剩余的元素。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 跳过最末尾的元素</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">skipLast</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">1</span>
+<span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">1</span>
+<h4 id="skipUntil-Predicate"><a href="#skipUntil-Predicate" class="headerlink" title="skipUntil(Predicate)"></a><strong>skipUntil(Predicate)</strong></h4><p>从<strong>Flux</strong>序列头部开始跳过元素,直到<strong>Predicate</strong>为<code>true</code>时结束。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 将元素小于3的元素全部跳过</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">skipUntil</span><span class="token punctuation">(</span>i<span class="token operator">-&gt;</span> i <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">3</span>
+<span class="token number">4</span>
+<span class="token number">5</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="take-long-n"><a href="#take-long-n" class="headerlink" title="take(long n)"></a>take(long n)</h4><p>如果可用，则仅从中 Flux获取前 N 个值。如果 n 为零，则源甚至未订阅，并且操作员在订阅后立即完成。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 只订阅序列中前两个元素</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">1</span>
+<span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="take-long-n-boolean-limitRequest"><a href="#take-long-n-boolean-limitRequest" class="headerlink" title="take(long n, boolean limitRequest)"></a>take(long n, boolean limitRequest)</h4><p>如果 limitRequest == false 此运算符不传播请求的背压量。相反，它会发出一个无限的请求，并在发出 N 个元素后取消。如果 n 为零，则订阅源但立即取消，则运算符完成。<br>在这种模式下，尽管取消了，但源可能会产生许多无关的元素。如果该行为不可取，并且您不拥有来自下游的请求（例如预取运算符），请考虑改用 limitRequest = true 。</p>
+<p>limitRequest – true 更密切地跟踪下游请求，并将上游请求限制为 n. false 从上游请求无限金额。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">1</span>
+<span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="takeLast"><a href="#takeLast" class="headerlink" title="takeLast()"></a><strong>takeLast()</strong></h4><p>获取<strong>Flux</strong>序列发布的最后 N 个值元素。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">takeLast</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">3</span>
+<span class="token number">4</span>
+<span class="token number">5</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="takeWhile-Predicate"><a href="#takeWhile-Predicate" class="headerlink" title="takeWhile(Predicate)"></a><strong>takeWhile(Predicate)</strong></h4><p>从Flux序列中按照指定的条件（continuePredicate）选取元素，直到条件不满足，就停止选取。它会返回一个Flux类型的对象，其中存放着满足条件的元素。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 获取条件为false之前的所有元素</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">takeWhile</span><span class="token punctuation">(</span>i <span class="token operator">-&gt;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">1</span>
+<span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="takeUntil-Predicate"><a href="#takeUntil-Predicate" class="headerlink" title="takeUntil(Predicate)"></a><strong>takeUntil(Predicate)</strong></h4><p>它的作用是从Flux中过滤掉满足Predicate条件的元素，直到发现第一个满足条件的元素，过滤停止，并返回剩余的元素。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 获取条件为true之前的所有元素</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">takeUntil</span><span class="token punctuation">(</span>i <span class="token operator">-&gt;</span> i <span class="token operator">&gt;</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">1</span>
+<span class="token number">2</span>
+<span class="token number">3</span>
+<span class="token number">4</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="组合操作符"><a href="#组合操作符" class="headerlink" title="组合操作符"></a>组合操作符</h3><h4 id="when-Publisher"><a href="#when-Publisher" class="headerlink" title="when(Publisher)"></a>when(Publisher)</h4><p>当该操作符的上游操作符都执行完之后,才会发布元素。一般用于做一些同步操作.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token string">"1001"</span><span class="token punctuation">,</span><span class="token string">"1002"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span>data<span class="token operator">-&gt;</span><span class="token punctuation">{</span>
+    <span class="token comment">// 将数据存储到DB</span>
+    <span class="token class-name">Mono</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Void</span><span class="token punctuation">&gt;</span></span> saveDataDB <span class="token operator">=</span> <span class="token class-name">SaveDB</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 存储缓存</span>
+    <span class="token class-name">Mono</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Void</span><span class="token punctuation">&gt;</span></span> saveDataCahce <span class="token operator">=</span> <span class="token class-name">SaveCache</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 保证方法都执行完后 才会返回结果</span>
+    <span class="token keyword">return</span> <span class="token class-name">Mono</span><span class="token punctuation">.</span><span class="token function">when</span><span class="token punctuation">(</span>saveDataDB<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="mergeWith-Publisher"><a href="#mergeWith-Publisher" class="headerlink" title="mergeWith(Publisher)"></a><strong>mergeWith(Publisher)</strong></h4><p>完成实现两个Publisher的合并。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">mergeWith</span><span class="token punctuation">(</span><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">1</span>
 <span class="token number">2</span>
 <span class="token number">3</span>
 <span class="token number">4</span>
 <span class="token number">5</span>
-<span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>RuntimeException</span><span class="token operator">:</span> 最后追加一个异常<span class="token operator">!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token number">6</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="zipWith-Publisher"><a href="#zipWith-Publisher" class="headerlink" title="zipWith(Publisher)"></a><strong>zipWith(Publisher)</strong></h4><p>将两个Flux中的元素交合为一对一对进行分组。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> flux1 <span class="token operator">=</span> <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Flux</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> flux2 <span class="token operator">=</span> <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+flux1<span class="token punctuation">.</span><span class="token function">zipWith</span><span class="token punctuation">(</span>flux2<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="统计操作符"><a href="#统计操作符" class="headerlink" title="统计操作符"></a>统计操作符</h3><p>通常用于统计流中的元素数量</p>
+<h4 id="any-Predicate"><a href="#any-Predicate" class="headerlink" title="any(Predicate)"></a>any(Predicate)</h4><p>判断序列中至少有一个符合条件的元素.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">any</span><span class="token punctuation">(</span>i<span class="token operator">-&gt;</span> i <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">any</span><span class="token punctuation">(</span>i<span class="token operator">-&gt;</span> i <span class="token operator">==</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token boolean">true</span>
+<span class="token boolean">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="all-Predicate"><a href="#all-Predicate" class="headerlink" title="all(Predicate)"></a>all(Predicate)</h4><p>判断序列中的元素是否全部符合条件.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span>i<span class="token operator">-&gt;</span> i <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span>i<span class="token operator">-&gt;</span> i <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token boolean">true</span>
+<span class="token boolean">false</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="concat-Publisher…"><a href="#concat-Publisher…" class="headerlink" title="concat(Publisher… )"></a>concat(Publisher… )</h4><p><strong>顺序</strong>合并来自不同流的数据。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>
+  <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">0</span>
+<span class="token number">1</span>
+<span class="token number">2</span>
+<span class="token number">3</span>
+<span class="token number">4</span>
+<span class="token number">5</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="reduce-BiFunction"><a href="#reduce-BiFunction" class="headerlink" title="reduce(BiFunction)"></a>reduce(BiFunction)</h4><p>对序列的元素进行累加运算,并且得出最后的结果.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 对0、1、2、3...99、100之间的数进行累加,求和</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span>curVal<span class="token punctuation">)</span><span class="token operator">-&gt;</span> sum <span class="token operator">+</span> curVal<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 与上面需求一致,但是在10000的基础之上进行累加</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">,</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span>curVal<span class="token punctuation">)</span><span class="token operator">-&gt;</span> sum <span class="token operator">+</span> curVal<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 在50000的基础之上求和</span>
+<span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">reduceWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span> <span class="token number">50000</span><span class="token punctuation">,</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span>curVal<span class="token punctuation">)</span><span class="token operator">-&gt;</span> sum<span class="token operator">+</span>curVal<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+<span class="token number">4950</span>
+<span class="token number">14950</span>
+<span class="token number">54950</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="工具操作符"><a href="#工具操作符" class="headerlink" title="工具操作符"></a>工具操作符</h3><h4 id="subscribe-Consumer"><a href="#subscribe-Consumer" class="headerlink" title="subscribe(Consumer)"></a><strong>subscribe(Consumer)</strong></h4><p>订阅序列元素最通用的方式。</p>
+<p>我们也可以自己实现<code>Subscriber</code>或者<code>BaseSubscriber</code>来重写它的处理函数.</p>
+<p>如下,通过实现<code>BaseSubscriber</code>类,实现<strong>主动拉取式</strong>消费元素。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BaseSubscriber</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">//初始化钩子函数 实现此方法以 request(long) 作为初始请求调</span>
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">hookOnSubscribe</span><span class="token punctuation">(</span><span class="token class-name">Subscription</span> subscription<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"init"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 请求一个元素,否则无法触发OnNext()方法</span>
+    <span class="token function">request</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">hookOnNext</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 这里每次消费完元素后,再次请求1个元素,直到消费完毕</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"onNext: "</span> <span class="token operator">+</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">request</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="timeout-Duration"><a href="#timeout-Duration" class="headerlink" title="timeout(Duration)"></a>timeout(Duration)</h4><p>在指定的时间内,如果没有产生元素,则抛出异常.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">interval</span><span class="token punctuation">(</span><span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">timeout</span><span class="token punctuation">(</span><span class="token class-name">Duration</span><span class="token punctuation">.</span><span class="token function">ofSeconds</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//Did not observe any item or terminal signal within 1000ms in 'source</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="log"><a href="#log" class="headerlink" title="log()"></a>log()</h4><p>打印序列的日志</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Flux</span><span class="token punctuation">.</span><span class="token function">just</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span> INFO<span class="token punctuation">]</span> <span class="token punctuation">(</span>main<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token function">onSubscribe</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token class-name">Synchronous</span> <span class="token class-name">Fuseable</span><span class="token punctuation">]</span> <span class="token class-name">FluxArray<span class="token punctuation">.</span>ArraySubscription</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span> INFO<span class="token punctuation">]</span> <span class="token punctuation">(</span>main<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token function">request</span><span class="token punctuation">(</span>unbounded<span class="token punctuation">)</span>
+<span class="token punctuation">[</span> INFO<span class="token punctuation">]</span> <span class="token punctuation">(</span>main<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token function">onNext</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token number">1</span>
+<span class="token punctuation">[</span> INFO<span class="token punctuation">]</span> <span class="token punctuation">(</span>main<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token function">onNext</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token number">2</span>
+<span class="token punctuation">[</span> INFO<span class="token punctuation">]</span> <span class="token punctuation">(</span>main<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token function">onNext</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token number">3</span>
+<span class="token punctuation">[</span> INFO<span class="token punctuation">]</span> <span class="token punctuation">(</span>main<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token function">onComplete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><h4 id="onErrorReturn-Publisher"><a href="#onErrorReturn-Publisher" class="headerlink" title="onErrorReturn(Publisher)"></a>onErrorReturn(Publisher)</h4><p>只需在观察到任何 Flux错误时发出的默认值</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Mono</span><span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">onErrorReturn</span><span class="token punctuation">(</span><span class="token string">"DefaultValue"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">DefaultValue</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="defaultIfEmpty-T"><a href="#defaultIfEmpty-T" class="headerlink" title="defaultIfEmpty(T)"></a>defaultIfEmpty(T)</h4><p>获取不到任何元素的情况下,提供默认值</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Mono</span><span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">defaultIfEmpty</span><span class="token punctuation">(</span><span class="token string">"DefaultVal"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">DefaultVal</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 </s>
                 
@@ -1277,18 +1499,17 @@ flux<span class="token punctuation">.</span><span class="token function">subscri
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/02/23/%E5%93%8D%E5%BA%94%E5%BC%8F%E7%BC%96%E7%A8%8B%E4%B9%8BReactor/">
+                <a href="/2023/02/27/Java%E3%80%90%E9%94%81%E3%80%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="响应式编程之Reactor">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Java【锁】">
                         
-                        <span class="card-title">响应式编程之Reactor</span>
+                        <span class="card-title">Java【锁】</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1298,31 +1519,26 @@ flux<span class="token punctuation">.</span><span class="token function">subscri
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-23
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-27
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%93%8D%E5%BA%94%E5%BC%8F%E7%BC%96%E7%A8%8B/" class="post-category">
-                                    响应式编程
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Zero
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring/">
-                        <span class="chip bg-color">Spring</span>
+                    <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+                        <span class="chip bg-color">并发编程</span>
                     </a>
                     
-                    <a href="/tags/%E5%93%8D%E5%BA%94%E5%BC%8F%E7%BC%96%E7%A8%8B/">
-                        <span class="chip bg-color">响应式编程</span>
+                    <a href="/tags/Java%E5%9F%BA%E7%A1%80/">
+                        <span class="chip bg-color">Java基础</span>
                     </a>
                     
                 </div>
@@ -1570,7 +1786,7 @@ flux<span class="token punctuation">.</span><span class="token function">subscri
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">224.3k</span>&nbsp;字
+                class="white-color">232.3k</span>&nbsp;字
             
             
             

@@ -674,7 +674,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.9k
+                    3k
                 </div>
                 
 
@@ -976,9 +976,7 @@ java.lang.InterruptedException: sleep interrupted<span aria-hidden="true" class=
 
 <p>在<code>jstack</code>中显示,t1线程为正常运行(这里处于timedWaiting是我们主动睡眠),而 另外两个线程显示<code>waiting for monitor entry</code>,表示处于<code>Blocked</code>状态,等待抢夺 object的monitor。</p>
 <p><code>synchronized</code>是有CPU指令<code>monitorentry</code>与<code>monitorexit</code>实现。</p>
-<p><strong>synchronized不同使用区别</strong></p>
-<p><strong>同步方法</strong></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">doExecute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h4 id="2-synchronized使用区别"><a href="#2-synchronized使用区别" class="headerlink" title="2. synchronized使用区别"></a>2. synchronized使用区别</h4><h5 id="1-修饰普通方法"><a href="#1-修饰普通方法" class="headerlink" title="1. 修饰普通方法"></a>1. 修饰普通方法</h5><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">doExecute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><code>synchronized</code>修饰普通方法时,锁定的是<code>this</code>,这里的<code>this</code>指的是值方法所属的实例本身。如下</p>
@@ -986,26 +984,26 @@ java.lang.InterruptedException: sleep interrupted<span aria-hidden="true" class=
 user<span class="token punctuation">.</span><span class="token function">doExecute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>锁定的是<code>user</code>该实例,不同的实例之间调用同步方法不会进行冲突。</p>
-<p><strong>同步静态方法</strong></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">doExecute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<p><strong>不同的实例执行同一个同步方法时,不会出现阻塞,但是同一个实例同时调用本类的两个同步方法时,会出现阻塞。</strong></p>
+<h5 id="2-修饰静态方法"><a href="#2-修饰静态方法" class="headerlink" title="2. 修饰静态方法"></a>2. 修饰静态方法</h5><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">doExecute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><code>synchronized</code>修饰静态方法,锁定的是<code>this</code>,只不过这个<code>this</code>可就不是实例了,因为静态方法是属于类方法,是全局性的。也就是锁定的就是本类的<code>Class</code>。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token function">doExecute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>同步的静态方法,同一时间只会有一个线程所执行。</p>
-<p><strong>同步代码块</strong></p>
-<p>该方式比较简单,直接锁定<code>synchronized（）</code>指定的对象。</p>
+<p>同一个类中的<strong>同步</strong>的静态方法,同一时间只会有一个线程所执行。</p>
+<p><strong>所以多个线程或者多个实例同时执行一个类的静态同步方法时,会阻塞住</strong>.</p>
+<h5 id="3-修饰普通方法内代码块"><a href="#3-修饰普通方法内代码块" class="headerlink" title="3. 修饰普通方法内代码块"></a>3. 修饰普通方法内代码块</h5><p>该方式比较简单,直接锁定<code>synchronized()</code>指定的对象。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span>  <span class="token keyword">void</span> <span class="token function">doExecute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>该方式与 <strong>同步普通方法</strong>一致,锁定的是实例。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+<p>该方式与<strong>修饰普通方法</strong>一致,锁定的是当前实例。</p>
+<h5 id="4-修饰静态方法代码块"><a href="#4-修饰静态方法代码块" class="headerlink" title="4. 修饰静态方法代码块"></a>4. 修饰静态方法代码块</h5><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">doExecute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
+      
     <span class="token punctuation">}</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
@@ -1351,12 +1349,12 @@ user<span class="token punctuation">.</span><span class="token function">doExecu
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
-                        <span class="chip bg-color">高并发编程</span>
-                    </a>
-                    
                     <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
                         <span class="chip bg-color">设计模式</span>
+                    </a>
+                    
+                    <a href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+                        <span class="chip bg-color">高并发编程</span>
                     </a>
                     
                 </div>
@@ -1600,7 +1598,7 @@ user<span class="token punctuation">.</span><span class="token function">doExecu
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">224.3k</span>&nbsp;字
+                class="white-color">232.3k</span>&nbsp;字
             
             
             

@@ -687,14 +687,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    5.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    25 分
                 </div>
                 
 
@@ -717,7 +717,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="锁机制和实战"><a href="#锁机制和实战" class="headerlink" title="锁机制和实战"></a>锁机制和实战</h2><h3 id="1-锁分类"><a href="#1-锁分类" class="headerlink" title="1. 锁分类"></a>1. 锁分类</h3><h4 id="按照粒度来分"><a href="#按照粒度来分" class="headerlink" title="按照粒度来分:"></a>按照粒度来分:</h4><ol>
+                <h3 id="1-锁分类"><a href="#1-锁分类" class="headerlink" title="1. 锁分类"></a>1. 锁分类</h3><h4 id="按照粒度来分"><a href="#按照粒度来分" class="headerlink" title="按照粒度来分:"></a>按照粒度来分:</h4><ol>
 <li><p>表级锁</p>
 <p><u>每次操作锁住整张表。锁定粒度大,发生锁冲突的概率最高，并发度最低。应用在MyISAM、 InnoDB、 BDB等存储引擎</u></p>
 </li>
@@ -772,20 +772,16 @@
 <p><u>在对一条数据修改的时候,为了避免同时被其他人修改,在修改数据之前先锁定，再修改的控制方式。共享锁和排他锁是悲观锁的不同实现，但都属于悲观锁范畴</u></p>
 </li>
 </ol>
-<h3 id="2-悲观锁"><a href="#2-悲观锁" class="headerlink" title="2.悲观锁"></a>2.悲观锁</h3><ul>
-<li>表级锁</li>
-</ul>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#给表加上表锁 可选 读锁 or 写锁</span>
+<h3 id="2-表级锁"><a href="#2-表级锁" class="headerlink" title="2. 表级锁"></a>2. 表级锁</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#给表加上表锁 可选 读锁 or 写锁</span>
 <span class="token keyword">lock</span> <span class="token keyword">table</span> <span class="token punctuation">`</span>tableName<span class="token punctuation">`</span> <span class="token keyword">READ</span><span class="token operator">|</span><span class="token keyword">WRITE</span>
 <span class="token comment">#释放锁</span>
 <span class="token keyword">UNLOCK</span> <span class="token keyword">TABLES</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><u>A会话 对该表设置 表级READ锁后,A会话和其他会话都可以进行读操作,但A会话不允许进行增删改操作,会报错,其他会话进行增删改查将会进入阻塞状态。</u></p>
-<p><u>A会话对该表设置 表级WRITE锁后,A会话可以对其做增删改查操作,其他会话对表的所有操作都将进入阻塞状态。</u></p>
-<p>总结: <strong><u>表级读锁,会阻塞写操作,但不会阻塞读操作,而写锁会阻塞其他连接会话的所有操作</u></strong></p>
-<h4 id="1-行级锁"><a href="#1-行级锁" class="headerlink" title="1.行级锁"></a>1.行级锁</h4><ul>
-<li><p><strong>读锁</strong></p>
-<p>加锁语法:  <strong>select … lock in share mode</strong></p>
+<p>A会话 对该表设置 表级READ锁后,A会话和其他会话都可以进行读操作,但A会话不允许进行增删改操作,会报错,其他会话进行增删改查将会进入阻塞状态。</p>
+<p>A会话对该表设置 表级WRITE锁后,A会话可以对其做增删改查操作,其他会话对表的所有操作都将进入阻塞状态。</p>
+<p>总结: <strong>表级读锁,会阻塞写操作,但不会阻塞读操作,而写锁会阻塞其他连接会话的所有操作</strong></p>
+<h3 id="3-行级锁"><a href="#3-行级锁" class="headerlink" title="3. 行级锁"></a>3. 行级锁</h3><p><strong>行锁是通过给索引上的索引项加锁来实现的。只有通过索引条件检索数据，InnoDB才使用行级锁,否则，InnoDB将使用表锁.</strong></p>
+<h4 id="读锁"><a href="#读锁" class="headerlink" title="读锁"></a><strong>读锁</strong></h4><p>加锁语法:  <strong>select … lock in share mode</strong></p>
 <p>如:</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">from</span> account <span class="token keyword">WHERE</span> <span class="token punctuation">`</span>name<span class="token punctuation">`</span> <span class="token operator">=</span> <span class="token string">'A'</span> <span class="token keyword">lock</span> <span class="token operator">in</span> <span class="token keyword">SHARE</span> <span class="token keyword">MODE</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -841,11 +837,9 @@ mysql<span class="token operator">&gt;</span> <span class="token keyword">select
 <li><p>修改完成!</p>
 </li>
 </ol>
-<p>总结: <u><strong>行级的读锁,同样不会阻塞其他会话的读操作,但是会阻塞修改操作</strong></u></p>
-</li>
-<li><p><strong>写锁</strong></p>
-<p>加锁语法: 在SQL末尾加上 <code>for update</code></p>
-<p><u>InnoDB 引擎默认会在update、delete语句加上 for update</u>,<u>行级锁的实现,其实是依靠其对应的索引,如果操作没用到索引的查询,会升级为表锁</u></p>
+<p>总结: <strong>行级的读锁,同样不会阻塞其他会话的读操作,但是会阻塞修改操作</strong></p>
+<h4 id="写锁"><a href="#写锁" class="headerlink" title="写锁"></a><strong>写锁</strong></h4><p>加锁语法: 在SQL末尾加上 <code>for update</code></p>
+<p>InnoDB 引擎默认会在update、delete语句加上<code>for update</code>。</p>
 <p>Example:</p>
 <ol>
 <li><p>开启一个事务,修改某一条数据,默认会加上<strong>行级写锁</strong></p>
@@ -883,15 +877,595 @@ Query OK<span class="token punctuation">,</span> <span class="token number">1</s
  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>修改完成!</p>
+<p>总结:<strong>行级的写锁,本身是会阻塞其他会话的任何操作,但是上面测试却发现并不会阻塞其他会话的读操作,这是因为Mysql使用了MVCC机制来提高了读写的并发能力,所以Mysql的写锁只会阻塞除了当前会话以外的写操作</strong></p>
 </li>
 </ol>
-<p>总结:<u><strong>行级的写锁,本身是会阻塞其他会话的任何操作,但是上面测试却发现并不会阻塞其他会话的读操作,这是因为Mysql使用了MVCC机制来提高了读写的并发能力,所以Mysql的写锁只会阻塞除了当前会话以外的写操作</strong></u></p>
+<h3 id="4-行锁模式"><a href="#4-行锁模式" class="headerlink" title="4. 行锁模式"></a>4. 行锁模式</h3><p>假设现在有如下数据表:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users<span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token operator">|</span> id <span class="token operator">|</span> name   <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token operator">|</span>  <span class="token number">1</span> <span class="token operator">|</span> 小张 <span class="token operator">|</span>
+<span class="token operator">|</span>  <span class="token number">5</span> <span class="token operator">|</span> 小兰 <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">10</span> <span class="token operator">|</span> 小绿 <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">15</span> <span class="token operator">|</span> 小王 <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">20</span> <span class="token operator">|</span> 小曾 <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token number">5</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>id</code>为主键索引。</p>
+<h4 id="recordlock"><a href="#recordlock" class="headerlink" title="recordlock"></a>recordlock</h4><p><strong>记录锁</strong>顾名思义就是对记录进行加锁,也即是我们俗称的<strong>行锁</strong>。事实上它锁定的是该行的<strong>索引记录</strong>,而不是锁的真正的数据。</p>
+<ol>
+<li><p>如果条件中的字段是<strong>非主键索引</strong>,会先在自己的索引上加锁,再去主键索引上加锁。</p>
+</li>
+<li><p>如果表上没有索引(包括没有主键)，则会使用隐藏的主键索引进行加锁。</p>
+</li>
+<li><p>如果Sql语句导致<strong>索引失效</strong>,或者说条件不涉及到索引,行锁会直接退化为表锁。</p>
+</li>
+</ol>
+<p>简单来说就是根据索引查询一条已经存在的记录时,会使用该模式,如<code>select * from users where id = 5 for update</code>。下面看案例</p>
+<ul>
+<li><p><strong>案例1:</strong></p>
+<p>使用<strong>行锁</strong>查询,根据id<strong>主键</strong>查询一条已经存在的记录.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">#关闭自动提交</span>
+mysql<span class="token operator">&gt;</span> <span class="token keyword">set</span> autocommit <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> 
+<span class="token comment">#开启事物</span>
+mysql<span class="token operator">&gt;</span> <span class="token keyword">begin</span><span class="token punctuation">;</span> 
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+ 
+<span class="token comment"># 查询并且添加行锁</span>
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users <span class="token keyword">where</span> id <span class="token operator">=</span> <span class="token number">5</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token operator">|</span> id <span class="token operator">|</span> name   <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token operator">|</span>  <span class="token number">5</span> <span class="token operator">|</span> 小兰 <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token number">1</span> <span class="token keyword">row</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后可以通过 <code>data_locks</code> 查看锁信息，SQL 如下：</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> performance_schema<span class="token punctuation">.</span>data_locks\G<span class="token punctuation">;</span>
+<span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token number">1.</span> <span class="token keyword">row</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>
+               <span class="token keyword">ENGINE</span>: <span class="token keyword">INNODB</span>
+       ENGINE_LOCK_ID: <span class="token number">5258646984</span>:<span class="token number">1142</span>:<span class="token number">5668775032</span>
+ENGINE_TRANSACTION_ID: <span class="token number">56284</span>
+            THREAD_ID: <span class="token number">2206</span>
+             EVENT_ID: <span class="token number">19</span>
+        OBJECT_SCHEMA: test_db
+          OBJECT_NAME: users
+       PARTITION_NAME: <span class="token boolean">NULL</span>
+    SUBPARTITION_NAME: <span class="token boolean">NULL</span>
+           INDEX_NAME: <span class="token boolean">NULL</span>
+OBJECT_INSTANCE_BEGIN: <span class="token number">5668775032</span>
+            LOCK_TYPE: <span class="token keyword">TABLE</span>
+            LOCK_MODE: IX
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token boolean">NULL</span>
+<span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token number">2.</span> <span class="token keyword">row</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>
+               <span class="token keyword">ENGINE</span>: <span class="token keyword">INNODB</span>
+       ENGINE_LOCK_ID: <span class="token number">5258646984</span>:<span class="token number">81</span>:<span class="token number">4</span>:<span class="token number">3</span>:<span class="token number">5670881816</span>
+ENGINE_TRANSACTION_ID: <span class="token number">56284</span>
+            THREAD_ID: <span class="token number">2206</span>
+             EVENT_ID: <span class="token number">19</span>
+        OBJECT_SCHEMA: test_db
+          OBJECT_NAME: users
+       PARTITION_NAME: <span class="token boolean">NULL</span>
+    SUBPARTITION_NAME: <span class="token boolean">NULL</span>
+           INDEX_NAME: <span class="token keyword">PRIMARY</span>
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670881816</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X<span class="token punctuation">,</span>REC_NOT_GAP
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token number">5</span>
+<span class="token number">2</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>结果主要包含引擎、库、表等信息，咱们需要重点关注以下几个字段:</p>
+<ul>
+<li>INDEX_NAME：锁定索引的名称 <code>PRIMARY</code> 表示使用的是主键索引。</li>
+<li>LOCK_TYPE: 锁的类型。对于 InnoDB,允许的值为 RECORD(行锁)和TABLE(表锁)。</li>
+<li>LOCK_MODE： 锁的模式。<ul>
+<li>S: 共享锁，允许多个用户读取同一行记录，但不允许其他用户写入该行记录。</li>
+<li>X: 排他锁，允许一个用户对行记录加写锁，其他用户无法写入或读取该行记录。</li>
+<li>IS: 意向共享锁，允许多个用户读取同一行记录，但不允许其他用户加写锁。</li>
+<li>IX: 意向排他锁，允许一个用户加写锁，其他用户既不能写入也不能读取。</li>
+<li>REC_NOT_GAP: 单行锁定,不存在间隙锁。因此，它不会阻止列中的其他行被更新，只会阻止表中锁定的单行被更新。</li>
+<li>Gap: 间隙锁，用于锁定非索引记录的范围，以防止并发事务在记录之间插入新记录。</li>
+</ul>
+</li>
+<li>LOCK_DATA: 锁关联的数据，对于 InnoDB,当LOCK_TYPE是RECORD(行锁),则显示实际的值。当锁在主键索引上时，则值是锁定记录的主键值。当锁是在辅助索引上时，则显示辅助索引的值，并附加上主键值。</li>
+</ul>
+<p>从上面的日志输出中我们看到<code>select * from users where id = 5 for update;</code>这条SQL,使用到了<strong>单行级记录锁</strong>。</p>
+</li>
+<li><p><strong>案例2</strong></p>
+<p>使用行锁,根据主键索引查询一条不存在的记录</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">begin</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users <span class="token keyword">where</span> id <span class="token operator">=</span> <span class="token number">50</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+Empty <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> performance_schema<span class="token punctuation">.</span>data_locks\G<span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+               <span class="token keyword">ENGINE</span>: <span class="token keyword">INNODB</span>
+       ENGINE_LOCK_ID: <span class="token number">5258646984</span>:<span class="token number">81</span>:<span class="token number">4</span>:<span class="token number">1</span>:<span class="token number">5670881816</span>
+ENGINE_TRANSACTION_ID: <span class="token number">56288</span>
+            THREAD_ID: <span class="token number">2206</span>
+             EVENT_ID: <span class="token number">45</span>
+        OBJECT_SCHEMA: test_db
+          OBJECT_NAME: users
+       PARTITION_NAME: <span class="token boolean">NULL</span>
+    SUBPARTITION_NAME: <span class="token boolean">NULL</span>
+           INDEX_NAME: <span class="token keyword">PRIMARY</span>
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670881816</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: supremum pseudo<span class="token operator">-</span>record
+<span class="token number">2</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>显然,这条Sql也同样加上了<strong>行锁</strong>,但实际上并没有锁到实际的数据: <code>LOCK_DATA: supremum pseudo-record</code>,所以不会影响到其他任何事物的操作。</p>
+</li>
+<li><p><strong>案例3</strong></p>
+<p>取消索引后,再使用行锁.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token number">7.</span> <span class="token keyword">row</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>
+               <span class="token keyword">ENGINE</span>: <span class="token keyword">INNODB</span>
+       ENGINE_LOCK_ID: <span class="token number">5258646984</span>:<span class="token number">82</span>:<span class="token number">4</span>:<span class="token number">6</span>:<span class="token number">5670881816</span>
+ENGINE_TRANSACTION_ID: <span class="token number">56327</span>
+            THREAD_ID: <span class="token number">2206</span>
+             EVENT_ID: <span class="token number">54</span>
+        OBJECT_SCHEMA: test_db
+          OBJECT_NAME: users
+       PARTITION_NAME: <span class="token boolean">NULL</span>
+    SUBPARTITION_NAME: <span class="token boolean">NULL</span>
+           INDEX_NAME: GEN_CLUST_INDEX
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670881816</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token number">0x000000000204</span>
+<span class="token number">7</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>由于没有了指定的主键索引,所以这里直接使用了默认生成的主键索引<code>INDEX_NAME: GEN_CLUST_INDEX</code>,并且锁定的值也直接显示了具体的数据<code>LOCK_DATA: 0x000000000204</code>。</p>
 </li>
 </ul>
-<h3 id="3-乐观锁"><a href="#3-乐观锁" class="headerlink" title="3.乐观锁"></a>3.乐观锁</h3><p>乐观锁其实并不是数据库提供的机制,而是由开发人员构思出来的一种<code>无锁</code>机制,乐观锁也是<code>CAS</code>的实现,<code>CAS</code>是比较并且替换,</p>
-<p>也就是说,先获取预先值,再比对,如果一致就替换掉,注意这里的<code>比较再替换</code>是原子性的.</p>
-<p><strong>实现</strong>:</p>
-<p>在数据表中添加一个<code>version</code>字段,表示更新的次数,每次更新前都预先获取一次值,在执行Update时,加上where version = <code>预先获取的version值</code>,这样就能实现乐观锁</p>
+<h4 id="gaplock"><a href="#gaplock" class="headerlink" title="gaplock"></a>gaplock</h4><p><strong>间隙锁</strong>,顾名思义锁间隙，不锁记录。锁间隙的意思就是锁定某一个范围，间隙锁又叫 gap 锁，其不会阻塞其他的 gap 锁，但是<strong>会阻塞插入间隙锁</strong>，<strong>这也是用来防止幻读的关键</strong>。</p>
+<ul>
+<li><p>案例1</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users <span class="token keyword">where</span> id <span class="token operator">&lt;</span> <span class="token number">20</span> <span class="token operator">and</span> id <span class="token operator">&gt;</span> <span class="token number">5</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token operator">|</span> id <span class="token operator">|</span> name   <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token operator">|</span>  <span class="token number">6</span> <span class="token operator">|</span> 小赵   <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">10</span> <span class="token operator">|</span> 小绿   <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">15</span> <span class="token operator">|</span> 小王   <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+</span>
+<span class="token number">3</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后查看锁信息:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token number">5.</span> <span class="token keyword">row</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>
+               <span class="token keyword">ENGINE</span>: <span class="token keyword">INNODB</span>
+       ENGINE_LOCK_ID: <span class="token number">5258646984</span>:<span class="token number">83</span>:<span class="token number">4</span>:<span class="token number">7</span>:<span class="token number">5670882160</span>
+ENGINE_TRANSACTION_ID: <span class="token number">56354</span>
+            THREAD_ID: <span class="token number">2206</span>
+             EVENT_ID: <span class="token number">73</span>
+        OBJECT_SCHEMA: test_db
+          OBJECT_NAME: users
+       PARTITION_NAME: <span class="token boolean">NULL</span>
+    SUBPARTITION_NAME: <span class="token boolean">NULL</span>
+           INDEX_NAME: <span class="token keyword">PRIMARY</span>
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670882160</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X<span class="token punctuation">,</span>GAP
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token number">20</span>
+<span class="token number">5</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.01</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>根据以上SQL,id为(5-20)区间的记录行都会被gap-lock锁住.无法进行新增。</p>
+<p>如下所示: 会一直阻塞着,除非锁释放后,或者超时。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> users<span class="token punctuation">(</span>id<span class="token punctuation">,</span>name<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token string">"小刘"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">1205</span> <span class="token operator">-</span> <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+</ul>
+<h4 id="next-keylock"><a href="#next-keylock" class="headerlink" title="next-keylock"></a>next-keylock</h4><p>Next-KeyLock是结合了GapLock和RecordLock 的一种锁定算法，<strong>其主要目的是为了解决幻读问题</strong>。</p>
+<p>在 InnoDB 默认的隔离级别 REPEATABLE-READ 下，行锁默认使用的算法就是 Next-KeyLock。但是，<strong>如果操作的索引是唯一索引或主键，InnoDB 会对 Next-Key Lock 进行优化，将其降级为 Record Lock</strong>，即仅锁住索引本身，而不是范围。</p>
+<p>由于<strong>主键也是一种唯一索引</strong>，所以我们可以这么说：<strong>Record Lock 是基于唯一索引的，而 Next-Key Lock 是基于非唯一索引的</strong>。</p>
+<p>现在有如下数据:</p>
+<p>对<code>age</code>字段添加<strong>非唯一索引</strong>.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users<span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">----+--------+------+</span>
+<span class="token operator">|</span> id <span class="token operator">|</span> name   <span class="token operator">|</span> age  <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+------+</span>
+<span class="token operator">|</span>  <span class="token number">1</span> <span class="token operator">|</span> 小张   <span class="token operator">|</span>   <span class="token number">15</span> <span class="token operator">|</span>
+<span class="token operator">|</span>  <span class="token number">5</span> <span class="token operator">|</span> 小兰   <span class="token operator">|</span>   <span class="token number">16</span> <span class="token operator">|</span>
+<span class="token operator">|</span>  <span class="token number">6</span> <span class="token operator">|</span> 小赵   <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">10</span> <span class="token operator">|</span> 小绿   <span class="token operator">|</span>   <span class="token number">27</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">15</span> <span class="token operator">|</span> 小王   <span class="token operator">|</span>   <span class="token number">29</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">20</span> <span class="token operator">|</span> 小曾   <span class="token operator">|</span>   <span class="token number">35</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+------+</span>
+<span class="token number">6</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后对<code>age</code>为20的记录进行加锁:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">begin</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users <span class="token keyword">where</span> age <span class="token operator">=</span> <span class="token number">20</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">----+--------+------+</span>
+<span class="token operator">|</span> id <span class="token operator">|</span> name   <span class="token operator">|</span> age  <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+------+</span>
+<span class="token operator">|</span>  <span class="token number">6</span> <span class="token operator">|</span> 小赵   <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+--------+------+</span>
+<span class="token number">1</span> <span class="token keyword">row</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这个时候,mysql会产生<strong>next-key lock</strong>的加锁模式,会对<code>age=20</code>记录的前后间隙分别加锁.</p>
+<p><code>age</code>为(<strong>16 - 20</strong>)和(<strong>20 - 27</strong>)的间隙全部被加锁。</p>
+<p>如下: 添加<code>age</code>为18、25全部被阻塞到超时.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">INSERT</span> <span class="token keyword">into</span> users<span class="token punctuation">(</span>id<span class="token punctuation">,</span><span class="token punctuation">`</span>name<span class="token punctuation">`</span><span class="token punctuation">,</span>age<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token string">"小小"</span><span class="token punctuation">,</span><span class="token number">18</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">1205</span> <span class="token operator">-</span> <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">INSERT</span> <span class="token keyword">into</span> users<span class="token punctuation">(</span>id<span class="token punctuation">,</span><span class="token punctuation">`</span>name<span class="token punctuation">`</span><span class="token punctuation">,</span>age<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">31</span><span class="token punctuation">,</span><span class="token string">"小小"</span><span class="token punctuation">,</span><span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">1205</span> <span class="token operator">-</span> <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>而添加<code>age</code>为 13、30的数据全部成功.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">INSERT</span> <span class="token keyword">into</span> users<span class="token punctuation">(</span>id<span class="token punctuation">,</span><span class="token punctuation">`</span>name<span class="token punctuation">`</span><span class="token punctuation">,</span>age<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token string">"小小"</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+mysql<span class="token operator">&gt;</span> <span class="token keyword">INSERT</span> <span class="token keyword">into</span> users<span class="token punctuation">(</span>id<span class="token punctuation">,</span><span class="token punctuation">`</span>name<span class="token punctuation">`</span><span class="token punctuation">,</span>age<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span><span class="token string">"小小"</span><span class="token punctuation">,</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>总结:</strong></p>
+<p><strong>Recordlock</strong> 是针对<strong>唯一索引</strong>的加锁方式。而<strong>gaplock</strong>和<strong>next-keylock</strong>是针对<strong>非唯一索引</strong>加锁方式。如果不指定<strong>索引</strong>,则会直接退化到表锁,会全部阻塞住。</p>
+<p>对于唯一索引来说,<strong>gap-lock(间隙锁)<strong>上下边界的记录都不会锁住,因为是</strong>唯一索引</strong>,是不需要加锁的。</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p>Innodb默认使用的<strong>写锁</strong>为<strong>next-key-lock</strong>,但是它会随着索引而优化。</p>
+<p>常见的写锁有<code>record-lock</code>、<code>gap-lock</code>、<code>next-key-lock</code>。</p>
+<p>定义数据表和数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> t<span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span> a  <span class="token operator">|</span> b    <span class="token operator">|</span> c    <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span>  <span class="token number">1</span> <span class="token operator">|</span>    <span class="token number">1</span> <span class="token operator">|</span>    <span class="token number">1</span> <span class="token operator">|</span>
+<span class="token operator">|</span>  <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">23</span> <span class="token operator">|</span>   <span class="token number">23</span> <span class="token operator">|</span>   <span class="token number">23</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token number">6</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中<code>a</code>是主键索引、<code>b</code>是非唯一索引、<code>c</code>没有索引。</p>
+<h4 id="1-唯一索引精确查询"><a href="#1-唯一索引精确查询" class="headerlink" title="1. 唯一索引精确查询"></a>1. 唯一索引精确查询</h4><p>现在我们通过主键索引,进行一次等值查询:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment"># 关闭自动提交</span>
+mysql<span class="token operator">&gt;</span> <span class="token keyword">set</span> autocommit <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+<span class="token comment"># 开启事物</span>
+<span class="token keyword">begin</span><span class="token punctuation">;</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> t <span class="token keyword">where</span> a <span class="token operator">=</span> <span class="token number">5</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">---+------+------+</span>
+<span class="token operator">|</span> a <span class="token operator">|</span> b    <span class="token operator">|</span> c    <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">---+------+------+</span>
+<span class="token operator">|</span> <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">---+------+------+</span>
+<span class="token number">1</span> <span class="token keyword">row</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>注意,先不要提交事物哦.我们来分析一下加锁情况:</p>
+<ol>
+<li><code>for update</code>会进行加<code>X</code>锁,也就是写锁.</li>
+<li>然后默认会加<code>next-key-lock</code>,加锁范围是索引[1~5]。也就是<strong>目标索引至前一个索引之间的范围</strong>。</li>
+<li>但是由于条件<code>a</code>字段是<strong>唯一索引(主键索引)</strong>,所以锁会优化为<code>record-lock</code>。加锁范围会优化成[5]。</li>
+</ol>
+<p>其实很简单,我们可以想一下,既然条件字段已经是<strong>唯一</strong>的了,那就不可能存在重复的记录,所以只需要防止它被修改即可.不存在<strong>幻读</strong>的情况。</p>
+<p>然后我们来看一下锁的信息:</p>
+<p>通过<code>select * from performance_schema.data_locks\G;</code>语句查看锁信息:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">           INDEX_NAME: <span class="token keyword">PRIMARY</span>
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670877208</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X<span class="token punctuation">,</span>REC_NOT_GAP
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token number">5</span>
+<span class="token number">2</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>显然可以看到和我们推断的一模一样.</p>
+<p><code>INDEX_NAME: PRIMARY</code>: 表示锁定的索引。</p>
+<p><code>LOCK_TYPE: RECORD</code>:表示为<strong>行级锁</strong>。</p>
+<p><code>LOCK_MODE: X,REC_NOT_GAP</code>:表示为<strong>写锁</strong> + <strong>记录锁</strong>。</p>
+<p><code>LOCK_DATA: 5</code>: 表示加锁的范围,当锁在主键索引上时，则值是锁定记录的<strong>主键值</strong>。</p>
+<p><strong>这种情况下,不会阻塞任何新增数据.只会阻塞对<code>a=5</code>这条记录的修改操作。</strong></p>
+<hr>
+
+<h4 id="2-普通索引精确查询"><a href="#2-普通索引精确查询" class="headerlink" title="2. 普通索引精确查询"></a>2. 普通索引精确查询</h4><p>通过普通索引<code>b</code>,进行精确查询。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">begin</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> t <span class="token keyword">where</span> b <span class="token operator">=</span> <span class="token number">5</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">---+------+------+</span>
+<span class="token operator">|</span> a <span class="token operator">|</span> b    <span class="token operator">|</span> c    <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">---+------+------+</span>
+<span class="token operator">|</span> <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">---+------+------+</span>
+<span class="token number">1</span> <span class="token keyword">row</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>分析加锁情况:</p>
+<ol>
+<li><code>for update</code> 会加X锁(写锁)。</li>
+<li>然后加<code>next-key-lock</code>锁,加锁范围为[1~5].</li>
+<li>由于<code>b</code>字段不是<strong>唯一索引</strong>,所以不会进行锁的退化,加锁范围不变,还是[1~5].</li>
+<li>由于<code>b</code>字段不是<strong>唯一索引</strong>,还会添加一把<code>gap-lock</code>锁,锁的范围与<code>netx-key-lock</code>相反,是<strong>目标索引与下一行记录索引之间的间隙</strong>,范围为[5~10].</li>
+</ol>
+<p>查看锁的信息:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">           INDEX_NAME: b_indx
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670877896</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X<span class="token punctuation">,</span>GAP
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">10</span>
+<span class="token number">4</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>LOCK_MODE: X,GAP</code>: 写锁+GAP(间隙锁).</p>
+<p><code>LOCK_DATA: 10, 10</code>: 加锁范围.</p>
+<p>尝试插入新数据:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>分别尝试在<code>b</code>字段插入2、1、5、9、10数值,都会陷入阻塞,因为它们都处于<code>nextlock</code>[1<del>5]和<code>gaplock</code>[5</del>10]的加锁范围内.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">update</span> t <span class="token keyword">set</span> c <span class="token operator">=</span> <span class="token number">55</span> <span class="token keyword">where</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>并且修改也会导致阻塞。</p>
+<p>只有插入的值,不存在锁的范围内才可以插入:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<hr>
+
+<h4 id="3-唯一索引精确查询不存在的记录1"><a href="#3-唯一索引精确查询不存在的记录1" class="headerlink" title="3. 唯一索引精确查询不存在的记录1"></a>3. 唯一索引精确查询不存在的记录1</h4><p>通过<strong>唯一索引</strong>查询一条不存在的记录。</p>
+<p>条件: </p>
+<ol>
+<li>查找的主键值 &gt; 当前已有的最大的主键值</li>
+<li>记录且不存在.</li>
+</ol>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">begin</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> t <span class="token keyword">where</span> a <span class="token operator">=</span> <span class="token number">25</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+Empty <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.01</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到,并没有查到任何记录.然后我们来看一下锁的信息:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">          INDEX_NAME: <span class="token boolean">NULL</span>
+OBJECT_INSTANCE_BEGIN: <span class="token number">5668775032</span>
+            LOCK_TYPE: <span class="token keyword">TABLE</span>
+            LOCK_MODE: IX
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token boolean">NULL</span>
+<span class="token number">3</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到,这种情况直接升级为<strong>表锁</strong>了<code>LOCK_TYPE: TABLE</code>.并且显示没有锁到任何数据.</p>
+<p>表面上好像没有加锁,实际已经加了一把<strong>巨大的锁</strong>!!!</p>
+<p>这种情况下,会默认形成一把<code>next-key-lock</code>锁,并且锁的范围是[当前最大的<code>a</code>的值 ~ 无上限]</p>
+<p>简单来说,目前<code>a</code>字段最大的值是<strong>23</strong>,如果此时插入任何一条<code>a</code>&gt;23的记录,全部都会阻塞住.如下所示:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">24</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">99999</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这种情况只能插入<code>a</code>小于当前最大记录<code>a</code>的值才允许插入:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">18</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<hr>
+
+<h4 id="4-唯一索引精确查询不存在的记录2"><a href="#4-唯一索引精确查询不存在的记录2" class="headerlink" title="4. 唯一索引精确查询不存在的记录2"></a>4. 唯一索引精确查询不存在的记录2</h4><p>条件: </p>
+<ol>
+<li>记录不存在</li>
+<li>唯一索引的值,介于已有索引最大值与最小值之间</li>
+</ol>
+<p>先看一下目前的数据:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span> a  <span class="token operator">|</span> b    <span class="token operator">|</span> c    <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span>  <span class="token number">1</span> <span class="token operator">|</span>    <span class="token number">1</span> <span class="token operator">|</span>    <span class="token number">1</span> <span class="token operator">|</span>
+<span class="token operator">|</span>  <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">11</span> <span class="token operator">|</span>   <span class="token number">11</span> <span class="token operator">|</span>   <span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">23</span> <span class="token operator">|</span>   <span class="token number">23</span> <span class="token operator">|</span>   <span class="token number">23</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们查询主键<code>a</code>为15的记录.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">begin</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> t <span class="token keyword">where</span> a <span class="token operator">=</span> <span class="token number">15</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+Empty <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>显然没有查到,然后看一下锁信息:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">           INDEX_NAME: <span class="token keyword">PRIMARY</span>
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670877208</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X<span class="token punctuation">,</span>GAP
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token number">20</span>
+<span class="token number">2</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol>
+<li><p>默认加的<code>next-key-lock</code>锁,范围为[14~15]</p>
+</li>
+<li><p><code>gap-lock</code>锁,范围为[15~20].</p>
+</li>
+<li><p>所以加锁范围故为: [14~20].</p>
+</li>
+</ol>
+<p>可以看到,尽管使用的是<strong>唯一索引</strong>,但是由于记录不存在,导致锁退化为了<code>gap-lock</code>.成为了间隙锁.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">18</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+
+<span class="token comment">#OK</span>
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.01</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>注意哦：</strong> 这种情况下,是可以对间隙两侧的记录进行修改的:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">update</span> t <span class="token keyword">set</span> c <span class="token operator">=</span> <span class="token number">200</span> <span class="token keyword">where</span> a<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+<span class="token keyword">Rows</span> <span class="token keyword">matched</span>: <span class="token number">1</span>  Changed: <span class="token number">1</span>  <span class="token keyword">Warnings</span>: <span class="token number">0</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">update</span> t <span class="token keyword">set</span> c <span class="token operator">=</span> <span class="token number">140</span> <span class="token keyword">where</span> a<span class="token operator">=</span><span class="token number">14</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+<span class="token keyword">Rows</span> <span class="token keyword">matched</span>: <span class="token number">1</span>  Changed: <span class="token number">1</span>  <span class="token keyword">Warnings</span>: <span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>哈哈哈,是不是很头大,明明退化为<code>gap-lock</code>了,但是居然和之前根据<strong>普通索引精确查询</strong>引起的<code>gap-lock</code>时的结果不同。</p>
+<p>仔细想想也很简单,虽然退化为了<code>gap-lock</code>锁,但是本质上我们的查询条件还是<strong>唯一索引</strong>,也就是说间隙两侧的记录肯定是存在的,既然<strong>已经存在</strong>并且还是<strong>唯一索引</strong>的,也就意味着不会出现重复的记录,所以即便是可以修改也是没问题的.之前根据普通索引查询引起的<code>gap-lock</code>是因为是<strong>非唯一索引</strong>,不能保证会不会有相同索引的记录随时插入进来,所以要进行加锁.</p>
+<hr>
+
+<h4 id="5-普通索引精确查询不存在的记录"><a href="#5-普通索引精确查询不存在的记录" class="headerlink" title="5. 普通索引精确查询不存在的记录"></a>5. 普通索引精确查询不存在的记录</h4><p>查看目前数据:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span> a  <span class="token operator">|</span> b    <span class="token operator">|</span> c    <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span>  <span class="token number">1</span> <span class="token operator">|</span>    <span class="token number">1</span> <span class="token operator">|</span>    <span class="token number">1</span> <span class="token operator">|</span>
+<span class="token operator">|</span>  <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">11</span> <span class="token operator">|</span>   <span class="token number">11</span> <span class="token operator">|</span>   <span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">23</span> <span class="token operator">|</span>   <span class="token number">23</span> <span class="token operator">|</span>   <span class="token number">23</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>精确查询<code>b=</code>为13的记录.</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">begin</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> t <span class="token keyword">where</span> b <span class="token operator">=</span> <span class="token number">13</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+Empty <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>查看锁信息:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">           INDEX_NAME: b_indx
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670877208</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X<span class="token punctuation">,</span>GAP
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token number">14</span><span class="token punctuation">,</span> <span class="token number">14</span>
+<span class="token number">2</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol>
+<li><code>next-key-lock</code>锁范围为[11~13]</li>
+<li><code>gap-lock</code>锁范围为[13~14]</li>
+</ol>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后尝试修改</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">update</span> t <span class="token keyword">set</span> c <span class="token operator">=</span> <span class="token number">110</span> <span class="token keyword">where</span> b<span class="token operator">=</span><span class="token number">11</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+<span class="token keyword">Rows</span> <span class="token keyword">matched</span>: <span class="token number">1</span>  Changed: <span class="token number">1</span>  <span class="token keyword">Warnings</span>: <span class="token number">0</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">update</span> t <span class="token keyword">set</span> c <span class="token operator">=</span> <span class="token number">140</span> <span class="token keyword">where</span> b<span class="token operator">=</span><span class="token number">14</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+<span class="token keyword">Rows</span> <span class="token keyword">matched</span>: <span class="token number">1</span>  Changed: <span class="token number">1</span>  <span class="token keyword">Warnings</span>: <span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以修改~</p>
+<hr>
+
+<h4 id="6-唯一索引范围查询"><a href="#6-唯一索引范围查询" class="headerlink" title="6. 唯一索引范围查询"></a>6. 唯一索引范围查询</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span> a  <span class="token operator">|</span> b    <span class="token operator">|</span> c    <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span>  <span class="token number">1</span> <span class="token operator">|</span>    <span class="token number">1</span> <span class="token operator">|</span>    <span class="token number">1</span> <span class="token operator">|</span>
+<span class="token operator">|</span>  <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>    <span class="token number">5</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">11</span> <span class="token operator">|</span>   <span class="token number">11</span> <span class="token operator">|</span>   <span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">23</span> <span class="token operator">|</span>   <span class="token number">23</span> <span class="token operator">|</span>   <span class="token number">23</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">begin</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">0</span> <span class="token keyword">rows</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> t <span class="token keyword">where</span> a <span class="token operator">between</span> <span class="token number">10</span> <span class="token operator">and</span> <span class="token number">22</span> <span class="token keyword">for</span> <span class="token keyword">update</span><span class="token punctuation">;</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span> a  <span class="token operator">|</span> b    <span class="token operator">|</span> c    <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token operator">|</span> <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>   <span class="token number">10</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">11</span> <span class="token operator">|</span>   <span class="token number">11</span> <span class="token operator">|</span>   <span class="token number">11</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>   <span class="token number">14</span> <span class="token operator">|</span>
+<span class="token operator">|</span> <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>   <span class="token number">20</span> <span class="token operator">|</span>
+<span class="token operator">+</span><span class="token comment">----+------+------+</span>
+<span class="token number">4</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">           INDEX_NAME: <span class="token keyword">PRIMARY</span>
+OBJECT_INSTANCE_BEGIN: <span class="token number">5670877896</span>
+            LOCK_TYPE: RECORD
+            LOCK_MODE: X<span class="token punctuation">,</span>GAP
+          LOCK_STATUS: GRANTED
+            LOCK_DATA: <span class="token number">23</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其实就如同,<strong>唯一索引查询不存在的记录</strong>一般,会退化为<code>gap-lock</code>。</p>
+<ol>
+<li><code>next-key-lock</code>锁范围为: [10~22]</li>
+<li><code>gap-lock</code>锁范围为:[22~23]</li>
+<li>所以会为[10~23]区间进行间隙加锁.</li>
+</ol>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+
+mysql<span class="token operator">&gt;</span> <span class="token keyword">insert</span> <span class="token keyword">into</span> t<span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">)</span><span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">24</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>唯一索引区间范围查询导致的<code>gap-lock</code>这种情况,只能对上间隙边界的记录进行修改操作:</p>
+<p>比如对索引为<strong>23</strong>这条记录进行修改:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">update</span> t <span class="token keyword">set</span> c <span class="token operator">=</span> <span class="token number">12312</span> <span class="token keyword">where</span> a <span class="token operator">=</span> <span class="token number">23</span><span class="token punctuation">;</span>
+Query OK<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token keyword">row</span> affected <span class="token punctuation">(</span><span class="token number">0.00</span> sec<span class="token punctuation">)</span>
+<span class="token keyword">Rows</span> <span class="token keyword">matched</span>: <span class="token number">1</span>  Changed: <span class="token number">1</span>  <span class="token keyword">Warnings</span>: <span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>修改成功,但是对下间隙边界<code>10</code>就无法修改了:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">&gt;</span> <span class="token keyword">update</span> t <span class="token keyword">set</span> c <span class="token operator">=</span> <span class="token number">12312</span> <span class="token keyword">where</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+ERROR <span class="token number">1205</span> <span class="token punctuation">(</span>HY000<span class="token punctuation">)</span>: <span class="token keyword">Lock</span> wait timeout exceeded<span class="token punctuation">;</span> try restarting <span class="token keyword">transaction</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><strong>总结</strong>:</p>
+<ul>
+<li><p>Innodb默认写锁使用的是<code>next-key-lock</code>.它默认会对<strong>目标记录和上一条记录之间的间隙</strong>进行<strong>加锁</strong>。对<strong>唯一索引</strong>进行精确查询时,<code>next-key-locK</code>会优化为<code>record-lock</code>,会将锁的范围缩小到某行记录。</p>
+</li>
+<li><p>对<strong>普通索引</strong>进行精确查询时,使用的是<code>gap-lock</code>(间隙锁),会对目标索引的<strong>上间隙</strong>和<strong>下间隙</strong>全部锁定。如索引包含3、7、9,对7进行精确匹配,那么会锁定[3<del>7</del>9]之间的所有间隙(包括3、7、9这三行记录).</p>
+</li>
+<li><p>对<strong>唯一索引</strong>进行精确查询时,如果查询的记录不存在,锁则会退化为<code>gap-lock</code>(间隙锁).查找的记录索引值的<strong>上间隙与下间隙</strong>加锁。如索引包含4、8、13,查询条件为11,则会对[8~13]间隙进行加锁。这种情况下,是可以对间隙两侧的记录进行修改的.</p>
+<p>注意: 如果查询的记录索引值已经超过了目前最大的索引值,则会对当前最大的索引值后面的所有间隙进行加锁.</p>
+</li>
+<li><p>对于唯一索引来说,<code>gap-lock</code>的间隙两侧都是不加锁的.</p>
+</li>
+<li><p>对于非唯一索引来说,<code>gap-lock</code>会锁小而不会锁大.</p>
+</li>
+</ul>
 
                 
             </div>
@@ -1430,7 +2004,7 @@ Query OK<span class="token punctuation">,</span> <span class="token number">1</s
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">224.3k</span>&nbsp;字
+                class="white-color">232.3k</span>&nbsp;字
             
             
             
