@@ -1,0 +1,469 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Flutter【基础组件】 | Zero(˶˚ ᗨ ˚˶)</title><meta name="author" content="Zero"><meta name="copyright" content="Zero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言1. 默认基础布局Flutter默认提供了一些基础框架Widget,这些Widget组件是整个APP的基石,一般情况下我们都是使用这些Widget作为基础页面,然后再在该基础上进行开发。 1. MaterialApp基础页面Widget,通常一个页面级别的widget都由它包裹,如程序入口的runApp()函数所渲染的第一层Widget就是MaterialApp。 void main() {">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter【基础组件】">
+<meta property="og:url" content="https://zlx2019.github.io/article/76c7754c.html">
+<meta property="og:site_name" content="Zero(˶˚ ᗨ ˚˶)">
+<meta property="og:description" content="前言1. 默认基础布局Flutter默认提供了一些基础框架Widget,这些Widget组件是整个APP的基石,一般情况下我们都是使用这些Widget作为基础页面,然后再在该基础上进行开发。 1. MaterialApp基础页面Widget,通常一个页面级别的widget都由它包裹,如程序入口的runApp()函数所渲染的第一层Widget就是MaterialApp。 void main() {">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://movies-bucket.oss-cn-beijing.aliyuncs.com/95443c0654a7422fa17e4da7a1e6c493.jpeg">
+<meta property="article:published_time" content="2022-04-18T12:08:30.000Z">
+<meta property="article:modified_time" content="2023-03-22T05:00:14.802Z">
+<meta property="article:author" content="Zero">
+<meta property="article:tag" content="移动端开发">
+<meta property="article:tag" content="Fultter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://movies-bucket.oss-cn-beijing.aliyuncs.com/95443c0654a7422fa17e4da7a1e6c493.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zlx2019.github.io/article/76c7754c.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Flutter【基础组件】',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-22 13:00:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><link rel="stylesheet" href="/css/bcustom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">105</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">34</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw icon-home"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-home"></use></svg><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw icon-rili"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rili"></use></svg><span> 归档</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/tags/"><i class="fa-fw icon-biaoqian"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-biaoqian"></use></svg><span> 标签</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw icon-fenlei"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-fenlei"></use></svg><span> 分类</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-tada"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-yinle"></use></svg><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/movies/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw icon-zuopinzhanshi"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zuopinzhanshi"></use></svg><span> 个人项目</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><i class="fa-fw icon-guanyuwo"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-guanyuwo"></use></svg><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://movies-bucket.oss-cn-beijing.aliyuncs.com/95443c0654a7422fa17e4da7a1e6c493.jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="Zero(˶˚ ᗨ ˚˶)"><span class="site-name">Zero(˶˚ ᗨ ˚˶)</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw icon-home"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-home"></use></svg><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw icon-rili"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rili"></use></svg><span> 归档</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/tags/"><i class="fa-fw icon-biaoqian"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-biaoqian"></use></svg><span> 标签</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw icon-fenlei"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-fenlei"></use></svg><span> 分类</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-tada"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-yinle"></use></svg><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/movies/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw icon-zuopinzhanshi"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zuopinzhanshi"></use></svg><span> 个人项目</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><i class="fa-fw icon-guanyuwo"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-guanyuwo"></use></svg><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Flutter【基础组件】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-18T12:08:30.000Z" title="发表于 2022-04-18 20:08:30">2022-04-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-22T05:00:14.802Z" title="更新于 2023-03-22 13:00:14">2023-03-22</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Flutter【基础组件】"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h3 id="1-默认基础布局"><a href="#1-默认基础布局" class="headerlink" title="1. 默认基础布局"></a>1. 默认基础布局</h3><p><code>Flutter</code>默认提供了一些基础框架<code>Widget</code>,这些<code>Widget</code>组件是整个APP的基石,一般情况下我们都是使用这些<code>Widget</code>作为基础页面,然后再在该基础上进行开发。</p>
+<h4 id="1-MaterialApp"><a href="#1-MaterialApp" class="headerlink" title="1. MaterialApp"></a>1. MaterialApp</h4><p>基础页面<code>Widget</code>,通常一个页面级别的<code>widget</code>都由它包裹,如程序入口的<code>runApp()</code>函数所渲染的第一层<code>Widget</code>就是<code>MaterialApp</code>。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">runApp</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token function">MyApp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">MyApp</span> <span class="token keyword">extends</span> <span class="token class-name">StatelessWidget</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token function">MyApp</span><span class="token punctuation">(</span><span class="token punctuation">{</span>Key<span class="token operator">?</span> key<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">super</span><span class="token punctuation">(</span>key<span class="token punctuation">:</span> key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token metadata symbol">@override</span>
+  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">//返回一个页面 Widget</span>
+    <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
+      <span class="token comment">//null</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>此时可见页面为一片黑色,因为该<code>Widget</code>还未设置任何内容。</p>
+<p><code>MaterialApp</code>构造函数内有<code>title</code>、<code>home</code>等可选变量可设置。</p>
+<p><code>title</code>顾名思义是指标题的意思 需要一个<code>String</code>类型的标题即可。而<code>home</code>则是一个<code>Widget</code>属性,很明显它的内容也是由<code>Widget</code>组成。</p>
+<h4 id="2-Scaffold"><a href="#2-Scaffold" class="headerlink" title="2. Scaffold"></a>2. Scaffold</h4><p>这是一个页面脚手架<code>Widget</code>,一般用于与作为于<code>MaterialApp</code>级别的<code>Widget</code>的子部件。可以构建出一个完整的页面。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
+    title<span class="token punctuation">:</span> <span class="token string">"App Title"</span><span class="token punctuation">,</span>
+    home<span class="token punctuation">:</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由<code>MaterialApp</code>与<code>Scaffold</code>部件组成的页面就产生了。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-18/354c2c3d45324866b4b08b2711b5ff24.png" style="zoom:50%;"></p>
+<p>只不过目前是空白一片,因为这两个都是基础框架组件,内容需要我们一点一点填充。</p>
+<h4 id="3-AppBar"><a href="#3-AppBar" class="headerlink" title="3. AppBar"></a>3. AppBar</h4><p><code>Scaffold</code>部件,是一个页面部件,有两个可选属性<code>appBar</code>与<code>body</code>。两个属性都需要两个<code>Widget</code>部件来填充页面的页面头部与中间内容部分。</p>
+<p>首先来看一下头部部分<code>appBar</code>。该属性可以使用<code>AppBar</code>部件,也是原生提供的部件.</p>
+<p>提供了<code>title</code>属性,可以直接显示该页面的标题</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
+    title<span class="token punctuation">:</span> <span class="token string">"App Title"</span><span class="token punctuation">,</span>
+    home<span class="token punctuation">:</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
+      appBar<span class="token punctuation">:</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
+        title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"Title"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>看一下页面效果</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-18/8099266900a641aaaf973c013ecff73b.png" style="zoom:50%;"></p>
+<h3 id="2-创建有状态Widget"><a href="#2-创建有状态Widget" class="headerlink" title="2. 创建有状态Widget"></a>2. 创建有状态Widget</h3><p>自定义一个<code>Widget</code> 作为页面的Body</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token comment">///定义一个带有状态的Widget 作为页面的Home</span>
+<span class="token keyword">class</span> <span class="token class-name">ZeroHome</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
+  <span class="token function">ZeroHome</span><span class="token punctuation">(</span><span class="token punctuation">{</span>Key<span class="token operator">?</span> key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">super</span><span class="token punctuation">(</span>key<span class="token punctuation">:</span> key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">///重写 Widget的State方法</span>
+  <span class="token metadata symbol">@override</span>
+  State<span class="token operator">&lt;</span>StatefulWidget<span class="token operator">&gt;</span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token function">_ZeroHomeState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">///定义 ZeroHome 部件的 State</span>
+<span class="token keyword">class</span> <span class="token class-name">_ZeroHomeState</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>ZeroHome<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  <span class="token metadata symbol">@override</span>
+  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">Container</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来的一些基础<code>Widget</code>都放在这个<code>Container</code>部件内讲解,关于这个<code>Container</code>我们后续再讲。</p>
+<h3 id="3-Text"><a href="#3-Text" class="headerlink" title="3. Text"></a>3. Text</h3><p><code>Text</code>部件是<code>Fultter</code>中最基础也是使用率最频繁的一个部件,就是用来渲染文本的,我们先来看一下它的构造函数。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span>
+  String <span class="token keyword">this</span><span class="token punctuation">.</span>data<span class="token punctuation">,</span> <span class="token comment">//要渲染的文本内容,必填项</span>
+  <span class="token punctuation">{</span>
+  Key<span class="token operator">?</span> key<span class="token punctuation">,</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>style<span class="token punctuation">,</span>				<span class="token comment">//文本样式: TextStyle如文本大小、颜色、字体</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>strutStyle<span class="token punctuation">,</span>	<span class="token comment">//文本每行最小行高</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>textAlign<span class="token punctuation">,</span>		<span class="token comment">//文本水平对齐方式: 左对齐、水平居中、右对齐</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>textDirection<span class="token punctuation">,</span><span class="token comment">//文本方向</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>locale<span class="token punctuation">,</span>			<span class="token comment">//</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>softWrap<span class="token punctuation">,</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>maxLines<span class="token punctuation">,</span> 		<span class="token comment">//显示最大行数,多余文本直接截取</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>overflow<span class="token punctuation">,</span>		<span class="token comment">//文本截取后显示方式如显示... 或者直接截取</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>textScaleFactor<span class="token punctuation">,</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>semanticsLabel<span class="token punctuation">,</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>textWidthBasis<span class="token punctuation">,</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>textHeightBehavior<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>简单渲染一个文本,然后看下效果</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token keyword">class</span> <span class="token class-name">_ZeroHomeState</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>ZeroHome<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  <span class="token metadata symbol">@override</span>
+  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">Container</span><span class="token punctuation">(</span>
+      width<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+      height<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+      color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>blue<span class="token punctuation">,</span>
+      child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span>
+        <span class="token string">'今天是个好天气哟 嗨嗨嗨'</span><span class="token punctuation">,</span>
+        <span class="token comment">//设置文本样式: 颜色、大小</span>
+        style<span class="token punctuation">:</span> <span class="token function">TextStyle</span><span class="token punctuation">(</span>color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>white<span class="token punctuation">,</span>fontSize<span class="token punctuation">:</span> <span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token comment">//设置文本在容器内 水平居中对齐</span>
+        textAlign<span class="token punctuation">:</span> TextAlign<span class="token punctuation">.</span>center<span class="token punctuation">,</span>
+        <span class="token comment">//最大显示一行文本</span>
+        maxLines<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token comment">//对于的文本 ...显示</span>
+        overflow<span class="token punctuation">:</span> TextOverflow<span class="token punctuation">.</span>ellipsis<span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-18/83c6cc55a688448c89dfd857534a68aa.png" style="zoom:50%;"></p>
+<h3 id="4-Button"><a href="#4-Button" class="headerlink" title="4. Button"></a>4. Button</h3><h4 id="1-TextButton"><a href="#1-TextButton" class="headerlink" title="1. TextButton"></a>1. TextButton</h4><pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">Container</span><span class="token punctuation">(</span>
+    width<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+    height<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+    color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>black12<span class="token punctuation">,</span>
+    child<span class="token punctuation">:</span> <span class="token function">TextButton</span><span class="token punctuation">(</span>
+      <span class="token comment">//按钮上的文本</span>
+      child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"press me"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">//按钮的回调事件</span>
+      onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span>
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">'按钮被点击'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-ElevatedButton"><a href="#2-ElevatedButton" class="headerlink" title="2. ElevatedButton"></a>2. ElevatedButton</h4><pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">Container</span><span class="token punctuation">(</span>
+    width<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+    height<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+    color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>black12<span class="token punctuation">,</span>
+    child<span class="token punctuation">:</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
+      <span class="token comment">//按钮上的文本</span>
+      child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"press me"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">//按钮的回调事件</span>
+      onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span>
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">'按钮被点击'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-Image"><a href="#5-Image" class="headerlink" title="5. Image"></a>5. Image</h3><p>图片<code>Widget</code>,一般用于加载一些网络图片</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">Column</span><span class="token punctuation">(</span>
+    children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+      <span class="token comment">//加载网络图片</span>
+      Image<span class="token punctuation">.</span><span class="token function">network</span><span class="token punctuation">(</span><span class="token string">'https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-18/83c6cc55a688448c89dfd857534a68aa.png'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">//加载本地图片</span>
+      Image<span class="token punctuation">.</span><span class="token function">asset</span><span class="token punctuation">(</span><span class="token string">'images/bj.jpeg'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="6-Container"><a href="#6-Container" class="headerlink" title="6. Container"></a>6. Container</h3><p><code>Container</code>类似于Html中的<code>div</code> 的<code>盒子模型</code>。通常用<code>Container</code>包装<code>Widget</code>。</p>
+<p>接下来将一个<code>Text</code>包装到<code>Container</code>中,来看一下能够如何布局。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">Container</span><span class="token punctuation">(</span>
+    <span class="token comment">// color: Colors.blue,//设置Container背景颜色</span>
+    width<span class="token punctuation">:</span> double<span class="token punctuation">.</span>infinity<span class="token punctuation">,</span> <span class="token comment">//设置宽度铺满</span>
+    height<span class="token punctuation">:</span> <span class="token number">400</span><span class="token punctuation">,</span>
+    alignment<span class="token punctuation">:</span> Alignment<span class="token punctuation">.</span>center<span class="token punctuation">,</span> <span class="token comment">//将容器内的Widget水平垂直都居中</span>
+    padding<span class="token punctuation">:</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token comment">//设置容器的内边距为 10</span>
+    margin<span class="token punctuation">:</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token comment">//设置容器的外边距为 10</span>
+    <span class="token comment">//为容器添加一个四边框,颜色为红色,边框宽度为2</span>
+    <span class="token comment">//注意: 边框颜色和容器背景颜色,只能设置一个</span>
+    decoration<span class="token punctuation">:</span> <span class="token function">BoxDecoration</span><span class="token punctuation">(</span>border<span class="token punctuation">:</span> Border<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span>color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>red<span class="token punctuation">,</span>width<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"我是一个文本内容"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-18/7de1b5d56b5b4a7dae46b5d20ed2e4dd.png" style="zoom:50%;"></p>
+<p><code>Container</code>的<code>decoration</code>与<code>color</code>属性存在冲突关系,但是我们又想拥有边框又想容器有背景颜色该如何处理呢?</p>
+<p>那我们可以在<code>decoration</code>中设置背景颜色即可.</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart">decoration<span class="token punctuation">:</span> <span class="token function">BoxDecoration</span><span class="token punctuation">(</span>
+  border<span class="token punctuation">:</span> Border<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span>color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>red<span class="token punctuation">,</span>width<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>blue
+<span class="token punctuation">)</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-18/76eab5e5e93c404097050a84261039bf.png" style="zoom:50%;"></p>
+<p><code>Container</code>的内部布局可选方案:</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart">alignment<span class="token punctuation">:</span> Alignment<span class="token punctuation">.</span>center<span class="token punctuation">,</span> <span class="token comment">//将容器内的Widget水平垂直都居中</span>
+  <span class="token comment">/// 左上角居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment topLeft <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/// 顶部水平居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment topCenter <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/// 右上角居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment topRight <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/// 中部偏左居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment centerLeft <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/// 水平垂直都居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment center <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/// 中部偏右居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment centerRight <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/// 左下角居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment bottomLeft <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/// 底部水平居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment bottomCenter <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/// 右下角居中</span>
+  <span class="token keyword">static</span> <span class="token keyword">const</span> Alignment bottomRight <span class="token operator">=</span> <span class="token function">Alignment</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Container</code>如果不设置宽高,默认会撑满父部件宽高。</p>
+<h3 id="7-Center"><a href="#7-Center" class="headerlink" title="7. Center"></a>7. Center</h3><p><code>Center</code>部件是用来布局的<code>widget</code>。它能够让其子部件居中。如下所示</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
+    title<span class="token punctuation">:</span> <span class="token string">"App Title"</span><span class="token punctuation">,</span>
+    home<span class="token punctuation">:</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
+      appBar<span class="token punctuation">:</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
+        title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"首页"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">,</span>
+      body<span class="token punctuation">:</span> <span class="token function">TextButton</span><span class="token punctuation">(</span>
+          onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+          child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"按钮"</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该页面body区域内容只有一个<code>TextButton</code>按钮，默认布局是最顶层最左侧依次排布。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-30/d44ab38564374d899c9e82733c27ba35.png" style="zoom:30%;"></p>
+<p>但是,我们现在想要该按钮在父容器中水平且垂直居中排布,我们就可以使用<code>Center</code>来达到。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart">body<span class="token punctuation">:</span> <span class="token function">Center</span><span class="token punctuation">(</span>
+  child<span class="token punctuation">:</span> <span class="token function">TextButton</span><span class="token punctuation">(</span>
+    onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"按钮"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://music9501.oss-cn-beijing.aliyuncs.com/2022-04-30/fa257ccdd88d4e62be149460832a1ff4.png" style="zoom:30%;"></p>
+<p><code>Center</code>默认是居中,但是我们可以自己选择在容器内的排布位置.<code>Center</code>继承自于<code>Align</code>,所以我们可以直接使用<code>Align</code>,它的功能更强大。</p>
+<pre class="line-numbers language-dart" data-language="dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
+    title<span class="token punctuation">:</span> <span class="token string">"App Title"</span><span class="token punctuation">,</span>
+    home<span class="token punctuation">:</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
+      appBar<span class="token punctuation">:</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
+        title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"首页"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">,</span>
+      body<span class="token punctuation">:</span> <span class="token function">Align</span><span class="token punctuation">(</span>
+        alignment<span class="token punctuation">:</span> Alignment<span class="token punctuation">.</span>topCenter<span class="token punctuation">,</span> <span class="token comment">//水平居中</span>
+        child<span class="token punctuation">:</span> <span class="token function">TextButton</span><span class="token punctuation">(</span>
+            onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+            child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"按钮"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过<code>Align</code>的<code>alignment</code>属性来指定排布的位置。我们这里是使用的<code>Scaffold</code>容器来演示,起始无论父容器是什么容器,都是如此。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zlx2019.github.io">Zero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zlx2019.github.io/article/76c7754c.html">https://zlx2019.github.io/article/76c7754c.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zlx2019.github.io" target="_blank">Zero(˶˚ ᗨ ˚˶)</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/">移动端开发</a><a class="post-meta__tags" href="/tags/Fultter/">Fultter</a></div><div class="post_share"><div class="social-share" data-image="https://movies-bucket.oss-cn-beijing.aliyuncs.com/95443c0654a7422fa17e4da7a1e6c493.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/reward/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/reward/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/reward/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/reward/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/29050e88.html" title="数据结构与算法【跳表】"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/blogCover/default.jpg" onerror="onerror=null;src='/img/loadError.jpeg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数据结构与算法【跳表】</div></div></a></div><div class="next-post pull-right"><a href="/article/b7bf889a.html" title="Java【高并发编程-线程池】"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/95443c0654a7422fa17e4da7a1e6c493.jpeg" onerror="onerror=null;src='/img/loadError.jpeg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Java【高并发编程-线程池】</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/article/e0000852.html" title="Flutter【布局】"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/95443c0654a7422fa17e4da7a1e6c493.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-30</div><div class="title">Flutter【布局】</div></div></a></div><div><a href="/article/e99884bb.html" title="Flutter【页面路由】"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/5092202441e14867a2591de72ec29897.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-04</div><div class="title">Flutter【页面路由】</div></div></a></div><div><a href="/article/1500762b.html" title="Flutter【滚动组件】"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/5bc57fcd37e142589c8e72351700e8c3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-03</div><div class="title">Flutter【滚动组件】</div></div></a></div><div><a href="/article/4b5a9284.html" title="Flutter【dart入门】"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/blogCover/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-09</div><div class="title">Flutter【dart入门】</div></div></a></div><div><a href="/article/9fefc81c.html" title="Flutter【State生命周期】"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://movies-bucket.oss-cn-beijing.aliyuncs.com/5092202441e14867a2591de72ec29897.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-04</div><div class="title">Flutter【State生命周期】</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zero</div><div class="author-info__description">去码头搞点薯条吧\(^o^)/~</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">105</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">34</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zlx2019"><i class="fab fa-github"></i><span>前往Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://res.abeim.cn/api/qq/?qq=1143967454" target="_blank" title="QQ"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-QQ"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/397253487" target="_blank" title="BiliBili"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://github.com/zlx2019" target="_blank" title="Github"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-github"></use></svg></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%BB%98%E8%AE%A4%E5%9F%BA%E7%A1%80%E5%B8%83%E5%B1%80"><span class="toc-text">1. 默认基础布局</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-MaterialApp"><span class="toc-text">1. MaterialApp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Scaffold"><span class="toc-text">2. Scaffold</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-AppBar"><span class="toc-text">3. AppBar</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E6%9C%89%E7%8A%B6%E6%80%81Widget"><span class="toc-text">2. 创建有状态Widget</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Text"><span class="toc-text">3. Text</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Button"><span class="toc-text">4. Button</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-TextButton"><span class="toc-text">1. TextButton</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ElevatedButton"><span class="toc-text">2. ElevatedButton</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Image"><span class="toc-text">5. Image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Container"><span class="toc-text">6. Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Center"><span class="toc-text">7. Center</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/80057b1e.html" title="Rust【六】模块管理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo3.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust【六】模块管理"/></a><div class="content"><a class="title" href="/article/80057b1e.html" title="Rust【六】模块管理">Rust【六】模块管理</a><time datetime="2023-03-21T13:23:18.000Z" title="发表于 2023-03-21 21:23:18">2023-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/9ef7e562.html" title="Rust【五】枚举"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo1.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust【五】枚举"/></a><div class="content"><a class="title" href="/article/9ef7e562.html" title="Rust【五】枚举">Rust【五】枚举</a><time datetime="2023-03-21T07:41:32.000Z" title="发表于 2023-03-21 15:41:32">2023-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/430e0518.html" title="Rust【四】结构体"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo1.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust【四】结构体"/></a><div class="content"><a class="title" href="/article/430e0518.html" title="Rust【四】结构体">Rust【四】结构体</a><time datetime="2023-03-17T12:10:50.000Z" title="发表于 2023-03-17 20:10:50">2023-03-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/4492f8d6.html" title="Rust【三】切片"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo1.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust【三】切片"/></a><div class="content"><a class="title" href="/article/4492f8d6.html" title="Rust【三】切片">Rust【三】切片</a><time datetime="2023-03-17T07:35:16.000Z" title="发表于 2023-03-17 15:35:16">2023-03-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/e6524ad9.html" title="Rust【二】所有权"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo1.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust【二】所有权"/></a><div class="content"><a class="title" href="/article/e6524ad9.html" title="Rust【二】所有权">Rust【二】所有权</a><time datetime="2023-03-15T07:41:29.000Z" title="发表于 2023-03-15 15:41:29">2023-03-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By Zero</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><script async src="//at.alicdn.com/t/c/font_3947604_tesead3g5v.js"></script><div class="aplayer no-destroy" data-id="2615711993" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false"> </div><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://dashboard.4everland.org/" style="margin-inline:5px" data-title="本站采用多线部署，备用线路托管于4EVERLAND" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-4EVERLAND-22DDDD?style=flat&amp;logo=IPFS" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 280px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/about/'|| '/about/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("https://gitcalendar.fomal.cc/api?zlx2019",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'zlx2019')
+    }
+  </script><!-- hexo injector body_end end --></body></html>
