@@ -1,0 +1,1874 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Meili-Search | Zero(˶˚ ᗨ ˚˶)</title><meta name="author" content="Zero"><meta name="copyright" content="Zero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="什么是MeiliSearch?Meili-Search是一个基于Rust语言编写的开源搜索引擎。是一个支持RESTful风格的搜索API。它旨在为所有希望为其最终用户提供快速且相关的搜索体验的人提供现成的解决方案 高效的搜索引擎通常需要大量的资源投资。只有具备开发满足其需求的定制搜索解决方案所需手段的公司才能访问它们。 中小型企业通常求助于低质量的搜索引擎，由于搜索执行不力，这些引擎会在用户体验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Meili-Search">
+<meta property="og:url" content="https://zlx2019.github.io/article/6f8bff.html">
+<meta property="og:site_name" content="Zero(˶˚ ᗨ ˚˶)">
+<meta property="og:description" content="什么是MeiliSearch?Meili-Search是一个基于Rust语言编写的开源搜索引擎。是一个支持RESTful风格的搜索API。它旨在为所有希望为其最终用户提供快速且相关的搜索体验的人提供现成的解决方案 高效的搜索引擎通常需要大量的资源投资。只有具备开发满足其需求的定制搜索解决方案所需手段的公司才能访问它们。 中小型企业通常求助于低质量的搜索引擎，由于搜索执行不力，这些引擎会在用户体验">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zlx2019.github.io/img/logo/meili-search-logo2.png">
+<meta property="article:published_time" content="2023-03-22T11:51:41.000Z">
+<meta property="article:modified_time" content="2023-03-23T15:04:59.574Z">
+<meta property="article:author" content="Zero">
+<meta property="article:tag" content="MeiliSearch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zlx2019.github.io/img/logo/meili-search-logo2.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zlx2019.github.io/article/6f8bff.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Meili-Search',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-23 23:04:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><link rel="stylesheet" href="/css/bcustom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">107</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">50</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">34</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw icon-home"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-home"></use></svg><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw icon-rili"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rili"></use></svg><span> 归档</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/tags/"><i class="fa-fw icon-biaoqian"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-biaoqian"></use></svg><span> 标签</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw icon-fenlei"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-fenlei"></use></svg><span> 分类</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-tada"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-yinle"></use></svg><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/movies/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw icon-zuopinzhanshi"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zuopinzhanshi"></use></svg><span> 个人项目</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><i class="fa-fw icon-guanyuwo"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-guanyuwo"></use></svg><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/logo/meili-search-logo2.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Zero(˶˚ ᗨ ˚˶)"><span class="site-name">Zero(˶˚ ᗨ ˚˶)</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw icon-home"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-home"></use></svg><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw icon-rili"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rili"></use></svg><span> 归档</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/tags/"><i class="fa-fw icon-biaoqian"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-biaoqian"></use></svg><span> 标签</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw icon-fenlei"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-fenlei"></use></svg><span> 分类</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-tada"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-yinle"></use></svg><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/movies/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw icon-zuopinzhanshi"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zuopinzhanshi"></use></svg><span> 个人项目</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><i class="fa-fw icon-guanyuwo"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-guanyuwo"></use></svg><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Meili-Search</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-22T11:51:41.000Z" title="发表于 2023-03-22 19:51:41">2023-03-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-23T15:04:59.574Z" title="更新于 2023-03-23 23:04:59">2023-03-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/">搜索引擎</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">9.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>35分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Meili-Search"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/meili-search-logo.png" alt=""></p>
+<h1 id="什么是MeiliSearch"><a href="#什么是MeiliSearch" class="headerlink" title="什么是MeiliSearch?"></a>什么是MeiliSearch?</h1><p><strong>Meili-Search</strong>是一个基于Rust语言编写的开源搜索引擎。是一个支持RESTful风格的搜索API。它旨在为所有希望为其最终用户提供<strong>快速且相关的搜索体验的</strong>人提供现成的解决方案</p>
+<p>高效的搜索引擎通常需要大量的资源投资。只有具备开发满足其需求的定制搜索解决方案所需手段的公司才能访问它们。</p>
+<p>中小型企业通常求助于低质量的搜索引擎，由于搜索执行不力，这些引擎会在用户体验和保留方面产生无形成本。</p>
+<p>这就是我们创建美丽搜索的原因：一个人人都可以访问的开源解决方案，旨在满足绝大多数需求。需要安装的配置很少，但高度可定制。</p>
+<p>我们的解决方案提供<strong>即时搜索体验，</strong>包括<strong>拼写错误处理</strong>、<strong>过滤器</strong>、<strong>自定义排名</strong>以及更多功能。</p>
+<h2 id="搜索演示"><a href="#搜索演示" class="headerlink" title="搜索演示"></a>搜索演示</h2><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/meili-search-show.gif" alt=""></p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li><strong>超快</strong>（答案 &lt; 50 毫秒）：优先考虑快速答案以获得流畅的搜索体验。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/what_is_meilisearch/features.html#search-as-you-type">键入时搜索</a>：每次击键都会更新结果。为了使这成为可能，我们使用<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/advanced/prefix.html#prefix-search">prefix-search</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/what_is_meilisearch/features.html#typo-tolerant">错别字容忍度</a>：理解错别字和拼写错误。</li>
+<li>英文、<strong>中文</strong>和<strong>所有使用空格作为单词分隔符的语言的</strong>分<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/advanced/tokenization.html">词</a>。</li>
+<li><strong>返回整个文档</strong>：搜索时返回整个文档。</li>
+<li>高度可定制的搜索和索引:<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/relevancy.html">自定义排名</a>：自定义搜索引擎的相关性和搜索结果的排名。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/settings.html#stop-words">停用词</a>：忽略常见的不相关词，如<code>of</code>or <code>the</code>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/what_is_meilisearch/features.html#highlighting">突出显示</a>：在文档中突出显示搜索结果</li>
+<li><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/what_is_meilisearch/features.html#synonyms">同义词</a>：定义同义词以获得更好的搜索体验。</li>
+</ul>
+</li>
+<li><strong>REST风格的API</strong></li>
+<li><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/what_is_meilisearch/search_preview.html">搜索预览</a>：允许您在不实施前端的情况下测试您的搜索设置</li>
+</ul>
+<h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><p>目前社区几乎引入了所有流行的<strong>编程语言</strong>、<strong>框架</strong>,并且其他还未支持的编程语言也在不断开发中。已经支持的SDK如下:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-dotnet">.NET</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-dart">Dart</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-go">Golang</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-java">Java</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-js">JavaScript</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-php">PHP</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-python">Python</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-ruby">Ruby</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-rust">Rust</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch-swift">Swift</a></li>
+</ul>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p>官方列出了<strong>Meili-Search</strong>与其他搜索引擎的比较文档,可以直接去查看官网查看: <a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/what_is_meilisearch/comparison_to_alternatives.html">点这里</a></p>
+<p>我也简单说一下个人观点,其实在此之前,小编也只是用过<code>ElasticSearch</code>这款中间件。就参考它来浅谈一下吧。</p>
+<p>使用过<code>ES</code>的开发者都知道,这是一款由Java编写的<strong>搜索引擎</strong>,可以算得上是目前最为主流的开源<strong>搜索引擎</strong>,在Github上有将近<a target="_blank" rel="noopener" href="https://github.com/elastic/elasticsearch">60+k</a>的star。但是Java大家都清楚,这是一个吃运行时内存的<code>大户人家</code>,我记得没错的话,它默认要求的配置就是<code>4GB</code>内存。这对于一些个人开发者或者小型创业公司来说负担似乎有些过重。之前小编也部署过几个集成了<code>ES</code>的项目,但都是打通之后,迅速关闭了云端程序,加上一些其他<strong>中间件</strong>,直接把我云服务器内存吃满了…负担不起哇~</p>
+<p><code>MeiliSearch</code>目前似乎不支持分布式集群等特性,但是我也认为这是它的优点-<strong>小而美</strong>。既轻量级而且性能卓越,更重要的是它是基于<strong>Rust</strong>编写,在内存占用率上远远比Java程序节省内存。好吧说到底还是穷…</p>
+<p><code>ES</code>是在2010年开源发布,到目前已经有了长达13年之久,在社区中累计了60k+star,而<code>MeiliSearch</code>是2019年开源发布,到目前为止仅仅3年左右时间,目前在社区中已经有<a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch">30+k</a>+star,而且目前还在疯狂涨,这足以说明它的优秀。</p>
+<hr>
+
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>官方提供了不同的安装方式:</p>
+<div class="tabs" id=""><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#-1">Linux</button></li><li class="tab"><button type="button" data-href="#-2">Mac</button></li><li class="tab"><button type="button" data-href="#-3">Docker</button></li><li class="tab"><button type="button" data-href="#-4">Source</button></li><li class="tab"><button type="button" data-href="#-5">下载可执行文件</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="-1"><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh"># Install Meilisearch
+curl -L https://install.meilisearch.com | sh
+# Launch Meilisearch
+./meilisearch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-2"><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh"># Update brew and install Meilisearch
+brew update &amp;&amp; brew install meilisearch
+# Launch Meilisearch
+meilisearch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-3"><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh"># 拉取镜像
+docker pull getmeili/meilisearch:v1.0
+
+# 运行镜像
+docker run -it --rm \
+    -p 7700:7700 \
+    -e MEILI_ENV='development' \
+    -v $(pwd)/meili_data:/meili_data \
+    getmeili/meilisearch:v1.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-4"><p>通过源码方式编译安装(需要Rust环境)</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">// 克隆仓库
+git clone https://github.com/meilisearch/meilisearch
+cd meilisearch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>切换到最新的分支</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git checkout latest<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>更新Rust版本,通过<code>Cargo</code>进行打包.</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh"># Update the rust toolchain to the latest version
+rustup update
+
+# Compile the project
+cargo build --release<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后就可以运行打包后的二进制文件了</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">./target/release/meilisearch<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-5"><p><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch/releases/tag/v1.0.2">下载地址</a></p>
+<p>根据自己的操作系统,下载不同的版本.我这里用的Mac,所以就下载以下版本了</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/meilisearch/meilisearch/releases/download/v1.0.2/meilisearch-macos-apple-silicon">meilisearch-macos-apple-silicon</a></p>
+<p>下载后得到的是一个直接可执行的二进制文件,直接执行即可。</p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<p>安装好后就可以直接运行起来了</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">% ./meilisearch-macos-apple-silicon 
+
+888b     d888          d8b 888 d8b                                            888
+8888b   d8888          Y8P 888 Y8P                                            888
+88888b.d88888              888                                                888
+888Y88888P888  .d88b.  888 888 888 .d8888b   .d88b.   8888b.  888d888 .d8888b 88888b.
+888 Y888P 888 d8P  Y8b 888 888 888 88K      d8P  Y8b     "88b 888P"  d88P"    888 "88b
+888  Y8P  888 88888888 888 888 888 "Y8888b. 88888888 .d888888 888    888      888  888
+888   "   888 Y8b.     888 888 888      X88 Y8b.     888  888 888    Y88b.    888  888
+888       888  "Y8888  888 888 888  88888P'  "Y8888  "Y888888 888     "Y8888P 888  888
+
+Config file path:	"none"
+Database path:		"./data.ms"
+Server listening on:	"http://localhost:7700"
+Environment:		"development"
+Commit SHA:		"572608c121d960cdf48c2c289a6dfd3dc834873a"
+Commit date:		"2023-02-23T13:52:56Z"
+Package version:	"1.0.2"
+
+Thank you for using Meilisearch!
+
+
+We collect anonymized analytics to improve our product and your experience. To learn more, including how to turn off analytics, visit our dedicated documentation page: https://docs.meilisearch.com/learn/what_is_meilisearch/telemetry.html
+
+Anonymous telemetry:	"Enabled"
+Instance UID:		"9848c0dc-e4e1-4815-8a58-12f2385b3924"
+
+
+
+ No master key was found. The server will accept unidentified requests.
+
+ A master key of at least 16 bytes will be required when switching to a production environment.
+
+
+We generated a new secure master key for you (you can safely use this token):
+
+&gt;&gt; --master-key 9d5ymK1JEM2yc5m4dN55_2s45MCI3w_JueJs_P1aJ3k &lt;&lt;
+
+Restart Meilisearch with the argument above to use this new and secure master key.
+
+Documentation:		https://docs.meilisearch.com
+Source code:		https://github.com/meilisearch/meilisearch
+Contact:		https://docs.meilisearch.com/resources/contact.html
+
+[2023-03-22T12:50:33Z INFO  actix_server::builder] Starting 8 workers
+[2023-03-22T12:50:33Z INFO  actix_server::server] Actix runtime found; starting in Actix runtime<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>启动速度非常快,基本上是毫秒级的。</p>
+<p>该引擎默认提供了一个管理页面,可以直接通过浏览器访问: <a target="_blank" rel="noopener" href="http://localhost:7700/">http://localhost:7700/</a></p>
+<hr>
+
+<h1 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h1><h2 id="导入数据"><a href="#导入数据" class="headerlink" title="导入数据"></a>导入数据</h2><p>为了快速入门,官方提供了一些数据。请下载该文件: <a target="_blank" rel="noopener" href="https://docs.meilisearch.com/movies.json">movies.json</a>,然后放在一个工作目录中。</p>
+<p>然后可以通过各种方式将<code>movies.json</code>文件中的内容,批量添加到引擎中。如下:</p>
+<div class="tabs" id=""><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#-1">curl</button></li><li class="tab"><button type="button" data-href="#-2">Java</button></li><li class="tab"><button type="button" data-href="#-3">Go</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="-1"><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">curl \
+  -X POST 'http://localhost:7700/indexes/movies/documents?primaryKey=id' \
+  -H 'Content-Type: application/json' \
+  --data-binary @movies.json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过终端的<code>curl</code>命令发起HTTP请求.</p>
+<p><code>POST</code>表示是新增。</p>
+<p><code>/indexes</code>表示新增的是索引库。</p>
+<p><code>/movies</code>表示的是索引库的名字。</p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-2"><p>Maven导入依赖</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>com.meilisearch.sdk<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>meilisearch-java<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>0.11.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>type</span><span class="token punctuation">&gt;</span></span>pom<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>type</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后通过Java客户端来批量插入数据</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>meilisearch<span class="token punctuation">.</span>sdk</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>file<span class="token punctuation">.</span></span><span class="token class-name">Files</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>file<span class="token punctuation">.</span></span><span class="token class-name">Path</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 读取文档文件</span>
+<span class="token class-name">Path</span> fileName <span class="token operator">=</span> <span class="token class-name">Path</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"movies.json"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 以String格式 读取文件的所有内容</span>
+<span class="token class-name">String</span> moviesJson <span class="token operator">=</span> <span class="token class-name">Files</span><span class="token punctuation">.</span><span class="token function">readString</span><span class="token punctuation">(</span>fileName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 初始化客户端</span>
+<span class="token class-name">Client</span> client <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Client</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Config</span><span class="token punctuation">(</span><span class="token string">"http://localhost:7700"</span><span class="token punctuation">,</span> <span class="token string">"masterKey"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 获取索引库,如果不存在则会创建</span>
+<span class="token class-name">Index</span> index <span class="token operator">=</span> client<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span><span class="token string">"movies"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 插入数据</span>
+index<span class="token punctuation">.</span><span class="token function">addDocuments</span><span class="token punctuation">(</span>moviesJson<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-3"><p>安装依赖库</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">go get -u github.com/meilisearch/meilisearch-go<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+  <span class="token string">"os"</span>
+  <span class="token string">"encoding/json"</span>
+  <span class="token string">"io"</span>
+
+  <span class="token string">"github.com/meilisearch/meilisearch-go"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 初始化客户端</span>
+  client <span class="token operator">:=</span> meilisearch<span class="token punctuation">.</span><span class="token function">NewClient</span><span class="token punctuation">(</span>meilisearch<span class="token punctuation">.</span>ClientConfig<span class="token punctuation">{</span>
+    Host<span class="token punctuation">:</span> <span class="token string">"http://localhost:7700"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+	<span class="token comment">// 打开文档文件</span>
+  jsonFile<span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">:=</span> os<span class="token punctuation">.</span><span class="token function">Open</span><span class="token punctuation">(</span><span class="token string">"movies.json"</span><span class="token punctuation">)</span>
+  <span class="token keyword">defer</span> jsonFile<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token comment">// 把文件内容全部读取出来</span>
+  byteValue<span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">:=</span> io<span class="token punctuation">.</span><span class="token function">ReadAll</span><span class="token punctuation">(</span>jsonFile<span class="token punctuation">)</span>
+  <span class="token comment">// 然后解析为map结构</span>
+  <span class="token keyword">var</span> movies <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+  json<span class="token punctuation">.</span><span class="token function">Unmarshal</span><span class="token punctuation">(</span>byteValue<span class="token punctuation">,</span> <span class="token operator">&amp;</span>movies<span class="token punctuation">)</span>
+	<span class="token comment">// 插入数据</span>
+  <span class="token boolean">_</span><span class="token punctuation">,</span> err <span class="token operator">:=</span> client<span class="token punctuation">.</span><span class="token function">Index</span><span class="token punctuation">(</span><span class="token string">"movies"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">AddDocuments</span><span class="token punctuation">(</span>movies<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+      <span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<p>这里建议直接使用<code>curl</code>方式.注意: 要在<code>movies.json</code>文件所在的目录执行哦~</p>
+<p>文件中的一条json数据格式如下:</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"id"</span><span class="token operator">:</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Ariel"</span><span class="token punctuation">,</span><span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"Taisto Kasurinen is a Finnish coal miner whose father has just committed suicide and who is framed for a crime he did not commit. In jail, he starts to dream about leaving the country and starting a new life. He escapes from prison but things don't go as planned..."</span><span class="token punctuation">,</span><span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">"Drama"</span><span class="token punctuation">,</span><span class="token string">"Crime"</span><span class="token punctuation">,</span><span class="token string">"Comedy"</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/ojDg0PGvs6R9xYFodRct2kdI6wC.jpg"</span><span class="token punctuation">,</span><span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">593395200</span><span class="token punctuation">}</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>前面的命令表示将<code>movies.json</code>文件中的数据内容解析出来,写入到名为<code>movies</code>的索引库中,并设置<code>id</code>为主键的新索引中。如果未手动设置，美力搜索会从您的数据集中<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/primary_key.html#meilisearch-guesses-your-primary-key">推断出来</a>。</p>
+<p>数据导入完成后会有如下响应:</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"taskUid"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span> <span class="token string">"movies"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"enqueued"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"documentAdditionOrUpdate"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-22T13:08:02.25617Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后我们就可以在管理界面看到数据了,如下所示:</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/meili-search-data-show.png" style="zoom:30%;"></p>
+<p>美丽搜索以离散记录的形式存储数据，称为<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/documents.html">文档</a>。文档被分组到集合中，称为<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/indexes.html">索引</a>。</p>
+<blockquote>
+<p>目前只支持JSON、NDJSON和CSV格式的数据.<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/documents.html#dataset-format">可以在这里</a>中阅读更多相关信息。</p>
+</blockquote>
+<p>每个索引都必须有一个<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/primary_key.html#primary-field">primary key</a>，一个在该索引中的所有文档之间共享的属性。如果您尝试将文档添加到索引中，即使有一个文档缺少主键，也不会存储任何文档。</p>
+<p>Meilisearch 将连续的文档请求合并为一个批次并一起处理。这个过程称为<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/documents.html#auto-batching">auto-batching</a>，它可以显着加快索引速度。添加文档后，您应该会收到如下响应：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"taskUid"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span> <span class="token string">"movies"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"enqueued"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"documentAdditionOrUpdate"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-22T13:08:02.25617Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>美丽搜索中的大部分数据库操作都是<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/advanced/asynchronous_operations.html">异步的</a>。这意味着 API 请求不是立即处理，而是<strong>添加到队列中并在稍后处理</strong>。</p>
+<p>然后可以使用响应中的<code>taskUid</code>来检查建立的索引库状态:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">curl \
+  -X GET 'http://localhost:7700/tasks/0'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>如果文档数据添加成功,响应会是如下这样:</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"uid"</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span><span class="token string">"movies"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span><span class="token string">"succeeded"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span><span class="token string">"documentAdditionOrUpdate"</span><span class="token punctuation">,</span>
+    <span class="token property">"canceledBy"</span><span class="token operator">:</span><span class="token null keyword">null</span><span class="token punctuation">,</span>
+    <span class="token property">"details"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+        <span class="token property">"receivedDocuments"</span><span class="token operator">:</span><span class="token number">31944</span><span class="token punctuation">,</span>
+        <span class="token property">"indexedDocuments"</span><span class="token operator">:</span><span class="token number">31944</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"error"</span><span class="token operator">:</span><span class="token null keyword">null</span><span class="token punctuation">,</span>
+    <span class="token property">"duration"</span><span class="token operator">:</span><span class="token string">"PT6.521260S"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span><span class="token string">"2023-03-22T13:08:02.25617Z"</span><span class="token punctuation">,</span>
+    <span class="token property">"startedAt"</span><span class="token operator">:</span><span class="token string">"2023-03-22T13:08:02.258523Z"</span><span class="token punctuation">,</span>
+    <span class="token property">"finishedAt"</span><span class="token operator">:</span><span class="token string">"2023-03-22T13:08:08.779783Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果该<code>status</code>字段的值为<code>enqueued</code>或<code>processing</code>，您所要做的就是稍等片刻，然后再次检查。<code>status</code>任务更改为 后，继续下一步<code>succeeded</code>。</p>
+<hr>
+
+<h2 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h2><p>数据导入好之后,我们就可以开始搜索了~</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">curl \
+  -X POST 'http://localhost:7700/indexes/movies/search' \
+  -H 'Content-Type: application/json' \
+  --data-binary '{ "q": "botman","limit": 3 }'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参数<code>q</code>代表搜索查询。<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/getting_started/quick_start.html#add-documents">您在上一步</a>中添加的文档将被搜索以查找匹配的文本<code>botman</code>。</p>
+<p><code>limit:3</code>参数表示值查询前3条文档。</p>
+<p>响应结果如下:</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"hits"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">268</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Batman"</span><span class="token punctuation">,</span>
+            <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"Batman must face his most ruthless nemesis when a deformed madman calling himself \"The Joker\" seizes control of Gotham's criminal underworld."</span><span class="token punctuation">,</span>
+            <span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+                <span class="token string">"Fantasy"</span><span class="token punctuation">,</span>
+                <span class="token string">"Action"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/hztwplhxe2X9sq24CIcvkUy2DHZ.jpg"</span><span class="token punctuation">,</span>
+            <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">614563200</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">272</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Batman Begins"</span><span class="token punctuation">,</span>
+            <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"Driven by tragedy, billionaire Bruce Wayne dedicates his life to uncovering and defeating the corruption that plagues his home, Gotham City.  Unable to work within the system, he instead creates a new identity, a symbol of fear for the criminal underworld - The Batman."</span><span class="token punctuation">,</span>
+            <span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+                <span class="token string">"Action"</span><span class="token punctuation">,</span>
+                <span class="token string">"Crime"</span><span class="token punctuation">,</span>
+                <span class="token string">"Drama"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/1P3ZyEq02wcTMd3iE4ebtLvncvH.jpg"</span><span class="token punctuation">,</span>
+            <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">1118361600</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">364</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Batman Returns"</span><span class="token punctuation">,</span>
+            <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"While Batman deals with a deformed man calling himself the Penguin, an employee of a corrupt businessman transforms into the Catwoman."</span><span class="token punctuation">,</span>
+            <span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+                <span class="token string">"Action"</span><span class="token punctuation">,</span>
+                <span class="token string">"Fantasy"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/jKBjeXM7iBBV9UkUcOXx3m7FSHY.jpg"</span><span class="token punctuation">,</span>
+            <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">708912000</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"query"</span><span class="token operator">:</span><span class="token string">"botman"</span><span class="token punctuation">,</span>
+    <span class="token property">"processingTimeMs"</span><span class="token operator">:</span><span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"limit"</span><span class="token operator">:</span><span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"offset"</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"estimatedTotalHits"</span><span class="token operator">:</span><span class="token number">70</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当然你也可以在可视化控制台来检索,不过出于安全原因，搜索预览仅在<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/configuration/instance_options.html#environment">开发模式下可用。</a></p>
+<h1 id="定制化配置"><a href="#定制化配置" class="headerlink" title="定制化配置"></a>定制化配置</h1><p>您可以在启动时使用<strong>命令行选项</strong>、<strong>环境变量</strong>或<strong>配置文件</strong>配置 Meilisearch 。</p>
+<p>这些启动选项会影响您的整个美丽搜索实例，而不仅仅是单个索引。有关影响单个索引内搜索的设置，请参阅<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/configuration/settings.html">索引设置</a>。</p>
+<h2 id="启动时参数"><a href="#启动时参数" class="headerlink" title="启动时参数"></a>启动时参数</h2><p>启动程序时可以通过<code>--</code>携带一些参数值,如下</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">./meilisearch --db-path ./meilifiles --http-addr 'localhost:7700'<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>./meilisearch</code>是启动实例的命令，而<code>--db-path</code>表示数据存储的目录,<code>--http-addr</code>表示服务端口。</p>
+<p>MeiliSearch也有一些<strong>标志参数</strong>,这些参数不需要传值,只需要加上表示即可,功能就会被激活并且改变默认支持的行为:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">./meilisearch --no-analytics<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>上面的标志禁用了 Meilisearch 实例的分析并且不接受值。</p>
+<h2 id="环境变量参数"><a href="#环境变量参数" class="headerlink" title="环境变量参数"></a>环境变量参数</h2><p>MeiliSearch也支持读取环境变量作为参数。要使用环境变量配置美丽搜索实例，请在启动实例之前设置环境变量。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">export MEILI_DB_PATH=./meilifiles
+export MEILI_HTTP_ADDR=localhost:7700
+./meilisearch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>命令行标志的环境变量接受<code>n</code>、<code>no</code>、<code>f</code>、<code>false</code>、<code>off</code>和<code>0</code>as <code>false</code>。缺少的环境变量也将被视为<code>false</code>. 考虑任何其他值<code>true</code>。</p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>Meilisearch 接受格式的配置文件<code>.toml</code>作为命令行选项和环境变量的替代。配置文件可以轻松共享和版本控制，并允许您定义多个选项。</p>
+<p><strong>同时使用时，环境变量会覆盖配置文件，而命令行选项会覆盖环境变量。</strong></p>
+<p>优先级: <strong>命令行参数</strong> &gt; <strong>环境变量</strong> &gt; <strong>配置文件</strong></p>
+<p>下载官方默认的配置文件:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">curl https://raw.githubusercontent.com/meilisearch/meilisearch/latest/config.toml &gt; config.toml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/meilisearch/meilisearch/latest/config.toml">config.toml</a></p>
+<p><code>config.toml</code>默认情况下，美丽搜索会在工作目录下查找文件。如果存在，它将用作配置文件。您可以在启动美丽搜索时验证这一点。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">888b     d888          d8b 888 d8b                                            888
+8888b   d8888          Y8P 888 Y8P                                            888
+88888b.d88888              888                                                888
+888Y88888P888  .d88b.  888 888 888 .d8888b   .d88b.   8888b.  888d888 .d8888b 88888b.
+888 Y888P 888 d8P  Y8b 888 888 888 88K      d8P  Y8b     "88b 888P"  d88P"    888 "88b
+888  Y8P  888 88888888 888 888 888 "Y8888b. 88888888 .d888888 888    888      888  888
+888   "   888 Y8b.     888 888 888      X88 Y8b.     888  888 888    Y88b.    888  888
+888       888  "Y8888  888 888 888  88888P'  "Y8888  "Y888888 888     "Y8888P 888  888
+
+Config file path:	"./config.toml"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果<code>Config file path</code>不是<code>"none"</code>，则表示已成功找到配置文件并用于启动美力搜索。</p>
+<p>可以通过环境变量或者命令行的方式来指定默认加载哪个位置的配置文件:</p>
+<div class="tabs" id=""><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#-1">Cli</button></li><li class="tab"><button type="button" data-href="#-2">环境变量</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="-1"><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">./meilisearch --config-file-path="./xxx/xxx/config.toml"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-2"><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">export MEILI_CONFIG_FILE_PATH="./xxx/xxx/config.toml"
+./meilisearch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<h2 id="配置参数详解"><a href="#配置参数详解" class="headerlink" title="配置参数详解"></a>配置参数详解</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">环境变量</th>
+<th style="text-align:center">命令行</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">值类型</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">配置文件路径。</td>
+<td style="text-align:center">MEILI_CONFIG_FILE_PATH</td>
+<td style="text-align:center">—config-file-path</td>
+<td style="text-align:center">./config.toml</td>
+<td style="text-align:center">文件路径</td>
+<td style="text-align:center">指定要在启动时加载的配置文件的位置。</td>
+</tr>
+<tr>
+<td style="text-align:center">数据库路径</td>
+<td style="text-align:center">MEILI_DB_PATH</td>
+<td style="text-align:center">—db-path</td>
+<td style="text-align:center">“data.ms/“</td>
+<td style="text-align:center">文件路径</td>
+<td style="text-align:center">指定将创建和检索数据库文件的位置。</td>
+</tr>
+<tr>
+<td style="text-align:center">实例环境</td>
+<td style="text-align:center">MEILI_ENV</td>
+<td style="text-align:center">—env</td>
+<td style="text-align:center">development</td>
+<td style="text-align:center">productio,`<br>development</td>
+<td style="text-align:center">配置实例的环境。值必须是production或development。</td>
+</tr>
+<tr>
+<td style="text-align:center">实例地址</td>
+<td style="text-align:center">MEILI_HTTP_ADDR</td>
+<td style="text-align:center">—http-addr</td>
+<td style="text-align:center">“localhost:7700”</td>
+<td style="text-align:center">HTTP 地址和端口</td>
+<td style="text-align:center">设置 Meilisearch 将使用的 HTTP 地址和端口。</td>
+</tr>
+<tr>
+<td style="text-align:center">访问秘钥</td>
+<td style="text-align:center">MEILI_MASTER_KEY</td>
+<td style="text-align:center">—master-key</td>
+<td style="text-align:center">None</td>
+<td style="text-align:center">至少 16 字节的 UTF-8 字符串</td>
+<td style="text-align:center">设置实例的主密钥,访问时需要携带秘钥。</td>
+</tr>
+<tr>
+<td style="text-align:center">禁用分析</td>
+<td style="text-align:center">MEILI_NO_ANALYTICS</td>
+<td style="text-align:center">—no-analytics</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center">标识参数</td>
+<td style="text-align:center">提供时停用 Meilisearch 的内置遥测。</td>
+</tr>
+<tr>
+<td style="text-align:center">Dump目录</td>
+<td style="text-align:center">MEILI_DUMP_DIR</td>
+<td style="text-align:center">—dump-dir</td>
+<td style="text-align:center">dumps/</td>
+<td style="text-align:center">有效目录的文件路径</td>
+<td style="text-align:center">设置创建dump文件的目录。</td>
+</tr>
+<tr>
+<td style="text-align:center">转入dump</td>
+<td style="text-align:center">MEILI_IMPORT_DUMP</td>
+<td style="text-align:center">—import-dump</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center">指向<code>.dump</code>文件的文件路径</td>
+<td style="text-align:center">导入位于指定路径的转储文件。路径必须指向一个<code>.dump</code>文件。如果数据库已经存在，将抛出错误并中止启动。</td>
+</tr>
+<tr>
+<td style="text-align:center">忽略dump</td>
+<td style="text-align:center">MEILI_IGNORE_MISSING_DUMP</td>
+<td style="text-align:center">—ignore-missing-dump</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">防止 Meilisearch 在未指向有效转储文件时抛出错误。</td>
+</tr>
+<tr>
+<td style="text-align:center">日志级别</td>
+<td style="text-align:center">MEILI_LOG_LEVEL</td>
+<td style="text-align:center">—log-level</td>
+<td style="text-align:center">‘INFO’</td>
+<td style="text-align:center">下面详细补充</td>
+<td style="text-align:center">定义日志中应显示多少详细信息。</td>
+</tr>
+<tr>
+<td style="text-align:center">索引最大内存</td>
+<td style="text-align:center">MEILI_MAX_INDEXING_MEMORY</td>
+<td style="text-align:center">—max-indexing-memory</td>
+<td style="text-align:center">可用 RAM 的 2/3</td>
+<td style="text-align:center">整数 ( <code>104857600</code>) 或人类可读大小 ( <code>'100Mb'</code>)</td>
+<td style="text-align:center">设置索引时 Meilisearch 可以使用的最大 RAM 量。</td>
+</tr>
+<tr>
+<td style="text-align:center">最大索引线程</td>
+<td style="text-align:center">MEILI_MAX_INDEXING_THREADS</td>
+<td style="text-align:center">—max-indexing-threads</td>
+<td style="text-align:center">可用线程的一半</td>
+<td style="text-align:center">一个整数</td>
+<td style="text-align:center">设置 Meilisearch 在索引期间可以使用的最大线程数。</td>
+</tr>
+<tr>
+<td style="text-align:center">请求负载限制大小</td>
+<td style="text-align:center">MEILI_HTTP_PAYLOAD_SIZE_LIMIT</td>
+<td style="text-align:center">—http-payload-size-limit</td>
+<td style="text-align:center"><code>104857600</code>(~100MB)</td>
+<td style="text-align:center">一个整数</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/documents.html#dataset-format">设置可接受有效负载</a>的最大大小。值必须以字节为单位或明确说明基本单位。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>参数补充:</p>
+<ul>
+<li><p><code>--env</code></p>
+<ol>
+<li><code>production</code></li>
+</ol>
+<ul>
+<li><strong>必须</strong>设置至少 16 字节的<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/security/master_api_keys.html">主密钥</a>。如果没有提供主密钥或者小于 16 字节，美力搜索将建议一个安全的自动生成的主密钥</li>
+<li>搜索<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/what_is_meilisearch/search_preview.html">预览界面</a>被禁用</li>
+</ul>
+<ol>
+<li><code>development</code></li>
+</ol>
+<ul>
+<li>设置<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/security/master_api_keys.html">主密钥</a>是<strong>可选的</strong>。如果没有提供主密钥或者小于 16 字节，美力搜索将建议一个安全的自动生成的主密钥</li>
+<li>搜索预览已启用</li>
+</ul>
+</li>
+<li><p><code>--log-level</code></p>
+<p>Meilisearch 目前支持五个日志级别，按照详细程度递增的顺序列出：</p>
+<ul>
+<li><code>'ERROR'</code>: 仅记录表明美力搜索未按预期运行的意外事件</li>
+<li><code>'WARN'</code>：记录所有意外事件，无论其严重程度如何</li>
+<li><code>'INFO'</code>：记录所有事件。这是默认值<code>--log-level</code></li>
+<li><code>'DEBUG'</code>：记录所有事件并包括有关美丽搜索内部流程的详细信息。在诊断问题和调试时很有用</li>
+<li><code>'TRACE'</code>：记录所有事件并包含有关美丽搜索内部流程的更多详细信息。我们不建议使用此级别，因为它非常冗长。使用<code>'DEBUG'</code>前考虑<code>'TRACE'</code>。</li>
+<li><code>'OFF'</code>: 禁用日志记录</li>
+</ul>
+</li>
+<li><p><code>--max-indexing-memory</code></p>
+<p>设置索引时 Meilisearch 可以使用的最大 RAM 量。默认情况下，美丽搜索使用的可用内存不超过三分之二。</p>
+<p>该值必须以字节为单位给出或明确说明基本单位： <code>107374182400</code>、<code>'107.7Gb'</code>或<code>'107374 Mb'</code>。</p>
+<p>Meilisearch 在索引期间可能会超出确切的 RAM 限制。在大多数环境和机器中，这应该是一个可以忽略不计的数量，对稳定性和性能几乎没有影响。</p>
+<p>设置为大于或等于机器总内存的值可能会导致实例崩溃。</p>
+</li>
+<li><p><code>--max-indexing-threads</code></p>
+<p>避免设置为机器处理器内核的总数。尽管这样做可能会加快索引编制速度，但可能会严重影响搜索体验。</p>
+</li>
+</ul>
+<p>所有的参数具体详情请参考<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/configuration/instance_options.html#all-instance-options">这里</a>。</p>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><h2 id="Documents"><a href="#Documents" class="headerlink" title="Documents"></a>Documents</h2><p><strong>Documents(文档数据)</strong>是由一个或者多个字段组成的复杂结构对象。可以理解为一个<code>JSON</code>对象。类似于数据库表中的一条<strong>记录</strong>。<strong>Document</strong>是<strong>MeiliSearch</strong>的最基本数据记录。这与<code>ES</code>及其相似。</p>
+<h3 id="文档结构"><a href="#文档结构" class="headerlink" title="文档结构"></a>文档结构</h3><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/meili-document.png" style="zoom:50%;"></p>
+<p><strong>字段解释</strong></p>
+<ul>
+<li><strong>Document</strong>: 文档。包含一个或多个字段形式的数据的对象。</li>
+<li><strong>Field</strong>: 字段。一组K-V数据项,一个属性和一个值。</li>
+<li><strong>Attribute</strong>: 字段的属性。</li>
+<li><strong>Value</strong>: 字段的值。</li>
+<li><strong>Primary Field</strong>: 主键字段。</li>
+</ul>
+<h2 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h2><p><strong>Index(索引库)</strong>是一系列相同<strong>Documents(文档)</strong>的组合库。类似于数据库中的<strong>数据表</strong>。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/indexes.html#create-an-index">您可以使用create index 端点</a>显式创建索引。创建后，您可以使用<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents">添加文档端点</a>添加文档。</p>
+<p>虽然隐式索引创建更方便，只需要一个 API 请求，但<strong>显式索引创建被认为对生产更安全</strong>。这是因为隐式索引创建将多个操作捆绑到一个任务中。如果一个操作成功完成而另一个操作失败，则问题可能难以诊断。</p>
+<h3 id="索引唯一标识"><a href="#索引唯一标识" class="headerlink" title="索引唯一标识"></a>索引唯一标识</h3><p><code>Uid</code>是索引的<strong>唯一标识符</strong><code>uid</code>。它在创建索引时设置，并且必须是整数或仅包含字母数字字符、连字符和下划线的字符串。<code>a-z A-Z 0-9``-``_</code>。</p>
+<p><strong>一旦定义，就<code>uid</code>不能更改</strong>，并且不能使用相同的创建另一个索引<code>uid</code>。</p>
+<h3 id="主键"><a href="#主键" class="headerlink" title="主键"></a>主键</h3><p>每个索引都有一个主键：一个必需的属性，必须存在于索引中的所有文档中。每个文档必须有一个与此属性关联的唯一值。</p>
+<p>主键用于标识每个文档，因此索引中的两个文档永远不会完全相同。如果您添加两个主键值相同的文档，它们将被视为同一个文档：一个将覆盖另一个。如果您尝试添加文档，即使有一个文档缺少主键，也不会存储任何文档。</p>
+<p>您可以为索引设置主键，也可以让美力搜索自行推断。</p>
+<h1 id="API"><a href="#API" class="headerlink" title="API"></a>API</h1><hr>
+
+<p><strong>MeiliSearch</strong>是一个 RESTfulAPI。对于一些简单的API,就不写过多的方式实现了,基于HTTP请求的方式进行演示。</p>
+<p>官方提供了<code>OpenAPI</code>文档.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://bump.sh/doc/meilisearch.yaml">YAML </a></li>
+<li><a target="_blank" rel="noopener" href="https://bump.sh/doc/meilisearch.json">JSON </a></li>
+</ul>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>API路由中的花括号（<code>{}</code>）表示路径参数，例如GET<code>/indexes/{index_uid}</code></li>
+<li>必填字段标有星号 ( <code>*</code>)</li>
+<li>占位符文本为带有下划线分隔符的大写字符，例如，<code>MASTER_KEY</code></li>
+</ul>
+<hr>
+
+<h3 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h3><p>如果开启了授权认证模式,那么请求时必须在请求头中添加<code>Authorization</code>参数和有效的<code>秘钥值</code>才可以访问。</p>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">curl \
+  -X GET 'http<span class="token operator">:</span><span class="token comment">//localhost:7700/keys' \</span>
+  -H 'Authorization<span class="token operator">:</span> Bearer MASTER_KEY'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><p>对于一些大量数据的查询,如GET<code>/indexes</code>、GET<code>/documents</code>等查询,默认会进行分页响应。默认每页返回20条结果。</p>
+<p>也可以通过<code>limit</code>和<code>offset</code>参数进行自定义数量数据查询。</p>
+<p><strong>分页参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>offset</code></strong></td>
+<td style="text-align:left">整数</td>
+<td style="text-align:left">跳过的资源数</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>limit</code></strong></td>
+<td style="text-align:left">整数</td>
+<td style="text-align:left">返回的资源数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>total</code></strong></td>
+<td style="text-align:left">整数</td>
+<td style="text-align:left">资源总数</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+
+<h3 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h3><p>参数是您可以传递给 API 端点以修改其响应的选项。美丽搜索API中的参数主要分为三类：请求体参数、路径参数和查询参数。</p>
+<p><strong>请求体参数</strong></p>
+<p>这些参数是 POST、PUT 和 PATCH 请求的必需部分。它们接受各种值和数据类型，具体取决于您要修改的资源。您必须将这些参数添加到请求的数据负载中。</p>
+<p><strong>路径参数</strong></p>
+<p>这些是您在端点路径中传递给 API 的参数。它们用于唯一标识资源。您可以有多个路径参数，例如，<code>/indexes/{index_uid}/documents/{document_id}</code>.</p>
+<p>如果端点不采用任何路径参数，则此部分不会出现在该端点的文档中。</p>
+<p><strong>查询参数</strong></p>
+<p>这些可选参数是一系列键值对，出现<code>?</code>在端点中的问号 () 之后。您可以列出多个查询参数，方法是用与号 (<code>&amp;</code>) 分隔它们。查询参数的顺序无关紧要。它们主要与 GET 端点一起使用。</p>
+<hr>
+
+<h3 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h3><p><strong>Content-Type</strong></p>
+<p>内容类型标头指示资源的媒体类型，帮助客户端正确处理响应正文。</p>
+<ul>
+<li><p><code>Content-Type: application/json</code>对于 JSON</p>
+</li>
+<li><p><code>Content-Type: application/x-ndjson</code>对于 NDJSON</p>
+</li>
+<li><p><code>Content-Type: text/csv</code>对于 CSV</p>
+<p>只有<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents">添加文档</a>和<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents">更新文档</a>端点接受 NDJSON 和 CSV。对于所有其他人，请使用<code>Content-Type: application/json</code>.</p>
+</li>
+</ul>
+<p><strong>Content-Encodeing</strong></p>
+<p>压缩通过发送和接收较小的有效负载来提高传输速度并减少带宽消耗。</p>
+<p><code>Content-Encoding</code>请求参数压缩方式。</p>
+<p><code>Accept-Encoding</code>响应参数压缩方式。</p>
+<ul>
+<li><code>br</code>: 使用<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Brotli">Brotli (opens new window) </a>算法</li>
+<li><code>deflate</code>: 使用<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Zlib">zlib (opens new window) </a>结构和<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/DEFLATE">deflate (opens new window) </a>压缩算法</li>
+<li><code>gzip</code>: 使用<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gzip">GZip (opens new window) </a>算法</li>
+</ul>
+<hr>
+
+<h3 id="请求体"><a href="#请求体" class="headerlink" title="请求体"></a>请求体</h3><p>请求正文是发送到 API 的数据。它与 PUT、POST 和 PATCH 方法一起使用来创建或更新资源。您必须以 JSON 格式提供请求正文。</p>
+<hr>
+
+<h3 id="响应体"><a href="#响应体" class="headerlink" title="响应体"></a>响应体</h3><p>美丽搜索是一个<strong>异步API</strong>。这意味着响应大多数写入请求，您将收到一个异步任务信息。</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"taskUid"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span> <span class="token string">"movies"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"enqueued"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"indexUpdate"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span> <span class="token string">"2021-08-11T09:25:53.000000Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>您可以使用它<code>taskUid</code>来获取<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/tasks.html#get-one-task">有关任务状态的</a>更多详细信息。</p>
+<hr>
+
+<h2 id="索引-API"><a href="#索引-API" class="headerlink" title="索引-API"></a>索引-API</h2><p>通过该<code>/indexes</code>路由允许您创建、管理和删除索引。</p>
+<h3 id="索引信息"><a href="#索引信息" class="headerlink" title="索引信息"></a>索引信息</h3><p>一个最基本的<code>Index</code>含有以下信息</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"uid"</span><span class="token operator">:</span> <span class="token string">"movies"</span><span class="token punctuation">,</span>
+  <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2022-02-10T07:45:15.628261Z"</span><span class="token punctuation">,</span>
+  <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2022-02-21T15:28:43.496574Z"</span><span class="token punctuation">,</span>
+  <span class="token property">"primaryKey"</span><span class="token operator">:</span> <span class="token string">"id"</span>
+<span class="token punctuation">}</span>
+ <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>uid</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">索引的<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/indexes.html#index-uid">唯一标识符。</a>一经创建，不可更改。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>createdAt</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">索引的创建日期。在创建索引时自动生成。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>updatedAt</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">最后一条文档更新时间。在索引创建或更新时自动生成。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>primaryKey</code></strong></td>
+<td style="text-align:left">String /null</td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">索引的<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/primary_key.html#primary-field">主键。</a>如果没有指定，美力搜索会从您添加到索引的第一个文档中<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/primary_key.html#meilisearch-guesses-your-primary-key">猜测您的主键</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+
+<h3 id="查询所有索引"><a href="#查询所有索引" class="headerlink" title="查询所有索引"></a>查询所有索引</h3><p><strong>Path:</strong> <code>/indexes</code></p>
+<p><strong>Method</strong>: <code>GET</code></p>
+<p><strong>查询参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Query parameter</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>offset</code></strong></td>
+<td style="text-align:left">偏移量。要跳过的数量。</td>
+<td style="text-align:left"><code>0</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>limit</code></strong></td>
+<td style="text-align:left">返回的数量。</td>
+<td style="text-align:left"><code>20</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>响应参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">姓名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>results</code></strong></td>
+<td style="text-align:left">Array</td>
+<td style="text-align:left"><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/indexes.html#index-object">索引</a>数组</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>offset</code></strong></td>
+<td style="text-align:left">Int</td>
+<td style="text-align:left">跳过的索引数</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>limit</code></strong></td>
+<td style="text-align:left">Int</td>
+<td style="text-align:left">返回的索引数</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>total</code></strong></td>
+<td style="text-align:left">Int</td>
+<td style="text-align:left">索引总数</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">curl  -X GET 'http<span class="token operator">:</span><span class="token comment">//localhost:7700/indexes?limit=3'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"results"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"uid"</span><span class="token operator">:</span> <span class="token string">"movies"</span><span class="token punctuation">,</span>
+            <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-22T13:08:02.258642Z"</span><span class="token punctuation">,</span>
+            <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-22T13:08:06.564941Z"</span><span class="token punctuation">,</span>
+            <span class="token property">"primaryKey"</span><span class="token operator">:</span> <span class="token string">"id"</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"uid"</span><span class="token operator">:</span> <span class="token string">"users"</span><span class="token punctuation">,</span>
+            <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T05:44:45.507995Z"</span><span class="token punctuation">,</span>
+            <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T05:44:45.512353Z"</span><span class="token punctuation">,</span>
+            <span class="token property">"primaryKey"</span><span class="token operator">:</span> <span class="token string">"id"</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"offset"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"limit"</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+    <span class="token property">"total"</span><span class="token operator">:</span> <span class="token number">2</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h3 id="查询单条索引"><a href="#查询单条索引" class="headerlink" title="查询单条索引"></a>查询单条索引</h3><p><strong>Path:</strong> <code>/indexes/{index_uid}</code></p>
+<p><strong>Method</strong>: <code>GET</code></p>
+<p><strong>查询参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">姓名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>index_uid</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">索引唯一标识。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">curl -X GET 'http<span class="token operator">:</span><span class="token comment">//localhost:7700/indexes/users'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>响应结果</strong>: <code>200 Ok</code></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"uid"</span><span class="token operator">:</span> <span class="token string">"users"</span><span class="token punctuation">,</span>
+    <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T05:44:45.507995Z"</span><span class="token punctuation">,</span>
+    <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T05:44:45.512353Z"</span><span class="token punctuation">,</span>
+    <span class="token property">"primaryKey"</span><span class="token operator">:</span> <span class="token string">"id"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><p><strong>Method</strong>: <code>POST</code>  </p>
+<p><strong>Path</strong>: <code>/indexes</code></p>
+<p><strong>Request Body</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">参数类型</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>uid</code></strong> *</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">N/A</td>
+<td style="text-align:left">索引库名称。索引库的唯一标识。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>primaryKey</code></strong></td>
+<td style="text-align:left">String / <code>null</code></td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">索引的主键列字段名称。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"uid"</span><span class="token operator">:</span> <span class="token string">"users"</span><span class="token punctuation">,</span>
+  <span class="token property">"primaryKey"</span><span class="token operator">:</span> <span class="token string">"id"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">curl \
+  -X POST 'http<span class="token operator">:</span><span class="token comment">//localhost:7700/indexes' \</span>
+  -H 'Content-Type<span class="token operator">:</span> application/json' \
+  --data-binary '<span class="token punctuation">{</span>
+    <span class="token property">"uid"</span><span class="token operator">:</span> <span class="token string">"users"</span><span class="token punctuation">,</span>
+    <span class="token property">"primaryKey"</span><span class="token operator">:</span> <span class="token string">"id"</span>
+  <span class="token punctuation">}</span>'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"taskUid"</span><span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span><span class="token string">"users"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span><span class="token string">"enqueued"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span><span class="token string">"indexCreation"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span><span class="token string">"2023-03-23T05:44:45.504971Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意,这里只是响应了<strong>异步任务</strong>的<code>Uid</code>,具体有没有创建索引成功,需要进一步跟踪这个异步任务状态。下面有任务相关的API。</p>
+<hr>
+
+<h3 id="更新索引"><a href="#更新索引" class="headerlink" title="更新索引"></a>更新索引</h3><p>注意: 只能更新目前还没有<strong>文档数据</strong>的<strong>索引</strong>。如果想更新包含<strong>文档数据</strong>的<strong>索引</strong>,必须先删除<strong>索引</strong>中的所有<strong>文档</strong>。而且索引的<code>uid</code>是无法更改的。</p>
+<p><strong>Method</strong>: <code>PATCH</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}</code></p>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">curl \
+  -X PATCH 'http<span class="token operator">:</span><span class="token comment">//localhost:7700/indexes/users' \</span>
+  -H 'Content-Type<span class="token operator">:</span> application/json' \
+  --data-binary '<span class="token punctuation">{</span> <span class="token property">"primaryKey"</span><span class="token operator">:</span> <span class="token string">"new_id"</span> <span class="token punctuation">}</span>'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>响应</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"uid"</span><span class="token operator">:</span> <span class="token string">"users"</span><span class="token punctuation">,</span>
+    <span class="token property">"createdAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T05:44:45.507995Z"</span><span class="token punctuation">,</span>
+    <span class="token property">"updatedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T06:16:22.704246Z"</span><span class="token punctuation">,</span>
+    <span class="token property">"primaryKey"</span><span class="token operator">:</span> <span class="token string">"new_id"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h3 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h3><p><strong>Method</strong>: <code>DELETE</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}</code></p>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">curl  -X DELETE 'http<span class="token operator">:</span><span class="token comment">//localhost:7700/indexes/users'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>响应</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"taskUid"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span> <span class="token string">"users"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"enqueued"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"indexDeletion"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T06:19:26.390532Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>您可以使用响应<code>taskUid</code>来跟踪任务的状态。</p>
+<hr>
+
+<h3 id="索引交换"><a href="#索引交换" class="headerlink" title="索引交换"></a>索引交换</h3><p>交换两个或多个索引的文档、设置和任务历史记录。<strong>您只能成对交换索引。</strong>单个请求可以根据需要交换任意数量的索引对。</p>
+<p>交换索引是一个原子事务：<strong>要么所有索引都成功交换，要么都不交换。</strong></p>
+<p><strong>Method</strong>: <code>POST</code>  </p>
+<p><strong>Path</strong>: <code>/swap-indexes</code></p>
+<p><strong>请求参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>indexes</code></strong></td>
+<td style="text-align:left">字符串类型数组</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">要交换的两个索引唯一标识。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">curl \
+  -X POST 'http<span class="token operator">:</span><span class="token comment">//localhost:7700/swap-indexes' \</span>
+  -H 'Content-Type<span class="token operator">:</span> application/json' \
+  --data-binary '<span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"indexes"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">"movies"</span><span class="token punctuation">,</span>
+        <span class="token string">"users"</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span>'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>响应</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"taskUid"</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"enqueued"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"indexSwap"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T06:31:08.997747Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于<code>indexSwap</code>是一项<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/advanced/asynchronous_operations.html#global-tasks">全局任务</a>，因此<code>indexUid</code>始终是<code>null</code>。</p>
+<p>您可以使用响应<code>taskUid</code>来跟踪任务的状态。</p>
+<p>任务执行完后<code>movies</code>和<code>users</code>索引库中的数据就会进行一个<strong>交换转移</strong>。如下所示:</p>
+<div class="tabs" id=""><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#-1">交换前</button></li><li class="tab"><button type="button" data-href="#-2">交换后</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="-1"><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/convertBefore.png" style="zoom:70%;"></p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-2"><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/convertAfter.png" style="zoom:70%;"></p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<hr>
+
+<h2 id="文档-API"><a href="#文档-API" class="headerlink" title="文档-API"></a>文档-API</h2><hr>
+
+<h3 id="查询文档列表"><a href="#查询文档列表" class="headerlink" title="查询文档列表"></a>查询文档列表</h3><p><strong>Method</strong>: <code>GET</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/documents</code></p>
+<p>查询指定索引库中的一组文档。使用查询参数<code>offset</code>和<code>limit</code>，您可以浏览所有文档。</p>
+<p><strong>Meilisearch 根据其 id 的哈希值对文档进行排序。</strong></p>
+<p><strong>Path参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>index_uid</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">要查询的索引库标识。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>查询参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>offset</code></strong></td>
+<td style="text-align:left"><code>0</code></td>
+<td style="text-align:left">要跳过的文档数</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>limit</code></strong></td>
+<td style="text-align:left"><code>20</code></td>
+<td style="text-align:left">要返回的文档数</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>fields</code></strong></td>
+<td style="text-align:left"><code>*</code></td>
+<td style="text-align:left">要查询的文档属性（区分大小写，以逗号分隔）。<code>*</code>表示所有属性</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>响应参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">姓名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>results</code></strong></td>
+<td style="text-align:left">Array</td>
+<td style="text-align:left">查询到的文档结果集</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>offset</code></strong></td>
+<td style="text-align:left">Int</td>
+<td style="text-align:left">跳过的文档数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>limit</code></strong></td>
+<td style="text-align:left">Int</td>
+<td style="text-align:left">查询的文档数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>total</code></strong></td>
+<td style="text-align:left">Int</td>
+<td style="text-align:left">索引中的文档总数</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="示例一-查询指定数量文档"><a href="#示例一-查询指定数量文档" class="headerlink" title="示例一: 查询指定数量文档"></a>示例一: 查询指定数量文档</h4><p><strong>需求:</strong> 查询<code>movies</code>索引库的前2条文档数据。</p>
+<div class="tabs" id=""><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#-1">Curl</button></li><li class="tab"><button type="button" data-href="#-2">Java</button></li><li class="tab"><button type="button" data-href="#-3">Go</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="-1"><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> -X GET <span class="token string">'http://localhost:7700/indexes/movies/documents?limit=2'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-2"><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">DocumentsQuery</span> query <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DocumentsQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setLimit</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+client<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span><span class="token string">"movies"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDocuments</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-3"><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">var</span> a <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+client<span class="token punctuation">.</span><span class="token function">Index</span><span class="token punctuation">(</span><span class="token string">"movies"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">GetDocuments</span><span class="token punctuation">(</span><span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>meilisearch<span class="token punctuation">.</span>DocumentsQuery<span class="token punctuation">{</span>
+  Limit<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>a<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"results"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">2</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Ariel"</span><span class="token punctuation">,</span>
+            <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"Taisto Kasurinen is a Finnish..."</span><span class="token punctuation">,</span>
+            <span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+                <span class="token string">"Drama"</span><span class="token punctuation">,</span>
+                <span class="token string">"Crime"</span><span class="token punctuation">,</span>
+                <span class="token string">"Comedy"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/ojDg0PGvs6R9xYFodRct2kdI6wC.jpg"</span><span class="token punctuation">,</span>
+            <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">593395200</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">5</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Four Rooms"</span><span class="token punctuation">,</span>
+            <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"It's Ted the Bellhop's first ...."</span><span class="token punctuation">,</span>
+            <span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+                <span class="token string">"Crime"</span><span class="token punctuation">,</span>
+                <span class="token string">"Comedy"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/75aHn1NOYXh4M7L5shoeQ6NGykP.jpg"</span><span class="token punctuation">,</span>
+            <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">818467200</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"offset"</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"limit"</span><span class="token operator">:</span><span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"total"</span><span class="token operator">:</span><span class="token number">31944</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="示例二-分页查询"><a href="#示例二-分页查询" class="headerlink" title="示例二: 分页查询"></a>示例二: 分页查询</h4><p><strong>需求:</strong> 对<code>movies</code>索引库进行分页查询,分页显示3条记录,查询第50页数据。</p>
+<p><strong>分页偏移量计算公式</strong>: 页容量 * (页码 - 1)</p>
+<p>所以<code>offset</code>= 3 <em> (50 - 1) = <em>*147</em></em></p>
+<div class="tabs" id=""><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#-1">Curl</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="-1"><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> -X GET <span class="token string">'http://localhost:7700/indexes/movies/documents?limit=3&amp;offset=147'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"results"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">214</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Saw III"</span><span class="token punctuation">,</span>
+            <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"Jigsaw has disappeared..."</span><span class="token punctuation">,</span>
+            <span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+                <span class="token string">"Horror"</span><span class="token punctuation">,</span>
+                <span class="token string">"Thriller"</span><span class="token punctuation">,</span>
+                <span class="token string">"Crime"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/dfl7ti4ataetiyoOg3SI0FA9KeP.jpg"</span><span class="token punctuation">,</span>
+            <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">1161907200</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">215</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Saw II"</span><span class="token punctuation">,</span>
+            <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"When a new murd..."</span><span class="token punctuation">,</span>
+            <span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+                <span class="token string">"Horror"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/gTnaTysN8HsvVQqTRUh8m35mmUA.jpg"</span><span class="token punctuation">,</span>
+            <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">1130457600</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">216</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Ali: Fear Eats the Soul"</span><span class="token punctuation">,</span>
+            <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"Emmi Kurowski, a cleaning lady, is lonel...."</span><span class="token punctuation">,</span>
+            <span class="token property">"genres"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+                <span class="token string">"Romance"</span><span class="token punctuation">,</span>
+                <span class="token string">"Drama"</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w500/raYnFIAXuxl3GwVPg1GkODi9dVq.jpg"</span><span class="token punctuation">,</span>
+            <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token number">139622400</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"offset"</span><span class="token operator">:</span><span class="token number">147</span><span class="token punctuation">,</span>
+    <span class="token property">"limit"</span><span class="token operator">:</span><span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"total"</span><span class="token operator">:</span><span class="token number">31944</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="示例三-查询部分字段"><a href="#示例三-查询部分字段" class="headerlink" title="示例三: 查询部分字段"></a>示例三: 查询部分字段</h4><p><strong>需求:</strong> 现在我只需要文档的<code>id</code>与<code>title</code>字段,其他字段是不需要的,所以就不要查询出来了,避免性能消耗。</p>
+<p>通过<code>fields</code>参数来控制要查询的字段。就像<code>SQL</code>语句中的<code>select *</code>一样。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> -X GET <span class="token string">'http://localhost:7700/indexes/movies/documents?limit=2&amp;fields=id,title'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"results"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Ariel"</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Four Rooms"</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"offset"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"limit"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"total"</span><span class="token operator">:</span> <span class="token number">31944</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h3 id="查询单条文档"><a href="#查询单条文档" class="headerlink" title="查询单条文档"></a>查询单条文档</h3><p><strong>Method</strong>: <code>GET</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/documents/{document_id}</code></p>
+<p>根据文档ID查询文档数据。</p>
+<p><strong>Path参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">姓名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>index_uid</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">要查询的索引库标识</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>document_id</code></strong></td>
+<td style="text-align:left">String/Int</td>
+<td style="text-align:left">要查询的文档ID</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span>
+  -X GET <span class="token string">'http://localhost:7700/indexes/movies/documents/25684?fields=id,title'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">25684</span><span class="token punctuation">,</span>
+    <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"American Ninja 5"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h3 id="添加或覆盖文档"><a href="#添加或覆盖文档" class="headerlink" title="添加或覆盖文档"></a>添加或覆盖文档</h3><p><strong>Method</strong>: <code>POST</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/documents</code></p>
+<p>添加一条<strong>新文档</strong>数据。如果要添加的<strong>新文档主键</strong>已经存在,则会将那<strong>整条已存在的文档</strong>覆盖掉。</p>
+<p>支持以下<code>content-type</code>类型:</p>
+<ul>
+<li><code>application/json</code></li>
+<li><code>application/x-ndjson</code></li>
+<li><code>text/csv</code></li>
+</ul>
+<p><strong>Path参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">姓名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>index_uid</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">要新增的索引库标识</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>请求参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">查询参数</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>primaryKey</code></strong></td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">索引的主键字段名</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注意: <code>primaryKey</code>参数只有在第一次向索引库<strong>添加文档</strong>时才会生效。在此之后的<strong>新增文档</strong>再给出此参数会被忽略掉。</p>
+<p>也就是说我们只需要指定一次,告诉这个<strong>索引库</strong>,使用<strong>文档</strong>中的哪个字段作为<strong>主键</strong>即可。然后后续的<strong>添加操作</strong>索引库会自己维护。</p>
+<p><strong>请求体</strong></p>
+<p>请求体以<code>Json</code>格式传输,而这个请求体就是我们要新增的文档数据</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">287947</span><span class="token punctuation">,</span>
+    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Shazam"</span><span class="token punctuation">,</span>
+    <span class="token property">"poster"</span><span class="token operator">:</span> <span class="token string">"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg"</span><span class="token punctuation">,</span>
+    <span class="token property">"overview"</span><span class="token operator">:</span> <span class="token string">"A boy is given the ability to become an adult superhero in times of need with a single magic word."</span><span class="token punctuation">,</span>
+    <span class="token property">"release_date"</span><span class="token operator">:</span> <span class="token string">"2019-03-23"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span>
+  -X POST <span class="token string">'http://localhost:7700/indexes/movies/documents'</span> <span class="token punctuation">\</span>
+  -H <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  --data-binary <span class="token string">'[
+    {
+      "id": 287947,
+      "title": "Shazam",
+      "poster": "https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg",
+      "overview": "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+      "release_date": "2019-03-23"
+    }
+  ]'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"taskUid"</span><span class="token operator">:</span><span class="token number">11</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span><span class="token string">"movies"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span><span class="token string">"enqueued"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span><span class="token string">"documentAdditionOrUpdate"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span><span class="token string">"2023-03-23T09:19:58.484419Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后我们来查询一下这条刚插入的文档:</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> -X GET <span class="token string">'http://localhost:7700/indexes/movies/documents/287947'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>查询结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span><span class="token number">287947</span><span class="token punctuation">,</span>
+    <span class="token property">"title"</span><span class="token operator">:</span><span class="token string">"Shazam"</span><span class="token punctuation">,</span>
+    <span class="token property">"overview"</span><span class="token operator">:</span><span class="token string">"A boy is given the ability to become an adult..."</span><span class="token punctuation">,</span>
+    <span class="token property">"poster"</span><span class="token operator">:</span><span class="token string">"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg"</span><span class="token punctuation">,</span>
+    <span class="token property">"release_date"</span><span class="token operator">:</span><span class="token string">"2019-03-23"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h3 id="添加或更新文档"><a href="#添加或更新文档" class="headerlink" title="添加或更新文档"></a>添加或更新文档</h3><p><strong>Method</strong>: <code>PUT</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/documents</code></p>
+<p>更新或者添加文档。</p>
+<p>如果要更新的文档不存在,则添加它。</p>
+<p>如果要更新的文档已存在,那么只会进行<strong>局部更新</strong>。只会更新新文档与旧文档<strong>同时存在</strong>的字段。不会直接覆盖掉原来的<strong>旧文档</strong>。</p>
+<p>对于<strong>新文档</strong>的新字段也会<strong>添加到文档</strong>中。</p>
+<p><strong>Path参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">姓名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>index_uid</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">要新增的索引库标识</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>请求参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">查询参数</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>primaryKey</code></strong></td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">索引的主键字段名</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>请求体</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token comment">// 要更新的文档id</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">287947</span><span class="token punctuation">,</span>
+  <span class="token comment">// 要更新的字段</span>
+    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Shazam ⚡️"</span><span class="token punctuation">,</span>
+  <span class="token comment">// 要新增的字段</span>
+    <span class="token property">"genres"</span><span class="token operator">:</span> <span class="token string">"comedy"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span>
+  -X PUT <span class="token string">'http://localhost:7700/indexes/movies/documents'</span> <span class="token punctuation">\</span>
+  -H <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  --data-binary <span class="token string">'[
+    {
+      "id": 287947,
+      "title": "Shazam ⚡️",
+      "genres": "comedy"
+    }
+  ]'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这些文档是匹配的，因为它们具有相同的<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/core_concepts/documents.html#primary-field">主</a>键值<code>id: 287947</code>。此路由将更新<code>title</code>字段，因为它从更改为<code>Shazam</code>并将<code>Shazam ⚡️</code>新<code>genres</code>字段添加到该文档。文档的其余部分将保持不变。</p>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"taskUid"</span><span class="token operator">:</span> <span class="token number">21</span><span class="token punctuation">,</span>
+    <span class="token property">"indexUid"</span><span class="token operator">:</span> <span class="token string">"movies"</span><span class="token punctuation">,</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"enqueued"</span><span class="token punctuation">,</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"documentAdditionOrUpdate"</span><span class="token punctuation">,</span>
+    <span class="token property">"enqueuedAt"</span><span class="token operator">:</span> <span class="token string">"2023-03-23T09:34:41.977794Z"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h3 id="删除所有文档"><a href="#删除所有文档" class="headerlink" title="删除所有文档"></a>删除所有文档</h3><p><strong>Method</strong>: <code>DELETE</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/documents</code></p>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> -X DELETE <span class="token string">'http://localhost:7700/indexes/movies/documents'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="删除单条文档"><a href="#删除单条文档" class="headerlink" title="删除单条文档"></a>删除单条文档</h3><p><strong>Method</strong>: <code>DELETE</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/documents/{document_id}</code></p>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> -X DELETE <span class="token string">'http://localhost:7700/indexes/movies/documents/25684'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="批量删除文档"><a href="#批量删除文档" class="headerlink" title="批量删除文档"></a>批量删除文档</h3><p><strong>Method</strong>: <code>POST</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/documents/delete-batch</code></p>
+<p>根据一个文档主键数组,批量删除文档。</p>
+<p><strong>请求体</strong></p>
+<p>要删除的所有文档的<strong>主键</strong>。</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">[</span><span class="token number">23488</span><span class="token punctuation">,</span> <span class="token number">153738</span><span class="token punctuation">,</span> <span class="token number">437035</span><span class="token punctuation">,</span> <span class="token number">363869</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span>
+  -X POST <span class="token string">'http://localhost:7700/indexes/movies/documents/delete-batch'</span> <span class="token punctuation">\</span>
+  -H <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  --data-binary <span class="token string">'[
+    23488,
+    153738,
+    437035,
+    363869
+  ]'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h1 id="搜索-API"><a href="#搜索-API" class="headerlink" title="搜索-API"></a>搜索-API</h1><p><strong>Meili-Search</strong>提供了两种请求类型:</p>
+<ul>
+<li><code>POST</code>: 这是使用 API 身份验证时的首选路由，因为它允许<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request">预检请求(opens new window) </a>缓存和更好的性能</li>
+<li><code>GET</code>: 不鼓励使用此路由，除非您有充分的理由不这样做（例如特定的缓存能力）</li>
+</ul>
+<h2 id="POST-Search"><a href="#POST-Search" class="headerlink" title="POST-Search"></a>POST-Search</h2><p><strong>Method</strong>: <code>POST</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/search</code></p>
+<p>在指定的索引库<code>index_uid</code>以<code>POST</code>请求进行特定的条件文档<strong>搜索</strong>。</p>
+<p>这是开启了认证功能时执行<strong>搜索</strong>的推荐方式。因为它允许缓存预检请求,可以提高搜索速度。</p>
+<blockquote>
+<p><strong>笔记</strong><br>默认情况下,此方式最多返回1000条结果文档。</p>
+</blockquote>
+<p><strong>Path参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>index_uid</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">要搜索的索引库</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>请求体参数</strong></p>
+<p>搜索参数比其他请求的请求多一些,有如下:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">参数类型</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>q</code></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"><code>""</code></td>
+<td style="text-align:left">要搜索的<strong>关键词</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#offset"><code>offset</code></a></strong></td>
+<td style="text-align:left">Integer</td>
+<td style="text-align:left"><code>0</code></td>
+<td style="text-align:left">要跳过的文档偏移量</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#limit"><code>limit</code></a></strong></td>
+<td style="text-align:left">Integer</td>
+<td style="text-align:left"><code>20</code></td>
+<td style="text-align:left">要查询的文档最大数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>hitsPerPage</code></td>
+<td style="text-align:left">Integer</td>
+<td style="text-align:left"><code>1</code></td>
+<td style="text-align:left">分页搜索。每页显示的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>page</code></td>
+<td style="text-align:left">Integer</td>
+<td style="text-align:left"><code>1</code></td>
+<td style="text-align:left">分页搜索。要搜索的页码</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#filter"><code>filter</code></a></strong></td>
+<td style="text-align:left">Array of strings</td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">过滤器按属性值过滤查询</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#facets"><code>facets</code></a></strong></td>
+<td style="text-align:left">Array of strings</td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">显示每个构面的匹配数</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>attributesToRetrieve</code></td>
+<td style="text-align:left">Array of strings</td>
+<td style="text-align:left"><code>["*"]</code></td>
+<td style="text-align:left">在返回的文档中显示的属性</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#attributes-to-crop"><code>attributesToCrop</code></a></strong></td>
+<td style="text-align:left">Array of strings</td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">必须裁剪其值的属性</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#crop-length"><code>cropLength</code></a></strong></td>
+<td style="text-align:left">Integer</td>
+<td style="text-align:left"><code>10</code></td>
+<td style="text-align:left">单词裁剪值的最大长度</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#crop-marker"><code>cropMarker</code></a></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"><code>"…"</code></td>
+<td style="text-align:left">字符串标记作物边界</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#attributes-to-highlight"><code>attributesToHighlight</code></a></strong></td>
+<td style="text-align:left">Array of strings</td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">要高亮显示的<strong>关键词</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#highlight-tags"><code>highlightPreTag</code></a></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"><code>"&lt;em&gt;"</code></td>
+<td style="text-align:left">插入在<strong>高亮关键词</strong>的前缀</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#highlight-tags"><code>highlightPostTag</code></a></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"><code>"&lt;/em&gt;"</code></td>
+<td style="text-align:left">插入在<strong>高亮关键词</strong>的后缀</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#show-matches-position"><code>showMatchesPosition</code></a></strong></td>
+<td style="text-align:left">Boolean</td>
+<td style="text-align:left"><code>false</code></td>
+<td style="text-align:left">返回匹配项位置</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#sort"><code>sort</code></a></strong></td>
+<td style="text-align:left">Array of strings</td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">根据哪些字段排序</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#matching-strategy"><code>matchingStrategy</code></a></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"><code>last</code></td>
+<td style="text-align:left">用于匹配文档中的查询词的策略</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>响应参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">姓名</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>hits</code></strong></td>
+<td style="text-align:left">Array of objects</td>
+<td style="text-align:left">查询结果集</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>offset</code></strong></td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">搜索时要跳过的文档偏移量</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>limit</code></strong></td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">请求时要查询的文档数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>estimatedTotalHits</code></td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">匹配条件的文档预估数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>totalHits</code></td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">匹配条件的文档总数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>totalPages</code></strong></td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">分页搜索。结果集的总页数,可以分为多少页</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>hitsPerPage</code></strong></td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">分页搜索。每页显示的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>page</code></strong></td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">分页搜索。当前搜索的页码</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>facetDistribution</code></strong></td>
+<td style="text-align:left">Object</td>
+<td style="text-align:left"><strong><a target="_blank" rel="noopener" href="https://docs.meilisearch.com/reference/api/search.html#facets">给定方面的分布</a></strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>processingTimeMs</code></strong></td>
+<td style="text-align:left">Number</td>
+<td style="text-align:left">查询的处理时间(毫秒)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>query</code></strong></td>
+<td style="text-align:left">String</td>
+<td style="text-align:left">查询发起响应</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>默认情况下使用<code>offset</code>与<code>limit</code>搜索时,只会返回搜索结果总数的一个预估值<code>estimatedTotalHits</code>。发生这种情况是因为美力搜索优先考虑相关性和性能。</p>
+<p>如果你想获得具体搜索结果总数,请在查询中使用<strong>分页查询</strong>,通过<code>hitsPerPage</code>和<code>page</code>来进行搜索。此方式会响应一个<code>totalHits</code>字段,表示结果集的总数量。不过使用这种方式可能会导致性能略有所下降。</p>
+<p>下面分别演示一下这两种查询方式:</p>
+<h3 id="示例一-预估查询"><a href="#示例一-预估查询" class="headerlink" title="示例一: 预估查询"></a>示例一: 预估查询</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span>
+  -X POST <span class="token string">'http://localhost:7700/indexes/movies/search'</span> <span class="token punctuation">\</span>
+  -H <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  --data-binary <span class="token string">'{"q": "test", "offset": 0,"limit": 3,"attributesToRetrieve": ["id"]}'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>关键词为<code>test</code>,并且只查询前<code>3</code>条数据,只显示<code>id</code>字段。</p>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"hits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">226979</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">5591</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">21259</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"query"</span><span class="token operator">:</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
+    <span class="token property">"processingTimeMs"</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    <span class="token property">"limit"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"offset"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"estimatedTotalHits"</span><span class="token operator">:</span> <span class="token number">488</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到,这种方式只返回了<code>estimatedTotalHits</code>结果总数的预估值,这个值可能有时候并不准确。</p>
+<h3 id="示例二-分页查询-1"><a href="#示例二-分页查询-1" class="headerlink" title="示例二: 分页查询"></a>示例二: 分页查询</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span>
+  -X POST <span class="token string">'http://localhost:7700/indexes/movies/search'</span> <span class="token punctuation">\</span>
+  -H <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  --data-binary <span class="token string">'{"q":"test","hitsPerPage":3,"page": 1,"attributesToRetrieve": ["id"]}'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>关键词一样为<code>test</code>,一样只显示<code>id</code>字段。</p>
+<p><code>hitsPerPage:3</code>: 每页显示3条文档。</p>
+<p><code>page: 1</code>: 搜索第1页。</p>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"hits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">226979</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">5591</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">21259</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"query"</span><span class="token operator">:</span> <span class="token string">"test"</span><span class="token punctuation">,</span>
+    <span class="token property">"processingTimeMs"</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">,</span>
+    <span class="token property">"hitsPerPage"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"page"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"totalPages"</span><span class="token operator">:</span> <span class="token number">163</span><span class="token punctuation">,</span>
+    <span class="token property">"totalHits"</span><span class="token operator">:</span> <span class="token number">488</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>你会发现<code>estimatedTotalHits</code>总数预估值没有了,替代它的是<code>totalHits</code>结果集总数量,这是一个<strong>精确值</strong>。</p>
+<hr>
+
+<h2 id="GET-Search"><a href="#GET-Search" class="headerlink" title="GET-Search"></a>GET-Search</h2><p><strong>Method</strong>: <code>GET</code>  </p>
+<p><strong>Path</strong>: <code>/indexes/{index_uid}/search</code></p>
+<p>在指定的索引库<code>index_uid</code>以<code>GET</code>请求进行特定的条件文档<strong>搜索</strong>。</p>
+<blockquote>
+<p><strong>警告</strong><br>此方式只支持<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/advanced/filtering_and_faceted_search.html#filter-expressions">字符串过滤器表达式</a>。</p>
+</blockquote>
+<p>只有在不需要 API 密钥时才应使用此端点。如果需要 API 密钥，请改用POST路由。</p>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span>  -X GET <span class="token string">'localhost:7700/indexes/movies/search?q=american%20ninja&amp;limit=2&amp;attributesToRetrieve=title'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>响应结果</strong></p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"hits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"American Ninja"</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"American Ninja 4: The Annihilation"</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"query"</span><span class="token operator">:</span> <span class="token string">"american ninja"</span><span class="token punctuation">,</span>
+    <span class="token property">"processingTimeMs"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"limit"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"offset"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"estimatedTotalHits"</span><span class="token operator">:</span> <span class="token number">9</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h2 id="搜索参数"><a href="#搜索参数" class="headerlink" title="搜索参数"></a>搜索参数</h2><h3 id="q"><a href="#q" class="headerlink" title="q"></a>q</h3><p><strong>参数名</strong>: <code>q</code></p>
+<p>要搜索的<strong>关键词数组</strong>。</p>
+<blockquote>
+<p><strong>注意</strong><br>只支持搜索前10个关键词,这是提供<a target="_blank" rel="noopener" href="https://docs.meilisearch.com/learn/advanced/known_limitations.html#maximum-number-of-query-words">快速的“键入即搜索”体验</a>所必需的。</p>
+</blockquote>
+<p><strong>示例</strong></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span>
+  -X POST <span class="token string">'http://localhost:7700/indexes/movies/search'</span> <span class="token punctuation">\</span>
+  -H <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  --data-binary <span class="token string">'{ "q": ["shifu","test"] }'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>默认关键词不区分大小写,会将所有字母转换为小写。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zlx2019.github.io">Zero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zlx2019.github.io/article/6f8bff.html">https://zlx2019.github.io/article/6f8bff.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zlx2019.github.io" target="_blank">Zero(˶˚ ᗨ ˚˶)</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MeiliSearch/">MeiliSearch</a></div><div class="post_share"><div class="social-share" data-image="/img/logo/meili-search-logo2.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/reward/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/reward/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/reward/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/reward/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/article/1b56a94c.html" title="Rus【七】错误处理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/rust-logo2.png" onerror="onerror=null;src='/img/loadError.jpeg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Rus【七】错误处理</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zero</div><div class="author-info__description">去码头搞点薯条吧\(^o^)/~</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">107</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">50</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">34</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zlx2019"><i class="fab fa-github"></i><span>前往Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://res.abeim.cn/api/qq/?qq=1143967454" target="_blank" title="QQ"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-QQ"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/397253487" target="_blank" title="BiliBili"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://github.com/zlx2019" target="_blank" title="Github"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-github"></use></svg></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFMeiliSearch"><span class="toc-text">什么是MeiliSearch?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E6%BC%94%E7%A4%BA"><span class="toc-text">搜索演示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E6%88%90"><span class="toc-text">集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-text">优势</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="toc-text">快速开始</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-text">导入数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2"><span class="toc-text">搜索</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E5%88%B6%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="toc-text">定制化配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E5%8F%82%E6%95%B0"><span class="toc-text">启动时参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%82%E6%95%B0"><span class="toc-text">环境变量参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-text">配置参数详解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-text">核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Documents"><span class="toc-text">Documents</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E7%BB%93%E6%9E%84"><span class="toc-text">文档结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Index"><span class="toc-text">Index</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86"><span class="toc-text">索引唯一标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE"><span class="toc-text">主键</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API"><span class="toc-text">API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%88%E6%9D%83"><span class="toc-text">授权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5"><span class="toc-text">分页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0"><span class="toc-text">请求参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%B4"><span class="toc-text">请求头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E4%BD%93"><span class="toc-text">请求体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E4%BD%93"><span class="toc-text">响应体</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95-API"><span class="toc-text">索引-API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E4%BF%A1%E6%81%AF"><span class="toc-text">索引信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E7%B4%A2%E5%BC%95"><span class="toc-text">查询所有索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%8D%95%E6%9D%A1%E7%B4%A2%E5%BC%95"><span class="toc-text">查询单条索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E7%B4%A2%E5%BC%95"><span class="toc-text">更新索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E4%BA%A4%E6%8D%A2"><span class="toc-text">索引交换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3-API"><span class="toc-text">文档-API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%96%87%E6%A1%A3%E5%88%97%E8%A1%A8"><span class="toc-text">查询文档列表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%B8%80-%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E6%95%B0%E9%87%8F%E6%96%87%E6%A1%A3"><span class="toc-text">示例一: 查询指定数量文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%BA%8C-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-text">示例二: 分页查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%B8%89-%E6%9F%A5%E8%AF%A2%E9%83%A8%E5%88%86%E5%AD%97%E6%AE%B5"><span class="toc-text">示例三: 查询部分字段</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%8D%95%E6%9D%A1%E6%96%87%E6%A1%A3"><span class="toc-text">查询单条文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%88%96%E8%A6%86%E7%9B%96%E6%96%87%E6%A1%A3"><span class="toc-text">添加或覆盖文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%88%96%E6%9B%B4%E6%96%B0%E6%96%87%E6%A1%A3"><span class="toc-text">添加或更新文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%89%80%E6%9C%89%E6%96%87%E6%A1%A3"><span class="toc-text">删除所有文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%8D%95%E6%9D%A1%E6%96%87%E6%A1%A3"><span class="toc-text">删除单条文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4%E6%96%87%E6%A1%A3"><span class="toc-text">批量删除文档</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2-API"><span class="toc-text">搜索-API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#POST-Search"><span class="toc-text">POST-Search</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%B8%80-%E9%A2%84%E4%BC%B0%E6%9F%A5%E8%AF%A2"><span class="toc-text">示例一: 预估查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%BA%8C-%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2-1"><span class="toc-text">示例二: 分页查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GET-Search"><span class="toc-text">GET-Search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%8F%82%E6%95%B0"><span class="toc-text">搜索参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#q"><span class="toc-text">q</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/6f8bff.html" title="Meili-Search"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/meili-search-logo2.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Meili-Search"/></a><div class="content"><a class="title" href="/article/6f8bff.html" title="Meili-Search">Meili-Search</a><time datetime="2023-03-22T11:51:41.000Z" title="发表于 2023-03-22 19:51:41">2023-03-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/1b56a94c.html" title="Rus【七】错误处理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/rust-logo2.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rus【七】错误处理"/></a><div class="content"><a class="title" href="/article/1b56a94c.html" title="Rus【七】错误处理">Rus【七】错误处理</a><time datetime="2023-03-22T06:01:21.000Z" title="发表于 2023-03-22 14:01:21">2023-03-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/80057b1e.html" title="Rust【六】模块管理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo3.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust【六】模块管理"/></a><div class="content"><a class="title" href="/article/80057b1e.html" title="Rust【六】模块管理">Rust【六】模块管理</a><time datetime="2023-03-21T13:23:18.000Z" title="发表于 2023-03-21 21:23:18">2023-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/9ef7e562.html" title="Rust【五】枚举"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo1.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust【五】枚举"/></a><div class="content"><a class="title" href="/article/9ef7e562.html" title="Rust【五】枚举">Rust【五】枚举</a><time datetime="2023-03-21T07:41:32.000Z" title="发表于 2023-03-21 15:41:32">2023-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/430e0518.html" title="Rust【四】结构体"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo1.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust【四】结构体"/></a><div class="content"><a class="title" href="/article/430e0518.html" title="Rust【四】结构体">Rust【四】结构体</a><time datetime="2023-03-17T12:10:50.000Z" title="发表于 2023-03-17 20:10:50">2023-03-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By Zero</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><script async src="//at.alicdn.com/t/c/font_3947604_tesead3g5v.js"></script><div class="aplayer no-destroy" data-id="2658354885" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false"> </div><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://dashboard.4everland.org/" style="margin-inline:5px" data-title="本站采用多线部署，备用线路托管于4EVERLAND" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-4EVERLAND-22DDDD?style=flat&amp;logo=IPFS" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 280px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/about/'|| '/about/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("https://gitcalendar.fomal.cc/api?zlx2019",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'zlx2019')
+    }
+  </script><!-- hexo injector body_end end --></body></html>

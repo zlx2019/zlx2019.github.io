@@ -4,6 +4,52 @@
   
     
     <entry>
+      <title>Meili-Search</title>
+      <link href="/article/6f8bff.html"/>
+      <url>/article/6f8bff.html</url>
+      
+      
+      <categories>
+          
+          <category> 搜索引擎 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MeiliSearch </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Rus【七】错误处理</title>
+      <link href="/article/1b56a94c.html"/>
+      <url>/article/1b56a94c.html</url>
+      
+      
+      <categories>
+          
+          <category> Rust </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Rust </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Rust【六】模块管理</title>
       <link href="/article/80057b1e.html"/>
       <url>/article/80057b1e.html</url>
@@ -2469,6 +2515,15 @@
     
     
     <entry>
+      <title></title>
+      <link href="/css/custom.css"/>
+      <url>/css/custom.css</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>categories</title>
       <link href="/categories/index.html"/>
       <url>/categories/index.html</url>
@@ -2505,15 +2560,6 @@
     
     
     <entry>
-      <title></title>
-      <link href="/js/title.js"/>
-      <url>/js/title.js</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>tags</title>
       <link href="/tags/index.html"/>
       <url>/tags/index.html</url>
@@ -2532,9 +2578,9 @@
     
     
     <entry>
-      <title>电影</title>
-      <link href="/movies/index.html"/>
-      <url>/movies/index.html</url>
+      <title>个人项目</title>
+      <link href="/link/index.html"/>
+      <url>/link/index.html</url>
       
     </entry>
     
@@ -2542,17 +2588,17 @@
     
     <entry>
       <title></title>
-      <link href="/css/custom.css"/>
-      <url>/css/custom.css</url>
+      <link href="/js/title.js"/>
+      <url>/js/title.js</url>
       
     </entry>
     
     
     
     <entry>
-      <title>个人项目</title>
-      <link href="/link/index.html"/>
-      <url>/link/index.html</url>
+      <title>电影</title>
+      <link href="/movies/index.html"/>
+      <url>/movies/index.html</url>
       
     </entry>
     
