@@ -4,6 +4,100 @@
   
     
     <entry>
+      <title>NSQ</title>
+      <link href="/article/8bf162d.html"/>
+      <url>/article/8bf162d.html</url>
+      
+      
+      <categories>
+          
+          <category> 消息中间件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Go </tag>
+            
+            <tag> NSQ </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Rust【十】特征</title>
+      <link href="/article/1eefe58c.html"/>
+      <url>/article/1eefe58c.html</url>
+      
+      
+      <categories>
+          
+          <category> Rust </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Rust </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Rust【九】泛型</title>
+      <link href="/article/ee420949.html"/>
+      <url>/article/ee420949.html</url>
+      
+      
+      <categories>
+          
+          <category> Rust </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Rust </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Rust【八】集合容器</title>
+      <link href="/article/6820f466.html"/>
+      <url>/article/6820f466.html</url>
+      
+      
+      <categories>
+          
+          <category> Rust </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Rust </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Meili-Search</title>
       <link href="/article/6f8bff.html"/>
       <url>/article/6f8bff.html</url>
@@ -27,7 +121,7 @@
     
     
     <entry>
-      <title>Rus【七】错误处理</title>
+      <title>Rust【七】错误处理</title>
       <link href="/article/1b56a94c.html"/>
       <url>/article/1b56a94c.html</url>
       
@@ -2238,9 +2332,9 @@
       
         <tags>
             
-            <tag> 前端 </tag>
-            
             <tag> Vue3 </tag>
+            
+            <tag> 前端 </tag>
             
         </tags>
       
@@ -2263,9 +2357,9 @@
       
         <tags>
             
-            <tag> 前端 </tag>
-            
             <tag> Vue3 </tag>
+            
+            <tag> 前端 </tag>
             
         </tags>
       
@@ -2313,9 +2407,9 @@
       
         <tags>
             
-            <tag> 前端 </tag>
-            
             <tag> Vue3 </tag>
+            
+            <tag> 前端 </tag>
             
         </tags>
       
@@ -2394,9 +2488,9 @@
             
             <tag> DBA </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> SQL </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -2419,9 +2513,9 @@
       
         <tags>
             
-            <tag> 前端 </tag>
-            
             <tag> Vue3 </tag>
+            
+            <tag> 前端 </tag>
             
         </tags>
       
@@ -2446,9 +2540,9 @@
             
             <tag> DBA </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> SQL </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -2524,24 +2618,6 @@
     
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>关于我</title>
-      <link href="/about/index.html"/>
-      <url>/about/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>contact</title>
       <link href="/contact/index.html"/>
       <url>/contact/index.html</url>
@@ -2560,9 +2636,27 @@
     
     
     <entry>
-      <title>tags</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>关于我</title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>电影</title>
+      <link href="/movies/index.html"/>
+      <url>/movies/index.html</url>
       
     </entry>
     
@@ -2572,6 +2666,15 @@
       <title>音乐</title>
       <link href="/music/index.html"/>
       <url>/music/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>tags</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
       
     </entry>
     
@@ -2590,15 +2693,6 @@
       <title></title>
       <link href="/js/title.js"/>
       <url>/js/title.js</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>电影</title>
-      <link href="/movies/index.html"/>
-      <url>/movies/index.html</url>
       
     </entry>
     
