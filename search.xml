@@ -4,6 +4,79 @@
   
     
     <entry>
+      <title>Python协程</title>
+      <link href="/article/24681f7.html"/>
+      <url>/article/24681f7.html</url>
+      
+      
+      <categories>
+          
+          <category> Python </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Coroutine </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Coroutine</title>
+      <link href="/article/de479ed3.html"/>
+      <url>/article/de479ed3.html</url>
+      
+      
+      <categories>
+          
+          <category> Coroutine </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Coroutine </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Vertx基础入门</title>
+      <link href="/article/6c9519b3.html"/>
+      <url>/article/6c9519b3.html</url>
+      
+      
+      <categories>
+          
+          <category> Vertx </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Quarkus </tag>
+            
+            <tag> Vertx </tag>
+            
+            <tag> 响应式编程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>NSQ</title>
       <link href="/article/8bf162d.html"/>
       <url>/article/8bf162d.html</url>
@@ -625,7 +698,7 @@
       
         <tags>
             
-            <tag> 微服务 </tag>
+            <tag> Quarkus </tag>
             
             <tag> 云原生 </tag>
             
@@ -650,7 +723,7 @@
       
         <tags>
             
-            <tag> 微服务 </tag>
+            <tag> Quarkus </tag>
             
             <tag> 云原生 </tag>
             
@@ -675,7 +748,7 @@
       
         <tags>
             
-            <tag> 微服务 </tag>
+            <tag> Quarkus </tag>
             
             <tag> 云原生 </tag>
             
@@ -2488,9 +2561,9 @@
             
             <tag> DBA </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> SQL </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -2540,9 +2613,9 @@
             
             <tag> DBA </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> SQL </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -2574,7 +2647,7 @@
     
     
     <entry>
-      <title>git初始化仓库</title>
+      <title>Git初始化仓库</title>
       <link href="/article/d725be2e.html"/>
       <url>/article/d725be2e.html</url>
       
@@ -2600,18 +2673,18 @@
     
     
     <entry>
-      <title>404</title>
-      <link href="//404.html"/>
-      <url>//404.html</url>
+      <title>contact</title>
+      <link href="/contact/index.html"/>
+      <url>/contact/index.html</url>
       
     </entry>
     
     
     
     <entry>
-      <title>friends</title>
-      <link href="/friends/index.html"/>
-      <url>/friends/index.html</url>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       
     </entry>
     
@@ -2627,18 +2700,18 @@
     
     
     <entry>
-      <title>contact</title>
-      <link href="/contact/index.html"/>
-      <url>/contact/index.html</url>
+      <title>404</title>
+      <link href="//404.html"/>
+      <url>//404.html</url>
       
     </entry>
     
     
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
+      <title>friends</title>
+      <link href="/friends/index.html"/>
+      <url>/friends/index.html</url>
       
     </entry>
     
@@ -2672,6 +2745,15 @@
     
     
     <entry>
+      <title></title>
+      <link href="/css/custom.css"/>
+      <url>/css/custom.css</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>电影</title>
       <link href="/movies/index.html"/>
       <url>/movies/index.html</url>
@@ -2684,15 +2766,6 @@
       <title>个人项目</title>
       <link href="/link/index.html"/>
       <url>/link/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title></title>
-      <link href="/css/custom.css"/>
-      <url>/css/custom.css</url>
       
     </entry>
     
