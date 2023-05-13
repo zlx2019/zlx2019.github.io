@@ -284,3 +284,8 @@ svg.icon {
     left: 0;
     top: 0;
 }
+
+/*h标题 水平居中显示*/
+h1,h2,h3,h4{
+    text-align: center;
+}
