@@ -4,6 +4,52 @@
   
     
     <entry>
+      <title>Centos7-ARM-Docker安装</title>
+      <link href="/article/210c580a.html"/>
+      <url>/article/210c580a.html</url>
+      
+      
+      <categories>
+          
+          <category> Docker </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Kubernetes开篇</title>
+      <link href="/article/474f3ce3.html"/>
+      <url>/article/474f3ce3.html</url>
+      
+      
+      <categories>
+          
+          <category> Kubernetes </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Kubernetes </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Rust错误处理进阶篇</title>
       <link href="/article/d988d02a.html"/>
       <url>/article/d988d02a.html</url>
@@ -27,7 +73,7 @@
     
     
     <entry>
-      <title>Rust多线程</title>
+      <title>Rust线程</title>
       <link href="/article/f309e8c3.html"/>
       <url>/article/f309e8c3.html</url>
       
@@ -2762,9 +2808,9 @@
             
             <tag> DBA </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> SQL </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -2814,9 +2860,9 @@
             
             <tag> DBA </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> SQL </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -2874,45 +2920,9 @@
     
     
     <entry>
-      <title>friends</title>
-      <link href="/friends/index.html"/>
-      <url>/friends/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title></title>
-      <link href="/css/custom.css"/>
-      <url>/css/custom.css</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>404</title>
       <link href="//404.html"/>
       <url>//404.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>contact</title>
-      <link href="/contact/index.html"/>
-      <url>/contact/index.html</url>
       
     </entry>
     
@@ -2928,27 +2938,54 @@
     
     
     <entry>
+      <title>contact</title>
+      <link href="/contact/index.html"/>
+      <url>/contact/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>friends</title>
+      <link href="/friends/index.html"/>
+      <url>/friends/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/js/title.js"/>
+      <url>/js/title.js</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/css/custom.css"/>
+      <url>/css/custom.css</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>电影</title>
       <link href="/movies/index.html"/>
       <url>/movies/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>个人项目</title>
-      <link href="/link/index.html"/>
-      <url>/link/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>tags</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
       
     </entry>
     
@@ -2964,9 +3001,18 @@
     
     
     <entry>
-      <title></title>
-      <link href="/js/title.js"/>
-      <url>/js/title.js</url>
+      <title>tags</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>个人项目</title>
+      <link href="/link/index.html"/>
+      <url>/link/index.html</url>
       
     </entry>
     
