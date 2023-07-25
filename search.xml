@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>Go核心篇章-GMP</title>
+      <link href="/article/e7691b7b.html"/>
+      <url>/article/e7691b7b.html</url>
+      
+      
+      <categories>
+          
+          <category> Go </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Go </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Centos7-ARM-Docker安装</title>
       <link href="/article/210c580a.html"/>
       <url>/article/210c580a.html</url>
@@ -2920,15 +2943,6 @@
     
     
     <entry>
-      <title>404</title>
-      <link href="//404.html"/>
-      <url>//404.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>关于我</title>
       <link href="/about/index.html"/>
       <url>/about/index.html</url>
@@ -2941,24 +2955,6 @@
       <title>contact</title>
       <link href="/contact/index.html"/>
       <url>/contact/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>friends</title>
-      <link href="/friends/index.html"/>
-      <url>/friends/index.html</url>
       
     </entry>
     
@@ -2983,9 +2979,36 @@
     
     
     <entry>
+      <title>friends</title>
+      <link href="/friends/index.html"/>
+      <url>/friends/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>电影</title>
       <link href="/movies/index.html"/>
       <url>/movies/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>个人项目</title>
+      <link href="/link/index.html"/>
+      <url>/link/index.html</url>
       
     </entry>
     
@@ -3001,18 +3024,18 @@
     
     
     <entry>
-      <title>tags</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
+      <title>404</title>
+      <link href="//404.html"/>
+      <url>//404.html</url>
       
     </entry>
     
     
     
     <entry>
-      <title>个人项目</title>
-      <link href="/link/index.html"/>
-      <url>/link/index.html</url>
+      <title>tags</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
       
     </entry>
     

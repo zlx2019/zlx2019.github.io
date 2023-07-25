@@ -1,0 +1,1048 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Go核心篇章-GMP | Zero(˶˚ ᗨ ˚˶)</title><meta name="author" content="Zero"><meta name="copyright" content="Zero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="GMP调度模型 GMP是Go语言中实现协程(Coroutine)与线程(Thread)之间的无感转换的桥梁,是一种调度模型。  Goroutine是经过Go优化后的Coroutine实现,它的特点有如下:  与内核线程映射的关系为 M:N。 创建、销毁、调度都是在用户态完成,十分轻量级。 利用多线程实现并行。 调度器与线程之间是动态绑定和灵活调度的。 协程的栈空间大小动态扩缩。  1.GMP分别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go核心篇章-GMP">
+<meta property="og:url" content="https://zlx2019.github.io/article/e7691b7b.html">
+<meta property="og:site_name" content="Zero(˶˚ ᗨ ˚˶)">
+<meta property="og:description" content="GMP调度模型 GMP是Go语言中实现协程(Coroutine)与线程(Thread)之间的无感转换的桥梁,是一种调度模型。  Goroutine是经过Go优化后的Coroutine实现,它的特点有如下:  与内核线程映射的关系为 M:N。 创建、销毁、调度都是在用户态完成,十分轻量级。 利用多线程实现并行。 调度器与线程之间是动态绑定和灵活调度的。 协程的栈空间大小动态扩缩。  1.GMP分别">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zlx2019.github.io/img/logo/Go-logo.png">
+<meta property="article:published_time" content="2023-07-24T06:06:20.000Z">
+<meta property="article:modified_time" content="2023-07-25T07:18:34.127Z">
+<meta property="article:author" content="Zero">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zlx2019.github.io/img/logo/Go-logo.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zlx2019.github.io/article/e7691b7b.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Go核心篇章-GMP',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-25 15:18:34'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><link rel="stylesheet" href="/css/bcustom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">126</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw icon-home"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-home"></use></svg><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw icon-rili"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rili"></use></svg><span> 归档</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/tags/"><i class="fa-fw icon-biaoqian"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-biaoqian"></use></svg><span> 标签</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw icon-fenlei"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-fenlei"></use></svg><span> 分类</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-tada"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-yinle"></use></svg><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/movies/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw icon-zuopinzhanshi"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zuopinzhanshi"></use></svg><span> 个人项目</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><i class="fa-fw icon-guanyuwo"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-guanyuwo"></use></svg><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/logo/Go-logo.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Zero(˶˚ ᗨ ˚˶)"><span class="site-name">Zero(˶˚ ᗨ ˚˶)</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw icon-home"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-home"></use></svg><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw icon-rili"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rili"></use></svg><span> 归档</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/tags/"><i class="fa-fw icon-biaoqian"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-biaoqian"></use></svg><span> 标签</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw icon-fenlei"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-fenlei"></use></svg><span> 分类</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-tada"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-yinle"></use></svg><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/movies/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw icon-zuopinzhanshi"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zuopinzhanshi"></use></svg><span> 个人项目</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><i class="fa-fw icon-guanyuwo"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-guanyuwo"></use></svg><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Go核心篇章-GMP</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-07-24T06:06:20.000Z" title="发表于 2023-07-24 14:06:20">2023-07-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-07-25T07:18:34.127Z" title="更新于 2023-07-25 15:18:34">2023-07-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Go/">Go</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>27分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Go核心篇章-GMP"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo14.jpeg" style="zoom:50%;"></p>
+<h1 id="GMP调度模型"><a href="#GMP调度模型" class="headerlink" title="GMP调度模型"></a><u>GMP调度模型</u></h1><blockquote>
+<p><strong>GMP</strong>是Go语言中实现<strong>协程(Coroutine)</strong>与<strong>线程(Thread)</strong>之间的无感转换的桥梁,是一种调度模型。</p>
+</blockquote>
+<p><strong>Goroutine</strong>是经过Go优化后的<strong>Coroutine</strong>实现,它的特点有如下:</p>
+<ol>
+<li>与内核线程映射的关系为 M:N。</li>
+<li>创建、销毁、调度都是在用户态完成,十分轻量级。</li>
+<li>利用多线程实现并行。</li>
+<li>调度器与线程之间是动态绑定和灵活调度的。</li>
+<li>协程的栈空间大小动态扩缩。</li>
+</ol>
+<h2 id="1-GMP分别代表什么"><a href="#1-GMP分别代表什么" class="headerlink" title="1.GMP分别代表什么"></a>1.<u>GMP分别代表什么</u></h2><h3 id="G-Goroutine"><a href="#G-Goroutine" class="headerlink" title="G-Goroutine"></a><u>G-Goroutine</u></h3><ul>
+<li><p><strong>(Goroutine)</strong> 是Go中的协程实现,在Go中就是一个个待准备执行的函数任务。存放在<code>P</code>的<strong>本地任务队列</strong>或者<strong>全局任务队列</strong>中。</p>
+</li>
+<li><p>每个<code>G</code>有自己的运行栈、状态、以及要执行的函数体。</p>
+</li>
+<li><p>一个Goroutine非常轻量级,只占几KB,并且这几KB就足够Goroutine运行完,这就能保证在有限的内存空间中支持大量Goroutine,从而支持更多的并发。并且它是可收缩的,如果需要用到更多内存,则runtime会自动扩容。</p>
+</li>
+<li><p><code>G</code>需要依赖于<code>P</code>才能被调度执行,在<code>G</code>的视角下，<code>P</code>就是它的CPU。</p>
+</li>
+</ul>
+<h3 id="M-Machine"><a href="#M-Machine" class="headerlink" title="M-Machine"></a><u>M-Machine</u></h3><ul>
+<li><code>M</code>是在Go中对<strong>内核线程</strong>的一种抽象。因为最终的执行还是要由CPU和系统线程来执行。主要用来负责执行<code>G</code>。</li>
+</ul>
+<h3 id="P-Process"><a href="#P-Process" class="headerlink" title="P-Process"></a><u>P-Process</u></h3><ul>
+<li><code>P</code>是GMP种的核心角色，也就是我们常说的调度器,Go能在众多语言中凭靠协程而闻名,调度器功不可没。</li>
+<li><code>P</code>主要负责管理和调度<code>G</code>，负责将<code>G</code>调度到<code>M</code>上进行执行。</li>
+<li><code>P</code>和<code>M</code>是1:1绑定的,<code>P</code>的数量决定了G的最大并行数量。可通过<code>GOMAXPROCS</code>进行设置。</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/Go-GMP模型.png" style="zoom:40%;"></p>
+<h2 id="1-模型图详解"><a href="#1-模型图详解" class="headerlink" title="1.模型图详解"></a><u>1.模型图详解</u></h2><p>(1) 全局队列: 存放等待运行的G。全局队列可能被任意的P去获取里面的G，所以全局队列相当于整个模型中的全局资源，那么自然对于队列的读写操作是要加入互斥动作的。</p>
+<p>(2) P的本地队列: 同全局队列类似，存放的也是等待运行的G，但存放的数量有限，不超过256个。新建G’时，G’优先加入P的本地队列，如果队列满了，则会把本地队列中一半的G移动到全局队列。</p>
+<p>(3) P列表:所有的P都在程序启动时创建，并保存在数组中，最多有GOMAXPROCS个(可配)。</p>
+<p>(4) M:线程想运行任务就得获取P，从P的本地队列获取G，当P队列为空时，M也会尝试从全局队列获得- - -批G放到P的本地队列，或从其他P的本地队列“偷”一半放到自己P的本地队列。M运.行G，G执行之后，M会从P获取下一个G，不断重复下去。Goroutine调度器和OS调度器是通过M结合起来的，每个M都代表了1个内核线程，OS调度器负责把内核线程分配到CPU的核.上执行。</p>
+<h2 id="2-P和M何时创建"><a href="#2-P和M何时创建" class="headerlink" title="2.P和M何时创建"></a><u>2.P和M何时创建</u></h2><p>(1) P创建的时机在确定了P的最大数量n后，运行时系统会根据这个数量创建n个P。<br>(2) M创建的时机是在当没有足够的M来关联P并运行其中可运行的G的时候。例如所有的M此时都阻塞住了，而P中还有很多就绪任务，就会去寻找空闲的M，如果此时没有空闲的M，就会去创建新的M。</p>
+<hr>
+
+<h2 id="3-设计策略"><a href="#3-设计策略" class="headerlink" title="3.设计策略"></a>3.<u>设计策略</u></h2><h3 id="1-策略一-复用线程"><a href="#1-策略一-复用线程" class="headerlink" title="1. 策略一: 复用线程"></a>1. 策略一: 复用线程</h3><p>避免频繁创建、销毁线程,而是对线程进行复用。</p>
+<ul>
+<li><p>(1) 偷取(Work Stealing)机制</p>
+<p>当本线程无可运行的G时，尝试从其他线程绑定的P偷取G，而不是销毁线程.这里需要注意的是，偷取的动作一定是由P发起的，而非M，因为P的数量是固定的，如果一个M得不到一个P，那么这个M是没有执行的本地队列的，更谈不上向其他的P队列偷取了。</p>
+</li>
+<li><p>(2) 移交 (Hand Off) 机制</p>
+<p>当M因为G进行系统调用儿陷入阻塞时,M会释放绑定的P,把P转移给其他空闲的M执行。GPM模型为了更大程度地利用M和P的性能，不会让一个P永远被一个阻塞的G1耽误之后的工作，所以遇见这种情况的时候，移交机制的设计理念是应该立刻将此时的P释放出来。</p>
+</li>
+</ul>
+<h3 id="2-策略二-利用并行"><a href="#2-策略二-利用并行" class="headerlink" title="2. 策略二: 利用并行"></a>2. 策略二: 利用并行</h3><p>GOMAXPROCS设置P的数量，最多有GOMAXPROCS个线程分布在多个CPU上同时运行。GOMAXPROCS也限制了并发的程度，例如GOMAXPROCS=核数/2，表示最多利用一半的CPU核进行并行。</p>
+<h3 id="3-策略三-强制式"><a href="#3-策略三-强制式" class="headerlink" title="3. 策略三: 强制式"></a>3. 策略三: 强制式</h3><p>在Co-routine中要等待一个协程主动让出CPU才执行下一个协程，在Go中，一个Goroutine最多占用CPU 10ms，防止其他Goroutine无资源可用，这就是Goroutine不同于Co-routine的一个地方。</p>
+<h3 id="4-策略四-全局G队列"><a href="#4-策略四-全局G队列" class="headerlink" title="4. 策略四: 全局G队列"></a>4. 策略四: 全局G队列</h3><p>在新的调度器中依然有全局G队列，但功能已经被弱化了，当M执行偷取，但从其他P偷不到G.时，它可以从全局G队列获取G。</p>
+<hr>
+
+<h2 id="4-创建G的调度流程"><a href="#4-创建G的调度流程" class="headerlink" title="4.创建G的调度流程"></a>4.<u>创建G的调度流程</u></h2><p>假设执行<code>go func()</code>创建一个Goroutine后,会产生怎样的执行流程呢?</p>
+<p>(1). 新创建的G会优先放入当前P的本地队列中,如果本地队列已满则会放入全局队列。</p>
+<p>(2). M尝试从P本地队列弹出一个可执行的G来执行,如果本地队列为空则从其他P本地队列中窃取一些G,如果窃取不到G,则从全局队列中获取一批G。</p>
+<p>(3). 一个M通过P调度G的执行过程是一个循环机制。</p>
+<p>(4). 当M执行某一个G如果发生了<code>syscall</code>或者其他阻塞操作,则M会阻塞住,如果当前有一些G在执行,runtime则会把这个M和P解绑(Detach),然后创建一个新的M(如果有空闲的M可用就直接复用)来服务于这个P。</p>
+<p>(5). (6)当M系统调用结束时，这个G会尝试获取一个空闲的P执行，并放入这个P的本地队列。如果获取不到P，则这个线程M会变成休眠状态，加入空闲线程中，然后这个G会被放入全局队列中。</p>
+<hr>
+
+<h2 id="5-调度器的声明周期"><a href="#5-调度器的声明周期" class="headerlink" title="5.调度器的声明周期"></a>5.<u>调度器的声明周期</u></h2><p>在GMP调度模型中,还有两个比较特殊的角色: <code>M0</code>和<code>G0</code>。</p>
+<p><strong>1. M0</strong></p>
+<p>(1). 启动程序后编号为0的主线程。</p>
+<p>(2). 在全局命令runtime.m0中,不需要在heap堆上分配。</p>
+<p>(3). 负责执行初始化操作和启动第1个G(G0)。</p>
+<p>(4). 启动第一个G后,M0就和其他的M一样了。 </p>
+<p><strong>2. G0</strong></p>
+<p>(1). 每次启动一个M，创建的第1个Goroutine就是G0。</p>
+<p>(2). G0仅用于负责调度G。</p>
+<p>(3). G0不指 向任何可执行的函数。</p>
+<p>(4). 每个M都会有一个自己的G0。</p>
+<p>(5). 在调度或系统调度时，会使用M切换到G0，再通过G0调度。</p>
+<p>(6). M0的G0会放在全局空间。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/调度器生命周期.png" style="zoom:40%;"></p>
+<p></p><hr><p></p>
+<h1 id="可视化GMP编程"><a href="#可视化GMP编程" class="headerlink" title="可视化GMP编程"></a><u>可视化GMP编程</u></h1><p>在理解GPM的基本模型和初始化的生命周期及过程的基础上，还能不能通过一些工具来看一下程序的GPM模型在执行过程中的数据呢?Go语言提供了两种方式可以查看一个程序的GPM数据。</p>
+<h3 id="Go-tool-trace"><a href="#Go-tool-trace" class="headerlink" title="Go tool trace"></a>Go tool trace</h3><p>trace记录了运行时的信息，能提供可视化的Web页面。下面举一个简单的例子，主要的流程是，main () 函数创建trace，trace 会运行在单独的Goroutine中，然后main () 打印” HelloWorld “，最后退出，代码如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">"fmt"</span>
+	<span class="token string">"os"</span>
+	<span class="token string">"runtime/trace"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// 创建trace文件</span>
+	f<span class="token punctuation">,</span> err <span class="token operator">:=</span> os<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span><span class="token string">"trace.out"</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">defer</span> f<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+	<span class="token comment">// 启动trace</span>
+	err <span class="token operator">=</span> trace<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// 关闭trace</span>
+	<span class="token keyword">defer</span> trace<span class="token punctuation">.</span><span class="token function">Stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+	<span class="token comment">// 正常的业务编写</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Hello World"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行该文件后,会得到一个<code>trace.out</code>文件</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ go run main.go
+Hello World
+$ ls
+main.go   trace.out<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后通过<code>go tool trace</code>打开该文件:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ go tool trace trace.out 
+2023/07/24 16:11:58 Parsing trace...
+2023/07/24 16:11:58 Splitting trace...
+2023/07/24 16:11:58 Opening browser. Trace viewer is listening on http://127.0.0.1:65176<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过浏览器打开<a href="https://127.0.0.1:65176网址，单击view">https://127.0.0.1:65176网址，单击view</a> trace能够看见可视化的调度流程。</p>
+<h3 id="DeBug-trace"><a href="#DeBug-trace" class="headerlink" title="DeBug trace"></a>DeBug trace</h3><p>通过终端日志的方式</p>
+<p>测试文件如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">"fmt"</span>
+	<span class="token string">"time"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后打包后,Debug运行:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ go build -o main
+$ GODEBUG = schedtrace = 1000 ./main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>接下来简单分析一下，. 上述输出结果的大致含义。</p>
+<p>(1) SCHED:调试信息输出标志字符串，代表本行是Goroutine调度器的输出。</p>
+<p>(2) 0ms:从程序启动到输出这行日志的时间。</p>
+<p>(3) gomaxprocs: P的数量，本例有两个P，因为默认的P的属性是和CPU核心数量一致，当然也可以通过GOMAXPROCS设置。</p>
+<p>(4) idleprocs: 处于idle状态的P的数量;通过gomaxprocs和idleprocs的差值，就可知道执行Go代码的P的数量。</p>
+<p>(5) threads: os threads/M的数量，包含scheduler使用的m数量，加. 上runtime自用的类似sysmon这样的thread的数量。</p>
+<p>(6) spinningthreads: 处于自旋状态的os thread数量。</p>
+<p>(7) idlethread: 处于idle状态的os thread的数量。</p>
+<p>(8) runqueue=0: Scheduler全 局队列中G的数量。</p>
+<p>(9) [00]: 分别为两个P的local queue中的G的数量。</p>
+<hr>
+
+<h1 id="GMP源码解读"><a href="#GMP源码解读" class="headerlink" title="GMP源码解读"></a><u>GMP源码解读</u></h1><p>下面我们通过源码走读的方式进一步论证。</p>
+<h2 id="GMP数据结构"><a href="#GMP数据结构" class="headerlink" title="GMP数据结构"></a><u>GMP数据结构</u></h2><p>GMP模型的数据结构定义在<code>runtime/runtime2.go</code>文件中,由于个各类的成员属性较多,所以只会摘取核心属性介绍。</p>
+<h3 id="G"><a href="#G" class="headerlink" title="G"></a><u>G</u></h3><p><code>Goroutine</code>的核心数据结构描述:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">type</span> g <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ...</span>
+
+  <span class="token comment">// 运行当前G的M的指针</span>
+  <span class="token comment">// M的指针会随着P的灵活调度而修改</span>
+  m         <span class="token operator">*</span>m
+  sched     gobuf
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中<code>G</code>的生命周期由以下几种状态组成:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">const</span> <span class="token punctuation">(</span>
+  <span class="token comment">// 表示G刚刚分配,仍未初始化</span>
+  _Gidle <span class="token operator">=</span> <span class="token boolean">iota</span> <span class="token comment">// 0</span>
+
+  <span class="token comment">// 待运行,已经初始化并且在队列中,等待M取出执行。</span>
+  _Grunnable <span class="token comment">// 1</span>
+
+  <span class="token comment">// 运行中,表示G处于被运行状态。此时G被分配了一个M和P</span>
+  _Grunning <span class="token comment">// 2</span>
+
+  <span class="token comment">// 表示G由于执行了系统相关调用而陷入的阻塞,和M直接进行绑定,但是不处于运行队列中</span>
+  <span class="token comment">// 在系统调用执行完成之后,会重新回到 _Grunnable状态。</span>
+  _Gsyscall <span class="token comment">// 3</span>
+
+  <span class="token comment">// 挂起状态,由于用户态层面而产生的阻塞状态,并且它也不处于运行队列中</span>
+  <span class="token comment">// 如存在于Channel的等待队列中、未抢占到锁等操作都会进入该状态。</span>
+  <span class="token comment">// 需要通过goready()唤醒，唤醒后会回到 _Grunnable状态。</span>
+  _Gwaiting <span class="token comment">// 4</span>
+
+  <span class="token comment">// 该状态存在两种可能: G刚刚初始化完成或者已经被销毁,会处于此状态。</span>
+  _Gdead <span class="token comment">// 6</span>
+
+  <span class="token comment">// 目前未使用</span>
+  _Genqueue_unused <span class="token comment">// 7</span>
+
+  <span class="token comment">// G正在栈扩容流程中</span>
+  _Gcopystack <span class="token comment">// 8</span>
+
+  <span class="token comment">// 协程被抢占后的状态</span>
+  _Gpreempted <span class="token comment">// 9</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>(1) <strong>_Gidle</strong>: 表示协程刚刚分配，此时尚未初始化完成。</p>
+<p>(2) <strong>_Grunnable</strong>: 表示待运行,已经初始化并且在执行队列中,等待被执行。</p>
+<p>(3) <strong>_Grunning</strong>: 表示运行中,表示G处于被运行状态。此时G被分配了一个M和P。同一时刻一个P只有一个G处于此状态。</p>
+<p>(4) <strong>_Gsyscall</strong>: 表示协程正在执行系统调用。</p>
+<p>(5) <strong>_Gwaiting:</strong> 表示协程处于挂起态，需要等待被唤醒. gc、channel 通信或者锁操作时经常会进入这种状态。</p>
+<p>(6) <strong>_Gdead</strong>: 表示协程刚初始化完成或者已经被销毁，会处于此状态。</p>
+<p>(7) <strong>_Gcopystack:</strong> 协程正在栈扩容流程中。</p>
+<p>(8) <strong>_Gpreempted</strong>: 协程被抢占后的状态。</p>
+<p><code>G</code>的状态转换流程图如下:</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/GMP-G的状态流程图.png" style="zoom:100%;"></p>
+<h3 id="M"><a href="#M" class="headerlink" title="M"></a><u>M</u></h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">type</span> m <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	g0      <span class="token operator">*</span>g     <span class="token comment">// 当前M的G0协程,负责通过P完成其他G在此M上的调度。</span>
+
+  <span class="token comment">// ...</span>
+  
+	<span class="token comment">// Fields not known to debuggers.</span>
+  <span class="token comment">// ...</span>
+	tls           <span class="token punctuation">[</span>tlsSlots<span class="token punctuation">]</span><span class="token builtin">uintptr</span> <span class="token comment">// 线程本地存储,存储内容只对当前线程可见。</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>(1) <strong>g0</strong>: 一个特殊的协程,每个M都会有一个独有的<strong>g0</strong>,负责执行G之间的切换调度。</p>
+<h3 id="P"><a href="#P" class="headerlink" title="P"></a><strong><u>P</u></strong></h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">type</span> p <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	id          <span class="token builtin">int32</span>
+	status      <span class="token builtin">uint32</span> <span class="token comment">// P的状态</span>
+  
+	<span class="token comment">// ...</span>
+  
+	<span class="token comment">// Queue of runnable goroutines. Accessed without lock.</span>
+	runqhead <span class="token builtin">uint32</span> <span class="token comment">// 队列头部指针</span>
+	runqtail <span class="token builtin">uint32</span> <span class="token comment">// 队列尾部指针</span>
+	runq     <span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span>guintptr   <span class="token comment">// P的本地G队列</span>
+	runnext guintptr <span class="token comment">// 队列中下一个可被执行的G的指针</span>
+
+	<span class="token comment">// ...</span>
+	
+  <span class="token comment">// 当前P的互斥锁</span>
+	timersLock mutex
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>(1) <strong>status</strong>: P的状态</p>
+<p>(2) <strong>runq</strong>: P的本地执行队列,最大可放256个G。</p>
+<p>(3) <strong>runqhead</strong>: 指向队列头部的G</p>
+<p>(4) <strong>runqtail</strong>: 指向队列尾部的G</p>
+<p>(5) <strong>runnext</strong>: 指向队列中下一个可被执行的G</p>
+<p>P的状态有如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">const</span> <span class="token punctuation">(</span>
+  <span class="token comment">// 空闲状态</span>
+	_Pidle <span class="token operator">=</span> <span class="token boolean">iota</span>
+
+  <span class="token comment">// 已经和M关联,正在运行</span>
+	_Prunning
+
+  <span class="token comment">//当前p正在执行系统调用</span>
+	_Psyscall
+  
+  <span class="token comment">// 当前p需要停止调度，一般在GC前或者刚被创建时</span>
+	_Pgcstop
+  
+  <span class="token comment">//当前p已死亡，不会再被调度</span>
+	_Pdead
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="schedt"><a href="#schedt" class="headerlink" title="schedt"></a><u>schedt</u></h3><p>schedt就是GMP中全局队列的实现。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">type</span> schedt <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	<span class="token comment">// 全局锁,保证多个P获取G时的同步</span>
+  lock mutex
+  
+  <span class="token comment">// ...</span>
+
+  <span class="token comment">// GMP全局执行队列</span>
+	runq     gQueue
+  <span class="token comment">// 队列的大小</span>
+	runqsize <span class="token builtin">int32</span>
+  
+	<span class="token comment">// ...</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>(1) <strong>lock</strong>: 全局锁,每个P尝试从全局队列中获取G时,都必须先加锁。</p>
+<p>(2) <strong>runq</strong>: 全局G队列。</p>
+<p>(3) <strong>runqsize</strong>: 全局队列的容量。</p>
+<hr>
+
+<h2 id="G的调度流程"><a href="#G的调度流程" class="headerlink" title="G的调度流程"></a><u>G的调度流程</u></h2><h3 id="G0和普通G的转换"><a href="#G0和普通G的转换" class="headerlink" title="G0和普通G的转换"></a><u>G0和普通G的转换</u></h3><p>在上面我们刚刚有提到,每一个M都会有一个G0,它主要负责去调度和切换普通的G。那么就会存在这两种G的转换。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/G0与G的转换.png" style="zoom:40%;"></p>
+<p>它们之间的转换是通过一组函数所完成,分别是<code>gogo()</code>和<code>mcall()</code>。</p>
+<ol>
+<li>G0找到可被调度执行的G后,通过调用<code>gogo()</code>函数将执行权转交给G。</li>
+<li>当G执行完成或者中途发送了阻塞时,会通过调用<code>m_call()</code>函数再将执行权归还给G0。</li>
+</ol>
+<h3 id="调度类型"><a href="#调度类型" class="headerlink" title="调度类型"></a><u>调度类型</u></h3><p>G之间的调度类型分为四种: <strong>主动调度</strong>、<strong>被动调度</strong>、<strong>正常调度</strong>、<strong>抢占调度</strong>。</p>
+<h4 id="1-主动调度"><a href="#1-主动调度" class="headerlink" title="(1) 主动调度"></a><strong>(1) 主动调度</strong></h4><p>协程通过调用<code>runtime.Goshed()</code>函数主动让当前出执行权,然后当前协程会被放入到全局队列中。</p>
+<p>该函数内部会通过我们上面提到的<code>mcall()</code>函数将执行权转移给G0,随后G0会继续调度下一个可执行G。</p>
+<p>执行流程如下:</p>
+<ol>
+<li>执行<code>Goshed()</code>函数,通过<code>mcall()</code>将执行权转移给G0。</li>
+<li>G0将需要进入阻塞的G状态更新为<code>_Gwaiting</code>,并且放入全局执行队列。</li>
+<li>G0尝试调度下一个可执行的G。</li>
+</ol>
+<p>源码位置: <code>runtime/proc.go</code></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 主动让出当前协程执行权.</span>
+<span class="token keyword">func</span> <span class="token function">Gosched</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ <span class="token function">checkTimeouts</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+ <span class="token comment">// 将执行权转移给G0</span>
+ <span class="token function">mcall</span><span class="token punctuation">(</span>gosched_m<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-被动调度"><a href="#2-被动调度" class="headerlink" title="(2) 被动调度"></a><strong>(2) 被动调度</strong></h4><p>当我们执行某些操作从而不满足执行条件时从而会产生的一种被动式调度。</p>
+<p>比如通过channel或者锁操作陷入阻塞等操作,在底层会默认执行<code>gopark()</code>函数,会将当前协程从<code>_Grunning</code>变为<code>_Gwaiting</code>状态。而<code>gopark()</code>函数同样通过<code>mcall()</code>函数将执行权转移给G0。流程如下:</p>
+<ol>
+<li>执行<code>gopark()</code>函数,通过<code>mcall()</code>函数将执行权给G0。</li>
+<li>G0通过<code>park_m()</code>将需要进入阻塞的G的状态更新为<code>_Gwaiting</code>。</li>
+<li>将G与M进行解绑。</li>
+<li>G0尝试调度下一个可执行的G。</li>
+</ol>
+<p>源码位置: <code>runtime/proc.go</code></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">gopark</span><span class="token punctuation">(</span>unlockf <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token operator">*</span>g<span class="token punctuation">,</span> unsafe<span class="token punctuation">.</span>Pointer<span class="token punctuation">)</span> <span class="token builtin">bool</span><span class="token punctuation">,</span> lock unsafe<span class="token punctuation">.</span>Pointer<span class="token punctuation">,</span> reason waitReason<span class="token punctuation">,</span> traceEv <span class="token builtin">byte</span><span class="token punctuation">,</span> traceskip <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">//...</span>
+  <span class="token function">mcall</span><span class="token punctuation">(</span>park_m<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">park_m</span><span class="token punctuation">(</span>gp <span class="token operator">*</span>g<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 获取G0</span>
+  _g_ <span class="token operator">:=</span> <span class="token function">getg</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token comment">// 将G有 _Grunning(运行中)更新为_Gwaiting(挂起)</span>
+  <span class="token function">casgstatus</span><span class="token punctuation">(</span>gp<span class="token punctuation">,</span> _Grunning<span class="token punctuation">,</span> _Gwaiting<span class="token punctuation">)</span>
+  
+  <span class="token comment">// 将G和M解绑</span>
+  <span class="token function">dropg</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// ...</span>
+  
+  <span class="token comment">// 调度其他G</span>
+  <span class="token function">schedule</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>还有一个与<code>gopark()</code>函数一一对应的函数名为<code>goready()</code>,该函数主要负责唤醒由<code>gopark()</code>而陷入阻塞的协程。将指定的协程从<code>_Gwaiting</code>变为<code>_Grunnable</code>状态。</p>
+<p>当一个由于被<code>gopark()</code>而进入阻塞的G,被其他G唤醒时(Unlock、Channel读写释放),底层就是对被阻塞的G执行了<code>goready()</code>。执行流程如下:</p>
+<ol>
+<li>G通过<code>goready()</code>唤醒一个被阻塞的G。</li>
+<li>G将被唤醒的G状态更新为<code>_Grunnable</code>。</li>
+<li>G尝试将被唤醒的G放入自己的本地队列中,如果本地队列满了,则会连带g一起将一半的g都转移到全局队列中。</li>
+</ol>
+<p>源码位置: <code>runtime/proc.go</code></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">goready</span><span class="token punctuation">(</span>gp <span class="token operator">*</span>g<span class="token punctuation">,</span> traceskip <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token function">systemstack</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token function">ready</span><span class="token punctuation">(</span>gp<span class="token punctuation">,</span> traceskip<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Mark gp ready to run.</span>
+<span class="token keyword">func</span> <span class="token function">ready</span><span class="token punctuation">(</span>gp <span class="token operator">*</span>g<span class="token punctuation">,</span> traceskip <span class="token builtin">int</span><span class="token punctuation">,</span> next <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//...</span>
+	<span class="token comment">// 获取当前g,也就是G0</span>
+	_g_ <span class="token operator">:=</span> <span class="token function">getg</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  
+  <span class="token comment">//...</span>
+  <span class="token comment">// 将G的状态 从 _Gwaiting(阻塞) 改为 _Grinnable(待运行)</span>
+	<span class="token function">casgstatus</span><span class="token punctuation">(</span>gp<span class="token punctuation">,</span> _Gwaiting<span class="token punctuation">,</span> _Grunnable<span class="token punctuation">)</span>
+  
+  <span class="token comment">// 将G添加到当前G0所在的P的本地执行队列中,如果队列已满,则会连带g一起将一半的g都转移到全局队列中。</span>
+	<span class="token function">runqput</span><span class="token punctuation">(</span>_g_<span class="token punctuation">.</span>m<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">ptr</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> gp<span class="token punctuation">,</span> next<span class="token punctuation">)</span>
+	<span class="token function">wakep</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token function">releasem</span><span class="token punctuation">(</span>mp<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-正常调度"><a href="#3-正常调度" class="headerlink" title="(3) 正常调度"></a><strong>(3) 正常调度</strong></h4><p>G中的执行任务正常结束后,将执行权转移给G0,然后状态更新为<code>_Gdead</code>,发起下一轮调度。流程如下:</p>
+<ol>
+<li>执行<code>goexit1()</code>函数。</li>
+<li>执行<code>mcall()</code>函数,将执行权转移给G0。</li>
+<li>执行<code>goexit0()</code>函数。<ol>
+<li>将状态更新为_G。dead</li>
+<li>和M取消关联。</li>
+<li>和P取消关联。</li>
+<li>开始新一轮调度。</li>
+</ol>
+</li>
+</ol>
+<p>源码位置: <code>runtime/proc.go</code></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 当前协程执行完成后调用</span>
+<span class="token keyword">func</span> <span class="token function">goexit1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> raceenabled <span class="token punctuation">{</span>
+		<span class="token function">racegoend</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">if</span> trace<span class="token punctuation">.</span>enabled <span class="token punctuation">{</span>
+		<span class="token function">traceGoEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+  <span class="token comment">// 执行mcall,执行权给g0,然后由g0执行goexit0()函数</span>
+	<span class="token function">mcall</span><span class="token punctuation">(</span>goexit0<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 协程结束退出要执行的函数,由g0执行</span>
+<span class="token comment">// 参数表示要结束的协程</span>
+<span class="token keyword">func</span> <span class="token function">goexit0</span><span class="token punctuation">(</span>gp <span class="token operator">*</span>g<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 获取当前协程</span>
+	_g_ <span class="token operator">:=</span> <span class="token function">getg</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token comment">// 获取P</span>
+	_p_ <span class="token operator">:=</span> _g_<span class="token punctuation">.</span>m<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">ptr</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	
+  <span class="token comment">// 将g的状态由 _Grunning(运行中) 更新为 _Gdead(已死亡)</span>
+	<span class="token function">casgstatus</span><span class="token punctuation">(</span>gp<span class="token punctuation">,</span> _Grunning<span class="token punctuation">,</span> _Gdead<span class="token punctuation">)</span>
+  <span class="token comment">//...</span>
+  <span class="token comment">// 将G和M取消关联</span>
+	gp<span class="token punctuation">.</span>m <span class="token operator">=</span> <span class="token boolean">nil</span>
+  <span class="token comment">// 清空一些值</span>
+	locked <span class="token operator">:=</span> gp<span class="token punctuation">.</span>lockedm <span class="token operator">!=</span> <span class="token number">0</span>
+	gp<span class="token punctuation">.</span>lockedm <span class="token operator">=</span> <span class="token number">0</span>
+	_g_<span class="token punctuation">.</span>m<span class="token punctuation">.</span>lockedg <span class="token operator">=</span> <span class="token number">0</span>
+	gp<span class="token punctuation">.</span>preemptStop <span class="token operator">=</span> <span class="token boolean">false</span>
+	gp<span class="token punctuation">.</span>paniconfault <span class="token operator">=</span> <span class="token boolean">false</span>
+	gp<span class="token punctuation">.</span>_defer <span class="token operator">=</span> <span class="token boolean">nil</span> <span class="token comment">// should be true already but just in case.</span>
+	gp<span class="token punctuation">.</span>_panic <span class="token operator">=</span> <span class="token boolean">nil</span> <span class="token comment">// non-nil for Goexit during panic. points at stack-allocated data.</span>
+	gp<span class="token punctuation">.</span>writebuf <span class="token operator">=</span> <span class="token boolean">nil</span>
+	gp<span class="token punctuation">.</span>waitreason <span class="token operator">=</span> <span class="token number">0</span>
+	gp<span class="token punctuation">.</span>param <span class="token operator">=</span> <span class="token boolean">nil</span>
+	gp<span class="token punctuation">.</span>labels <span class="token operator">=</span> <span class="token boolean">nil</span>
+	gp<span class="token punctuation">.</span>timer <span class="token operator">=</span> <span class="token boolean">nil</span>
+
+  <span class="token comment">//...</span>
+
+  <span class="token comment">// 将当前G和M取消关联</span>
+	<span class="token function">dropg</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// 开始新一轮调度</span>
+	<span class="token function">schedule</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-抢占调度"><a href="#4-抢占调度" class="headerlink" title="(4) 抢占调度"></a><strong>(4) 抢占调度</strong></h4><p>一个G最多占用CPU 10ms，主要防止其他G长时间无资源可用。如G执行系统调用超过指定的时长，且全局的P资源比较紧缺，此时将P和G解绑，抢占出来用于其他G的调度. 等G完成系统调用后，会重新进入可执行队列中等待被调度。</p>
+<p>需要注意的是,前三种调度方式都是由M中的G0完成,而抢占调度不同,它是由一个特殊的G执行,被称为<strong>全局监控协程</strong> Monitor G。</p>
+<p>因为发起系统调用时需要打破用户态的边界进入内核态，此时 m 也会因系统调用而陷入僵直，无法主动完成抢占调度的行为.因此，在 Golang 进程会有一个全局监控协程 monitor g 的存在，这个 g 会越过 p 直接与一个 m 进行绑定，不断轮询对所有 p 的执行状况进行监控. 倘若发现<strong>满足抢占调度的条件</strong>，则会从第三方的角度出手干预，主动发起该动作.</p>
+<p><strong>满足抢占调度的条件</strong>有如下几条,它们分别都表示当前系统是处于繁忙(非清闲)状态。</p>
+<p>逻辑执行流程:</p>
+<ol>
+<li><p>对P所在的列表进行加锁,然后循环寻找是否有需要被抢占的P。</p>
+</li>
+<li><p>倘若其中某个P满足如下条件,则会进行抢占调度,相反如果三条都不满足则不会进行抢占调度,因为处于清闲状态。</p>
+<ol>
+<li>P执行系统调用(处于Psyscall)超过10ms。</li>
+<li>P的本地队列还有等待执行的G。</li>
+<li>当前没有空闲的P和M。</li>
+</ol>
+<p>以下三条就是判断系统是否是繁忙状态,只有繁忙状态需要抢占调度,满足其中一条即可触发抢占调度。</p>
+</li>
+<li><p>找到需要抢占调度的P后,将状态更新为_Pidle(清闲状态)</p>
+</li>
+<li><p>然后进入<code>handoffp()</code>方法，判断是否需要为P寻找一个新的M。</p>
+</li>
+</ol>
+<p>具体逻辑代码位于<code>runtime/prot.go</code>的<code>retake()</code>方法:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">retake</span><span class="token punctuation">(</span>now <span class="token builtin">int64</span><span class="token punctuation">)</span> <span class="token builtin">uint32</span> <span class="token punctuation">{</span>
+	n <span class="token operator">:=</span> <span class="token number">0</span>
+	<span class="token comment">// 对全局P列表加锁</span>
+	<span class="token function">lock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>allpLock<span class="token punctuation">)</span>
+	<span class="token comment">// allp 是所有的P所在列表</span>
+	<span class="token comment">// 遍历全局所有的P,寻找需要被抢占的P</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">len</span><span class="token punctuation">(</span>allp<span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		_p_ <span class="token operator">:=</span> allp<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+		<span class="token keyword">if</span> _p_ <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+			<span class="token keyword">continue</span>
+		<span class="token punctuation">}</span>
+		pd <span class="token operator">:=</span> <span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>sysmontick
+		<span class="token comment">// 获取P的状态</span>
+		s <span class="token operator">:=</span> _p_<span class="token punctuation">.</span>status
+		sysretake <span class="token operator">:=</span> <span class="token boolean">false</span>
+		<span class="token keyword">if</span> s <span class="token operator">==</span> _Prunning <span class="token operator">||</span> s <span class="token operator">==</span> _Psyscall <span class="token punctuation">{</span>
+		<span class="token comment">// 如果当前G运行时间过长,则抢占G</span>
+			t <span class="token operator">:=</span> <span class="token function">int64</span><span class="token punctuation">(</span>_p_<span class="token punctuation">.</span>schedtick<span class="token punctuation">)</span>
+			<span class="token keyword">if</span> <span class="token function">int64</span><span class="token punctuation">(</span>pd<span class="token punctuation">.</span>schedtick<span class="token punctuation">)</span> <span class="token operator">!=</span> t <span class="token punctuation">{</span>
+				pd<span class="token punctuation">.</span>schedtick <span class="token operator">=</span> <span class="token function">uint32</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+				pd<span class="token punctuation">.</span>schedwhen <span class="token operator">=</span> now
+			<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> pd<span class="token punctuation">.</span>schedwhen<span class="token operator">+</span>forcePreemptNS <span class="token operator">&lt;=</span> now <span class="token punctuation">{</span>
+				<span class="token function">preemptone</span><span class="token punctuation">(</span>_p_<span class="token punctuation">)</span>
+				sysretake <span class="token operator">=</span> <span class="token boolean">true</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+		<span class="token comment">// 如果该P处于系统调用</span>
+		<span class="token keyword">if</span> s <span class="token operator">==</span> _Psyscall <span class="token punctuation">{</span>
+			<span class="token comment">// 如果当前系统处于清闲状态,那么则不需要抢占调度,因为没有任务需要处理</span>
+			<span class="token comment">// 条件一: 如果p的本地队列是否是空的，表示系统清闲</span>
+			<span class="token comment">// 条件二: 如果当前还有空闲的P和M,也表示系统清闲</span>
+			<span class="token comment">// 条件三: 如果PM执行系统调用还未超过10ms,那么也不需要抢占</span>
+			<span class="token comment">// 满足其中一条,当前P就不需要被抢占.</span>
+			<span class="token keyword">if</span> <span class="token function">runqempty</span><span class="token punctuation">(</span>_p_<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> atomic<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>nmspinning<span class="token punctuation">)</span><span class="token operator">+</span>atomic<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>npidle<span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> pd<span class="token punctuation">.</span>syscallwhen<span class="token operator">+</span><span class="token number">10</span><span class="token operator">*</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">1000</span> <span class="token operator">&gt;</span> now <span class="token punctuation">{</span>
+				<span class="token comment">// 处于清闲状态,不需要抢占</span>
+				<span class="token keyword">continue</span>
+			<span class="token punctuation">}</span>
+			<span class="token comment">// 全局P列表解锁</span>
+			<span class="token function">unlock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>allpLock<span class="token punctuation">)</span>
+			<span class="token function">incidlelocked</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+			<span class="token comment">// 将P的状态更新为 _Pidle(清闲状态)</span>
+			<span class="token keyword">if</span> atomic<span class="token punctuation">.</span><span class="token function">Cas</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>status<span class="token punctuation">,</span> s<span class="token punctuation">,</span> _Pidle<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token keyword">if</span> trace<span class="token punctuation">.</span>enabled <span class="token punctuation">{</span>
+					<span class="token function">traceGoSysBlock</span><span class="token punctuation">(</span>_p_<span class="token punctuation">)</span>
+					<span class="token function">traceProcStop</span><span class="token punctuation">(</span>_p_<span class="token punctuation">)</span>
+				<span class="token punctuation">}</span>
+				n<span class="token operator">++</span>
+				_p_<span class="token punctuation">.</span>syscalltick<span class="token operator">++</span>
+				<span class="token comment">// 为P寻找一个新的M</span>
+				<span class="token function">handoffp</span><span class="token punctuation">(</span>_p_<span class="token punctuation">)</span>
+			<span class="token punctuation">}</span>
+			<span class="token function">incidlelocked</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+			<span class="token function">lock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>allpLock<span class="token punctuation">)</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">unlock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>allpLock<span class="token punctuation">)</span>
+	<span class="token keyword">return</span> <span class="token function">uint32</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 判断是否需要为P 寻找一个新的M</span>
+<span class="token comment">//</span>
+<span class="token comment">//go:nowritebarrierrec</span>
+<span class="token keyword">func</span> <span class="token function">handoffp</span><span class="token punctuation">(</span>_p_ <span class="token operator">*</span>p<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handoffp must start an M in any situation where</span>
+	<span class="token comment">// findrunnable would return a G to run on _p_.</span>
+
+	<span class="token comment">// if it has local work, start it straight away</span>
+	<span class="token comment">// 如果当前这个P 本地队列还有G</span>
+	<span class="token keyword">if</span> <span class="token operator">!</span><span class="token function">runqempty</span><span class="token punctuation">(</span>_p_<span class="token punctuation">)</span> <span class="token operator">||</span> sched<span class="token punctuation">.</span>runqsize <span class="token operator">!=</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+		<span class="token comment">// 为P分配一个新的M</span>
+		<span class="token function">startm</span><span class="token punctuation">(</span>_p_<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+		<span class="token keyword">return</span>
+	<span class="token punctuation">}</span>
+  <span class="token comment">// ...</span>
+	<span class="token comment">// 如果全局没有空闲的M和P</span>
+	<span class="token keyword">if</span> atomic<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>nmspinning<span class="token punctuation">)</span><span class="token operator">+</span>atomic<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>npidle<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> atomic<span class="token punctuation">.</span><span class="token function">Cas</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>nmspinning<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// TODO: fast atomic</span>
+		<span class="token comment">// 为P分配一个新的M</span>
+		<span class="token function">startm</span><span class="token punctuation">(</span>_p_<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+		<span class="token keyword">return</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">lock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>lock<span class="token punctuation">)</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h3 id="调度流程方法链路"><a href="#调度流程方法链路" class="headerlink" title="调度流程方法链路"></a><u>调度流程方法链路</u></h3><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/GMP-调度流程.png" style="zoom:100%;"></p>
+<ol>
+<li>G0通过<code>schedule()</code>找到下一个可执行G。</li>
+<li>通过<code>execute()</code>执行G。</li>
+<li><p>通过<code>gogo()</code>函数将执行权转交给G。</p>
+</li>
+<li><p>G执行自己的任务,可能存在多种情况</p>
+<ol>
+<li>通过<code>runtime.GOsched()</code>主动让渡执行权</li>
+<li>中途陷入被动调度<code>gopark()</code></li>
+<li>正常结束<code>goexit0()</code></li>
+</ol>
+</li>
+<li>G通过<code>mcall()</code>将执行权归还给G0,从而开始下一轮调度。</li>
+</ol>
+<h4 id="1-调度"><a href="#1-调度" class="headerlink" title="1.调度"></a><u>1.调度</u></h4><p>调度流程的入口方法是<code>runtime/proc.go</code>文件中的<code>schedule()</code>函数,负责找到下一个可执行的G,此时执行权在g0手中。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 找到一个可执行G,并且运行它</span>
+<span class="token keyword">func</span> <span class="token function">schedule</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ <span class="token comment">// ...</span>
+ <span class="token comment">// 获取下一个可执行的G</span>
+ gp<span class="token punctuation">,</span> inheritTime<span class="token punctuation">,</span> tryWakeP <span class="token operator">:=</span> <span class="token function">findRunnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// blocks until work is available</span>
+ <span class="token comment">// 执行G</span>
+ <span class="token function">execute</span><span class="token punctuation">(</span>gp<span class="token punctuation">,</span> inheritTime<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-获取g"><a href="#2-获取g" class="headerlink" title="2.获取g"></a>2.<u>获取g</u></h4><p>调度流程中,一个非常核心的步骤,就是获取下一个可被执行的G。流程图如下:</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/GMP-查找G.png" style="zoom:100%;"></p>
+<p>流程描述如下:</p>
+<ol>
+<li>每隔61次调度时,会优化从全局队列中获取一个G进行执行。</li>
+<li>正常调度的话会优先从P的本地执行队列中获取G。</li>
+<li>如果本地队列中为空,会尝试从全局队列中获取一批G放入本地队列。</li>
+<li>如果本地队列和全局队列都为空,则尝试获取阻塞之后又为就绪态的G。</li>
+<li>如果此时依然获取不到G,将会从其他P中窃取一半的G放入本地队列。</li>
+</ol>
+<p>该部分源码内容位于<code>runtime/proc.go</code>的<code>findRunnable()</code>方法中:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 查找下一个可被执行的G</span>
+<span class="token comment">// 从P本地队列中获取、从其他P窃取、从全局队列获取、获取网络协程。</span>
+<span class="token keyword">func</span> <span class="token function">findRunnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>gp <span class="token operator">*</span>g<span class="token punctuation">,</span> inheritTime<span class="token punctuation">,</span> tryWakeP <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 获取当前G</span>
+  _g_ <span class="token operator">:=</span> <span class="token function">getg</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  top<span class="token punctuation">:</span>
+  <span class="token comment">//...</span>
+
+  <span class="token comment">//1.为了保证公平性,每隔61次调度时,会优化从全局队列中获取一个G来执行</span>
+  <span class="token comment">// 否则两个P之间如果持续相互窃取会导致全局队列中的G饿死。</span>
+  <span class="token keyword">if</span> _p_<span class="token punctuation">.</span>schedtick<span class="token operator">%</span><span class="token number">61</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> sched<span class="token punctuation">.</span>runqsize <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token comment">//全局队列加锁</span>
+    <span class="token function">lock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>lock<span class="token punctuation">)</span>
+    <span class="token comment">//从全局队列获取一个G</span>
+    gp <span class="token operator">=</span> <span class="token function">globrunqget</span><span class="token punctuation">(</span>_p_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token comment">//解锁</span>
+    <span class="token function">unlock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>lock<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> gp <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 若获取到了,直接返回</span>
+      <span class="token keyword">return</span> gp<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">//2. 从本地队列中获取G,如果获取到了直接返回G</span>
+  <span class="token keyword">if</span> gp<span class="token punctuation">,</span> inheritTime <span class="token operator">:=</span> <span class="token function">runqget</span><span class="token punctuation">(</span>_p_<span class="token punctuation">)</span><span class="token punctuation">;</span> gp <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> gp<span class="token punctuation">,</span> inheritTime<span class="token punctuation">,</span> <span class="token boolean">false</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">//3. 从全局队列获取G,如果获取到了,直接返回G</span>
+  <span class="token keyword">if</span> sched<span class="token punctuation">.</span>runqsize <span class="token operator">!=</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token function">lock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>lock<span class="token punctuation">)</span>
+    <span class="token comment">// 从全局队列中获取一个G,并且移动一批G到本地队列</span>
+    gp <span class="token operator">:=</span> <span class="token function">globrunqget</span><span class="token punctuation">(</span>_p_<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token function">unlock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>lock<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> gp <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> gp<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">//4. 假如本地队列和全局队列都没有可用的G,则会获取之前IO阻塞后准备就绪的G</span>
+  <span class="token keyword">if</span> <span class="token function">netpollinited</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> atomic<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>netpollWaiters<span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> atomic<span class="token punctuation">.</span><span class="token function">Load64</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>lastpoll<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 非阻塞式获取变得可运行的G的列表,是否存在可运行的G</span>
+    <span class="token keyword">if</span> list <span class="token operator">:=</span> <span class="token function">netpoll</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">!</span>list<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// non-blocking</span>
+      <span class="token comment">// 如果有就获取G</span>
+      gp <span class="token operator">:=</span> list<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token function">injectglist</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>list<span class="token punctuation">)</span>
+      <span class="token comment">// 通过CAS,将获取到的G的状态从waiting更新为runnable</span>
+      <span class="token function">casgstatus</span><span class="token punctuation">(</span>gp<span class="token punctuation">,</span> _Gwaiting<span class="token punctuation">,</span> _Grunnable<span class="token punctuation">)</span>
+      <span class="token keyword">if</span> trace<span class="token punctuation">.</span>enabled <span class="token punctuation">{</span>
+        <span class="token function">traceGoUnpark</span><span class="token punctuation">(</span>gp<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> gp<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">//5.窃取其他P的G</span>
+  procs <span class="token operator">:=</span> <span class="token function">uint32</span><span class="token punctuation">(</span>gomaxprocs<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> _g_<span class="token punctuation">.</span>m<span class="token punctuation">.</span>spinning <span class="token operator">||</span> <span class="token number">2</span><span class="token operator">*</span>atomic<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>nmspinning<span class="token punctuation">)</span> <span class="token operator">&lt;</span> procs<span class="token operator">-</span>atomic<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>npidle<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>_g_<span class="token punctuation">.</span>m<span class="token punctuation">.</span>spinning <span class="token punctuation">{</span>
+      _g_<span class="token punctuation">.</span>m<span class="token punctuation">.</span>spinning <span class="token operator">=</span> <span class="token boolean">true</span>
+      atomic<span class="token punctuation">.</span><span class="token function">Xadd</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sched<span class="token punctuation">.</span>nmspinning<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">//尝试从其他P的本地队列中窃取一半的G</span>
+    gp<span class="token punctuation">,</span> inheritTime<span class="token punctuation">,</span> tnow<span class="token punctuation">,</span> w<span class="token punctuation">,</span> newWork <span class="token operator">:=</span> <span class="token function">stealWork</span><span class="token punctuation">(</span>now<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-1-从全局队列获取G"><a href="#2-1-从全局队列获取G" class="headerlink" title="2.1 从全局队列获取G"></a>2.1 从全局队列获取G</h5><p>该函数负责尝试从全局队列中获取一个G,并且从全局队列中移动一批G到本地队列中。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 尝试从全局执行队列中获取一个G,并且再从全局队列中获取(max-1)个G填补到本地队列中</span>
+<span class="token keyword">func</span> <span class="token function">globrunqget</span><span class="token punctuation">(</span>_p_ <span class="token operator">*</span>p<span class="token punctuation">,</span> max <span class="token builtin">int32</span><span class="token punctuation">)</span> <span class="token operator">*</span>g <span class="token punctuation">{</span>
+  <span class="token comment">// 如果全局队列为空</span>
+  <span class="token keyword">if</span> sched<span class="token punctuation">.</span>runqsize <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 计算默认要从全局队列中填补到本地队列中的均衡数</span>
+  <span class="token comment">// 均衡数 = (当前队列G的数量 / P的数量 + 1)</span>
+  n <span class="token operator">:=</span> sched<span class="token punctuation">.</span>runqsize <span class="token operator">/</span> gomaxprocs <span class="token operator">+</span> <span class="token number">1</span>
+  <span class="token comment">// 填补数量最多不能超过队列中G的总数量</span>
+  <span class="token keyword">if</span> n <span class="token operator">&gt;</span> sched<span class="token punctuation">.</span>runqsize <span class="token punctuation">{</span>
+    n <span class="token operator">=</span> sched<span class="token punctuation">.</span>runqsize
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 如果 均衡数 &gt; 指定的数量,则以指定数量为准</span>
+  <span class="token keyword">if</span> max <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> n <span class="token operator">&gt;</span> max <span class="token punctuation">{</span>
+    n <span class="token operator">=</span> max
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 如果要填补的数量 &gt; (当前P本地队列数量 / 2)</span>
+  <span class="token comment">// 那么本次填补数量 =  当前P本地队列数量 / 2 </span>
+  <span class="token keyword">if</span> n <span class="token operator">&gt;</span> <span class="token function">int32</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>_p_<span class="token punctuation">.</span>runq<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span> <span class="token punctuation">{</span>
+    n <span class="token operator">=</span> <span class="token function">int32</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>_p_<span class="token punctuation">.</span>runq<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 修改全部队列G数量</span>
+  sched<span class="token punctuation">.</span>runqsize <span class="token operator">-=</span> n
+  <span class="token comment">// 先从全局队列弹出一个G,作为返回值</span>
+  gp <span class="token operator">:=</span> sched<span class="token punctuation">.</span>runq<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  n<span class="token operator">--</span>
+ <span class="token comment">//循环从全局队列中移动n个G到本地队列.</span>
+  <span class="token keyword">for</span> <span class="token punctuation">;</span> n <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">;</span> n<span class="token operator">--</span> <span class="token punctuation">{</span>
+    gp1 <span class="token operator">:=</span> sched<span class="token punctuation">.</span>runq<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">runqput</span><span class="token punctuation">(</span>_p_<span class="token punctuation">,</span> gp1<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> gp
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-2-从本地队列获取G"><a href="#2-2-从本地队列获取G" class="headerlink" title="2.2 从本地队列获取G"></a>2.2 从本地队列获取G</h5><p>该函数负责从P的本地队列中获取一个G。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 从本地执行队列中获取一个G</span>
+<span class="token keyword">func</span> <span class="token function">runqget</span><span class="token punctuation">(</span>_p_ <span class="token operator">*</span>p<span class="token punctuation">)</span> <span class="token punctuation">(</span>gp <span class="token operator">*</span>g<span class="token punctuation">,</span> inheritTime <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// 获取本地队列的下一个可执行G</span>
+	next <span class="token operator">:=</span> _p_<span class="token punctuation">.</span>runnext
+	<span class="token keyword">if</span> next <span class="token operator">!=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> _p_<span class="token punctuation">.</span>runnext<span class="token punctuation">.</span><span class="token function">cas</span><span class="token punctuation">(</span>next<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">// 存在下一个可被执行的G,直接返回</span>
+		<span class="token keyword">return</span> next<span class="token punctuation">.</span><span class="token function">ptr</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// 循环不断从本地队列获取G</span>
+	<span class="token keyword">for</span> <span class="token punctuation">{</span>
+		h <span class="token operator">:=</span> atomic<span class="token punctuation">.</span><span class="token function">LoadAcq</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>runqhead<span class="token punctuation">)</span>
+		t <span class="token operator">:=</span> _p_<span class="token punctuation">.</span>runqtail <span class="token comment">// 获取队列头部</span>
+		<span class="token keyword">if</span> t <span class="token operator">==</span> h <span class="token punctuation">{</span>
+			<span class="token comment">// 头部为空,表示本地队列为空,退出</span>
+			<span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+		<span class="token punctuation">}</span>
+		<span class="token comment">// 获取队列头部的G</span>
+		gp <span class="token operator">:=</span> _p_<span class="token punctuation">.</span>runq<span class="token punctuation">[</span>h<span class="token operator">%</span><span class="token function">uint32</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>_p_<span class="token punctuation">.</span>runq<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">ptr</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+		<span class="token comment">// 并尝试使用CAS更新G点状态</span>
+		<span class="token keyword">if</span> atomic<span class="token punctuation">.</span><span class="token function">CasRel</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>runqhead<span class="token punctuation">,</span> h<span class="token punctuation">,</span> h<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> gp<span class="token punctuation">,</span> <span class="token boolean">false</span>
+		<span class="token punctuation">}</span>
+		<span class="token comment">//如果CAS更新失败,则表示被其他P抢走了G，进入下一轮获取</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-3-从其他P窃取G"><a href="#2-3-从其他P窃取G" class="headerlink" title="2.3 从其他P窃取G"></a>2.3 从其他P窃取G</h5><p>该方法是发生窃取机制的入口</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 尝试从其他P窃取一批G</span>
+<span class="token keyword">func</span> <span class="token function">stealWork</span><span class="token punctuation">(</span>now <span class="token builtin">int64</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>gp <span class="token operator">*</span>g<span class="token punctuation">,</span> inheritTime <span class="token builtin">bool</span><span class="token punctuation">,</span> rnow<span class="token punctuation">,</span> pollUntil <span class="token builtin">int64</span><span class="token punctuation">,</span> newWork <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  pp <span class="token operator">:=</span> <span class="token function">getg</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>m<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">ptr</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  ranTimer <span class="token operator">:=</span> <span class="token boolean">false</span>
+  <span class="token comment">// 最多尝试发起4次窃取机制</span>
+  <span class="token comment">// 如果其中某一次窃取到了,就提前返回</span>
+  <span class="token keyword">const</span> stealTries <span class="token operator">=</span> <span class="token number">4</span>
+  <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> stealTries<span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+    stealTimersOrRunNextG <span class="token operator">:=</span> i <span class="token operator">==</span> stealTries<span class="token operator">-</span><span class="token number">1</span>
+    <span class="token comment">// 并不会针对某一个P窃取,而是随机</span>
+    <span class="token keyword">for</span> enum <span class="token operator">:=</span> stealOrder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token function">fastrand</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">!</span>enum<span class="token punctuation">.</span><span class="token function">done</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> enum<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> sched<span class="token punctuation">.</span>gcwaiting <span class="token operator">!=</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+        <span class="token comment">// GC work may be available.</span>
+        <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> now<span class="token punctuation">,</span> pollUntil<span class="token punctuation">,</span> <span class="token boolean">true</span>
+      <span class="token punctuation">}</span>
+      <span class="token comment">//...</span>
+      <span class="token keyword">if</span> <span class="token operator">!</span>idlepMask<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>enum<span class="token punctuation">.</span><span class="token function">position</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> gp <span class="token operator">:=</span> <span class="token function">runqsteal</span><span class="token punctuation">(</span>pp<span class="token punctuation">,</span> p2<span class="token punctuation">,</span> stealTimersOrRunNextG<span class="token punctuation">)</span><span class="token punctuation">;</span> gp <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> gp<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> now<span class="token punctuation">,</span> pollUntil<span class="token punctuation">,</span> ranTimer
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> now<span class="token punctuation">,</span> pollUntil<span class="token punctuation">,</span> ranTimer
+<span class="token punctuation">}</span>
+
+
+<span class="token comment">// 从p2的本地队列中 窃取一半的G 放入p的本地队列中</span>
+<span class="token keyword">func</span> <span class="token function">runqsteal</span><span class="token punctuation">(</span>_p_<span class="token punctuation">,</span> p2 <span class="token operator">*</span>p<span class="token punctuation">,</span> stealRunNextG <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token operator">*</span>g <span class="token punctuation">{</span>
+  t <span class="token operator">:=</span> _p_<span class="token punctuation">.</span>runqtail
+  <span class="token comment">// 窃取机制核心逻辑</span>
+  n <span class="token operator">:=</span> <span class="token function">runqgrab</span><span class="token punctuation">(</span>p2<span class="token punctuation">,</span> <span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>runq<span class="token punctuation">,</span> t<span class="token punctuation">,</span> stealRunNextG<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+  <span class="token punctuation">}</span>
+  n<span class="token operator">--</span>
+  gp <span class="token operator">:=</span> _p_<span class="token punctuation">.</span>runq<span class="token punctuation">[</span><span class="token punctuation">(</span>t<span class="token operator">+</span>n<span class="token punctuation">)</span><span class="token operator">%</span><span class="token function">uint32</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>_p_<span class="token punctuation">.</span>runq<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">ptr</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> gp
+  <span class="token punctuation">}</span>
+  h <span class="token operator">:=</span> atomic<span class="token punctuation">.</span><span class="token function">LoadAcq</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>runqhead<span class="token punctuation">)</span> <span class="token comment">// load-acquire, synchronize with consumers</span>
+  <span class="token keyword">if</span> t<span class="token operator">-</span>h<span class="token operator">+</span>n <span class="token operator">&gt;=</span> <span class="token function">uint32</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>_p_<span class="token punctuation">.</span>runq<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">throw</span><span class="token punctuation">(</span><span class="token string">"runqsteal: runq overflow"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  atomic<span class="token punctuation">.</span><span class="token function">StoreRel</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>runqtail<span class="token punctuation">,</span> t<span class="token operator">+</span>n<span class="token punctuation">)</span> <span class="token comment">// store-release, makes the item available for consumption</span>
+  <span class="token keyword">return</span> gp
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 窃取机制的核心逻辑方法</span>
+<span class="token comment">// 从_p_的执行队列中 获取一批G,直接放入到 batch这个容器内,这个容器就是饥饿态的P的执行队列指针</span>
+<span class="token keyword">func</span> <span class="token function">runqgrab</span><span class="token punctuation">(</span>_p_ <span class="token operator">*</span>p<span class="token punctuation">,</span> batch <span class="token operator">*</span><span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span>guintptr<span class="token punctuation">,</span> batchHead <span class="token builtin">uint32</span><span class="token punctuation">,</span> stealRunNextG <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token builtin">uint32</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">{</span>
+    h <span class="token operator">:=</span> atomic<span class="token punctuation">.</span><span class="token function">LoadAcq</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>runqhead<span class="token punctuation">)</span> <span class="token comment">// load-acquire, synchronize with other consumers</span>
+    t <span class="token operator">:=</span> atomic<span class="token punctuation">.</span><span class="token function">LoadAcq</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>runqtail<span class="token punctuation">)</span> <span class="token comment">// load-acquire, synchronize with the producer</span>
+    n <span class="token operator">:=</span> t <span class="token operator">-</span> h
+    n <span class="token operator">=</span> n <span class="token operator">-</span> n<span class="token operator">/</span><span class="token number">2</span> <span class="token comment">// 要窃取的G的数量,是目标P队列的一半</span>
+
+    <span class="token comment">// ...</span>
+
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token function">uint32</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 获取p中的g</span>
+      g <span class="token operator">:=</span> _p_<span class="token punctuation">.</span>runq<span class="token punctuation">[</span><span class="token punctuation">(</span>h<span class="token operator">+</span>i<span class="token punctuation">)</span><span class="token operator">%</span><span class="token function">uint32</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>_p_<span class="token punctuation">.</span>runq<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+      <span class="token comment">//放入需要g的p中</span>
+      batch<span class="token punctuation">[</span><span class="token punctuation">(</span>batchHead<span class="token operator">+</span>i<span class="token punctuation">)</span><span class="token operator">%</span><span class="token function">uint32</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>batch<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> g
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> atomic<span class="token punctuation">.</span><span class="token function">CasRel</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>_p_<span class="token punctuation">.</span>runqhead<span class="token punctuation">,</span> h<span class="token punctuation">,</span> h<span class="token operator">+</span>n<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// cas-release, commits consume</span>
+      <span class="token keyword">return</span> n
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h4 id="3-执行g"><a href="#3-执行g" class="headerlink" title="3. 执行g"></a>3. 执行g</h4><p>在<code>schedule()</code>函数中,通过<code>findRunnable()</code>函数找到一个G后,下一步就该执行这个G,通过<code>runtime/proc.go</code>中的<code>execute()</code>函数来执行:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 调度G在当前M上运行</span>
+<span class="token keyword">func</span> <span class="token function">execute</span><span class="token punctuation">(</span>gp <span class="token operator">*</span>g<span class="token punctuation">,</span> inheritTime <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 获取G0</span>
+  _g_ <span class="token operator">:=</span> <span class="token function">getg</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token comment">//...</span>
+
+  <span class="token comment">// 将G0的M 和要执行的G互相关联起来</span>
+  _g_<span class="token punctuation">.</span>m<span class="token punctuation">.</span>curg <span class="token operator">=</span> gp
+  gp<span class="token punctuation">.</span>m <span class="token operator">=</span> _g_<span class="token punctuation">.</span>m
+
+  <span class="token comment">// 将G的状态由 待运行 改为 运行中</span>
+  <span class="token function">casgstatus</span><span class="token punctuation">(</span>gp<span class="token punctuation">,</span> _Grunnable<span class="token punctuation">,</span> _Grunning<span class="token punctuation">)</span>
+  gp<span class="token punctuation">.</span>waitsince <span class="token operator">=</span> <span class="token number">0</span>
+  gp<span class="token punctuation">.</span>preempt <span class="token operator">=</span> <span class="token boolean">false</span>
+  gp<span class="token punctuation">.</span>stackguard0 <span class="token operator">=</span> gp<span class="token punctuation">.</span>stack<span class="token punctuation">.</span>lo <span class="token operator">+</span> _StackGuard
+  <span class="token keyword">if</span> <span class="token operator">!</span>inheritTime <span class="token punctuation">{</span>
+    <span class="token comment">//当前P调度次数+1,为了记录是否为每隔61次调度</span>
+    _g_<span class="token punctuation">.</span>m<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">ptr</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>schedtick<span class="token operator">++</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">//...</span>
+  <span class="token comment">//真正意义上的执行G,将执行权从当前的G0转交给G</span>
+  <span class="token function">gogo</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>gp<span class="token punctuation">.</span>sched<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zlx2019.github.io">Zero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zlx2019.github.io/article/e7691b7b.html">https://zlx2019.github.io/article/e7691b7b.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zlx2019.github.io" target="_blank">Zero(˶˚ ᗨ ˚˶)</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Go/">Go</a></div><div class="post_share"><div class="social-share" data-image="/img/logo/Go-logo.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/reward/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/reward/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/reward/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/reward/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/article/210c580a.html" title="Centos7-ARM-Docker安装"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Docker-logo.png" onerror="onerror=null;src='/img/loadError.jpeg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Centos7-ARM-Docker安装</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/article/35aea58a.html" title="Go【七】Channel"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-09</div><div class="title">Go【七】Channel</div></div></a></div><div><a href="/article/5f275f0a.html" title="Go【二】容器集合"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">Go【二】容器集合</div></div></a></div><div><a href="/article/108f6a9a.html" title="Go【六】协程"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-09</div><div class="title">Go【六】协程</div></div></a></div><div><a href="/article/5fa48e3f.html" title="Go【九】终端彩色输出"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-11</div><div class="title">Go【九】终端彩色输出</div></div></a></div><div><a href="/article/905697b5.html" title="Go【三】字符处理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-28</div><div class="title">Go【三】字符处理</div></div></a></div><div><a href="/article/d1f817d2.html" title="Go【八】context"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-10</div><div class="title">Go【八】context</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zero</div><div class="author-info__description">欲买桂花同载酒<br/>终不似,少年游</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">126</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zlx2019"><i class="fab fa-github"></i><span>前往Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://res.abeim.cn/api/qq/?qq=1143967454" target="_blank" title="QQ"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-QQ"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/397253487" target="_blank" title="BiliBili"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://github.com/zlx2019" target="_blank" title="Github"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-github"></use></svg></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GMP%E8%B0%83%E5%BA%A6%E6%A8%A1%E5%9E%8B"><span class="toc-text">GMP调度模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-GMP%E5%88%86%E5%88%AB%E4%BB%A3%E8%A1%A8%E4%BB%80%E4%B9%88"><span class="toc-text">1.GMP分别代表什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#G-Goroutine"><span class="toc-text">G-Goroutine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#M-Machine"><span class="toc-text">M-Machine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#P-Process"><span class="toc-text">P-Process</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A8%A1%E5%9E%8B%E5%9B%BE%E8%AF%A6%E8%A7%A3"><span class="toc-text">1.模型图详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-P%E5%92%8CM%E4%BD%95%E6%97%B6%E5%88%9B%E5%BB%BA"><span class="toc-text">2.P和M何时创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%AE%BE%E8%AE%A1%E7%AD%96%E7%95%A5"><span class="toc-text">3.设计策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%AD%96%E7%95%A5%E4%B8%80-%E5%A4%8D%E7%94%A8%E7%BA%BF%E7%A8%8B"><span class="toc-text">1. 策略一: 复用线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AD%96%E7%95%A5%E4%BA%8C-%E5%88%A9%E7%94%A8%E5%B9%B6%E8%A1%8C"><span class="toc-text">2. 策略二: 利用并行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%AD%96%E7%95%A5%E4%B8%89-%E5%BC%BA%E5%88%B6%E5%BC%8F"><span class="toc-text">3. 策略三: 强制式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%AD%96%E7%95%A5%E5%9B%9B-%E5%85%A8%E5%B1%80G%E9%98%9F%E5%88%97"><span class="toc-text">4. 策略四: 全局G队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%9B%E5%BB%BAG%E7%9A%84%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B"><span class="toc-text">4.创建G的调度流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%B0%83%E5%BA%A6%E5%99%A8%E7%9A%84%E5%A3%B0%E6%98%8E%E5%91%A8%E6%9C%9F"><span class="toc-text">5.调度器的声明周期</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96GMP%E7%BC%96%E7%A8%8B"><span class="toc-text">可视化GMP编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Go-tool-trace"><span class="toc-text">Go tool trace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DeBug-trace"><span class="toc-text">DeBug trace</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GMP%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB"><span class="toc-text">GMP源码解读</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#GMP%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">GMP数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#G"><span class="toc-text">G</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#M"><span class="toc-text">M</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#P"><span class="toc-text">P</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#schedt"><span class="toc-text">schedt</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#G%E7%9A%84%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B"><span class="toc-text">G的调度流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#G0%E5%92%8C%E6%99%AE%E9%80%9AG%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">G0和普通G的转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E7%B1%BB%E5%9E%8B"><span class="toc-text">调度类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%B8%BB%E5%8A%A8%E8%B0%83%E5%BA%A6"><span class="toc-text">(1) 主动调度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%A2%AB%E5%8A%A8%E8%B0%83%E5%BA%A6"><span class="toc-text">(2) 被动调度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%AD%A3%E5%B8%B8%E8%B0%83%E5%BA%A6"><span class="toc-text">(3) 正常调度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E6%8A%A2%E5%8D%A0%E8%B0%83%E5%BA%A6"><span class="toc-text">(4) 抢占调度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B%E6%96%B9%E6%B3%95%E9%93%BE%E8%B7%AF"><span class="toc-text">调度流程方法链路</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%B0%83%E5%BA%A6"><span class="toc-text">1.调度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%8E%B7%E5%8F%96g"><span class="toc-text">2.获取g</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-%E4%BB%8E%E5%85%A8%E5%B1%80%E9%98%9F%E5%88%97%E8%8E%B7%E5%8F%96G"><span class="toc-text">2.1 从全局队列获取G</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2-%E4%BB%8E%E6%9C%AC%E5%9C%B0%E9%98%9F%E5%88%97%E8%8E%B7%E5%8F%96G"><span class="toc-text">2.2 从本地队列获取G</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-3-%E4%BB%8E%E5%85%B6%E4%BB%96P%E7%AA%83%E5%8F%96G"><span class="toc-text">2.3 从其他P窃取G</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%89%A7%E8%A1%8Cg"><span class="toc-text">3. 执行g</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/e7691b7b.html" title="Go核心篇章-GMP"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Go核心篇章-GMP"/></a><div class="content"><a class="title" href="/article/e7691b7b.html" title="Go核心篇章-GMP">Go核心篇章-GMP</a><time datetime="2023-07-24T06:06:20.000Z" title="发表于 2023-07-24 14:06:20">2023-07-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/210c580a.html" title="Centos7-ARM-Docker安装"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Docker-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Centos7-ARM-Docker安装"/></a><div class="content"><a class="title" href="/article/210c580a.html" title="Centos7-ARM-Docker安装">Centos7-ARM-Docker安装</a><time datetime="2023-05-29T01:43:34.000Z" title="发表于 2023-05-29 09:43:34">2023-05-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/474f3ce3.html" title="Kubernetes开篇"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/k8s-logo6.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Kubernetes开篇"/></a><div class="content"><a class="title" href="/article/474f3ce3.html" title="Kubernetes开篇">Kubernetes开篇</a><time datetime="2023-05-20T12:09:01.000Z" title="发表于 2023-05-20 20:09:01">2023-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/d988d02a.html" title="Rust错误处理进阶篇"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust错误处理进阶篇"/></a><div class="content"><a class="title" href="/article/d988d02a.html" title="Rust错误处理进阶篇">Rust错误处理进阶篇</a><time datetime="2023-05-12T08:22:41.000Z" title="发表于 2023-05-12 16:22:41">2023-05-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/f309e8c3.html" title="Rust线程"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Rust-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Rust线程"/></a><div class="content"><a class="title" href="/article/f309e8c3.html" title="Rust线程">Rust线程</a><time datetime="2023-05-11T12:03:38.000Z" title="发表于 2023-05-11 20:03:38">2023-05-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By Zero</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script async src="//at.alicdn.com/t/c/font_3947604_tesead3g5v.js"></script><div class="aplayer no-destroy" data-id="2658354885" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false"> </div><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://dashboard.4everland.org/" style="margin-inline:5px" data-title="本站采用多线部署，备用线路托管于4EVERLAND" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-4EVERLAND-22DDDD?style=flat&amp;logo=IPFS" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 280px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/about/'|| '/about/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("https://gitcalendar.fomal.cc/api?zlx2019",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'zlx2019')
+    }
+  </script><!-- hexo injector body_end end --></body></html>
