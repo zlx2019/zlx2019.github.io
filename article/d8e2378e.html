@@ -1,0 +1,777 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Go核心篇章-Slice原理 | Zero(˶˚ ᗨ ˚˶)</title><meta name="author" content="Zero"><meta name="copyright" content="Zero"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1.前言切片(Slice)是 Golang 中内置的一个常用的数据类型，它是数组的,可以理解为动态数组。其类比于Java中的ArrayList或者Rust中的Vec。 我们通常在Go开发中使用 Slice 的频率非常高，但是你真的了解这个结构吗？本文就从深入到 Slice 的底层原理进行深度学习。 本章基于Go1.19版本学习。 2.结构原理 每一个 Slice 本质上都是引用了一块连续的内存空">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go核心篇章-Slice原理">
+<meta property="og:url" content="https://zlx2019.github.io/article/d8e2378e.html">
+<meta property="og:site_name" content="Zero(˶˚ ᗨ ˚˶)">
+<meta property="og:description" content="1.前言切片(Slice)是 Golang 中内置的一个常用的数据类型，它是数组的,可以理解为动态数组。其类比于Java中的ArrayList或者Rust中的Vec。 我们通常在Go开发中使用 Slice 的频率非常高，但是你真的了解这个结构吗？本文就从深入到 Slice 的底层原理进行深度学习。 本章基于Go1.19版本学习。 2.结构原理 每一个 Slice 本质上都是引用了一块连续的内存空">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zlx2019.github.io/img/logo/Go-logo.png">
+<meta property="article:published_time" content="2023-07-30T07:48:27.000Z">
+<meta property="article:modified_time" content="2023-08-06T04:47:39.701Z">
+<meta property="article:author" content="Zero">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zlx2019.github.io/img/logo/Go-logo.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zlx2019.github.io/article/d8e2378e.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Go核心篇章-Slice原理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-06 12:47:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><link rel="stylesheet" href="/css/bcustom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw icon-home"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-home"></use></svg><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw icon-rili"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rili"></use></svg><span> 归档</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/tags/"><i class="fa-fw icon-biaoqian"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-biaoqian"></use></svg><span> 标签</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw icon-fenlei"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-fenlei"></use></svg><span> 分类</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-tada"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-yinle"></use></svg><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/movies/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw icon-zuopinzhanshi"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zuopinzhanshi"></use></svg><span> 个人项目</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><i class="fa-fw icon-guanyuwo"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-guanyuwo"></use></svg><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/logo/Go-logo.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Zero(˶˚ ᗨ ˚˶)"><span class="site-name">Zero(˶˚ ᗨ ˚˶)</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><i class="fa-fw icon-home"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-home"></use></svg><span> 首页</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/archives/"><i class="fa-fw icon-rili"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-rili"></use></svg><span> 归档</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/tags/"><i class="fa-fw icon-biaoqian"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-biaoqian"></use></svg><span> 标签</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/"><i class="fa-fw icon-fenlei"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-fenlei"></use></svg><span> 分类</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><i class="fa-fw fas fa-list faa-tada"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-yinle"></use></svg><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/movies/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><i class="fa-fw icon-zuopinzhanshi"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zuopinzhanshi"></use></svg><span> 个人项目</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/about/"><i class="fa-fw icon-guanyuwo"></i><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-guanyuwo"></use></svg><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Go核心篇章-Slice原理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-07-30T07:48:27.000Z" title="发表于 2023-07-30 15:48:27">2023-07-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-06T04:47:39.701Z" title="更新于 2023-08-06 12:47:39">2023-08-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Go/">Go</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>20分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Go核心篇章-Slice原理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo14.jpeg" style="zoom:50%;"></p>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a><u>1.前言</u></h1><p><strong>切片(Slice)</strong>是 Golang 中内置的一个常用的数据类型，它是<strong>数组</strong>的,可以理解为<strong>动态数组</strong>。其类比于Java中的ArrayList或者Rust中的Vec。</p>
+<p>我们通常在Go开发中使用 Slice 的频率非常高，但是你真的了解这个结构吗？本文就从深入到 Slice 的底层原理进行深度学习。</p>
+<p>本章基于Go1.19版本学习。</p>
+<h1 id="2-结构原理"><a href="#2-结构原理" class="headerlink" title="2.结构原理"></a><u>2.结构原理</u></h1><blockquote>
+<p>每一个 Slice 本质上都是引用了一块连续的内存空间，利用这一块连续的内存空间来存储元素，你可以将这块内存空间理解为一个底层数组，由于内存空间是连续的，所以可以根据索引进行偏移量快速检索到指定索引位置的元素。并且切片还有两个重要的字段: 长度(length)和容量(capacity)，这两个值分别会随着切片的扩容或者收缩而变化。</p>
+</blockquote>
+<h1 id="3-核心结构"><a href="#3-核心结构" class="headerlink" title="3.核心结构"></a><u>3.核心结构</u></h1><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/slice结构图.png" style="zoom:50%;"></p>
+<p>切片的源码结构位于<code>runtime/slice.go</code>文件:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">type</span> slice <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 指向所使用的内存空间起点的指针</span>
+  array unsafe<span class="token punctuation">.</span>Pointer
+  <span class="token comment">// 切片长度</span>
+  <span class="token builtin">len</span>   <span class="token builtin">int</span>
+  <span class="token comment">// 切片容量</span>
+  <span class="token builtin">cap</span>   <span class="token builtin">int</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>array</strong>: 指向所使用的内存空间起点的指针,切片中的元素就存储于这片内存空间中;</li>
+<li><strong>len</strong>: 切片的长度，指的是当前切片中的元素数量;</li>
+<li><strong>cap</strong>: 切片的容量，指的是当前切片分配了多少可以存放元素的内存空间，cap永远会大于等于len。</li>
+</ul>
+<p><strong>注意:</strong> Slice的len和cap属性一定要分清楚，这是两个不同的概念。</p>
+<p>通过 Slice 结构属性中可以看到，每个Slice中存放的都是内存空间的指针(array 属性)，后续再传递 Slice 的时候，都是对 Slice 进行了一次值拷贝，但内部的<code>array</code>属性的值是一个内存地址，因此Slice本身属于引用传递。</p>
+<p><strong>Go引用传递的本质</strong>: </p>
+<p>其实在Go语言中，其实并不存在真正意义上的引用传递，本质上所有的方法传递都是值传递，只是传递的值类型有些特殊时，会导致被认为是引用传递。</p>
+<p>举个栗子: 有一个<code>s1</code>切片变量，现在将<code>s1</code>传入一个方法内作为参数，那么底层其实做了哪些操作呢?</p>
+<ol>
+<li>对<code>s1</code>进行值拷贝，得出一个副本<code>s2</code>作为方法的局部变量;</li>
+<li>现在<code>s1</code>和<code>s2</code>完全是两个变量，但是它们的值完全相同;</li>
+<li>假设<code>s1.array</code>值为<code>0x1001</code>，那么会将<code>0x1001</code>这个值同样拷贝到<code>s2.array</code>中，所以本质上还是值拷贝;</li>
+<li>但是<code>array</code>是<code>unsafe.Pointer</code>类型，它是一个内存地址;</li>
+<li>如果对<code>s2.array</code>进行修改，那么会通过解引用操作去修改<code>0x1001</code>这个内存地址中的数据;</li>
+<li>由于<code>s1.array</code>所指向的值也是<code>0x1001</code>，此时再通过解引用获取数据就会发现数据已经被修改过了;</li>
+</ol>
+<hr>
+
+<h1 id="4-初始化"><a href="#4-初始化" class="headerlink" title="4.初始化"></a><u>4.初始化</u></h1><p>下面来介绍切片的初始化操作.</p>
+<h3 id="1-声明但不初始化"><a href="#1-声明但不初始化" class="headerlink" title="1.声明但不初始化"></a><u>1.声明但不初始化</u></h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">var</span> list <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol>
+<li><p>该例子只是通过<code>var</code>关键声明了一个slice的类型，但是并没有初始化分配内存，所以当前这个list依然是一个<code>nil</code>;</p>
+</li>
+<li><p>但是并不影响通过<code>append()</code>函数来添加元素，该操作会触发slice的初始化;</p>
+</li>
+</ol>
+<h3 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2.初始化"></a><u>2.初始化</u></h3><p>通过<code>make(sliceType,len,cap)</code>来创建slice。</p>
+<p><strong>第一种方式如下:</strong></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">list <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token comment">//[0 0 0 0 0 0 0 0]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol>
+<li><p>该方式会将 slice 的 长度(len) 和 cap(容量) 同时设置为8;</p>
+</li>
+<li><p>需要注意: slice 的 len 一旦被指定了，就表示对应位置已经分配了元素，会默认设置为元素类型的默认值;</p>
+</li>
+</ol>
+<p><strong>第二种方式如下:</strong></p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">list <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token comment">// [0 0 0 0 0]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol>
+<li><p>该方式会分别把 len 和 cap 设置为 5和10，同样会设置5个零值作为元素;</p>
+</li>
+<li><p>不过需要保证 cap &gt;= len，否则会panic;</p>
+</li>
+<li><p>在index为[len:cap]的范围内，虽然已经分配了内存，但是逻辑意义上并不存在该元素，直接访问会panic，报数组越界错误;</p>
+</li>
+<li><p>在index为[0:len]的范围内，可以正常访问，只不过会是元素类型的零值;</p>
+</li>
+</ol>
+<h3 id="3-初始化且赋值"><a href="#3-初始化且赋值" class="headerlink" title="3.初始化且赋值"></a><u>3.初始化且赋值</u></h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">list <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol>
+<li>该方式可以在初始化的同时直接赋值元素;</li>
+<li>并且初始的 len 和 cap 均为元素的数量;</li>
+</ol>
+<p>Slice 的初始化源码位于<code>runtime/slice.go</code>文件中的<code>makeslice()</code>方法中:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 初始化切片,返回切片的指针</span>
+<span class="token comment">// 参数: 切片元素类型，len，cap</span>
+<span class="token keyword">func</span> <span class="token function">makeslice</span><span class="token punctuation">(</span>et <span class="token operator">*</span>_type<span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">,</span> <span class="token builtin">cap</span> <span class="token builtin">int</span><span class="token punctuation">)</span> unsafe<span class="token punctuation">.</span>Pointer <span class="token punctuation">{</span>
+  <span class="token comment">// 1. 根据元素类型所占字节大小,以及cap(要初始化的容量数量)计算出需要分配的内存大小</span>
+  <span class="token comment">//    mem = typeSize * cap</span>
+  mem<span class="token punctuation">,</span> overflow <span class="token operator">:=</span> math<span class="token punctuation">.</span><span class="token function">MulUintptr</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">,</span> <span class="token function">uintptr</span><span class="token punctuation">(</span><span class="token builtin">cap</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// 2. 如果以下条件成立,则直接panic</span>
+  <span class="token comment">// 如果要分配的内存超负荷</span>
+  <span class="token comment">// 如果len超过cap</span>
+  <span class="token comment">// 如果len为负数</span>
+  <span class="token keyword">if</span> overflow <span class="token operator">||</span> mem <span class="token operator">&gt;</span> maxAlloc <span class="token operator">||</span> <span class="token builtin">len</span> <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">||</span> <span class="token builtin">len</span> <span class="token operator">&gt;</span> <span class="token builtin">cap</span> <span class="token punctuation">{</span>
+    mem<span class="token punctuation">,</span> overflow <span class="token operator">:=</span> math<span class="token punctuation">.</span><span class="token function">MulUintptr</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">,</span> <span class="token function">uintptr</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> overflow <span class="token operator">||</span> mem <span class="token operator">&gt;</span> maxAlloc <span class="token operator">||</span> <span class="token builtin">len</span> <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+      <span class="token function">panicmakeslicelen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">panicmakeslicecap</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 3. 步入mallocgc,进行内存分配以及切片初始化</span>
+  <span class="token keyword">return</span> <span class="token function">mallocgc</span><span class="token punctuation">(</span>mem<span class="token punctuation">,</span> et<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h1 id="5-切片截取"><a href="#5-切片截取" class="headerlink" title="5.切片截取"></a><u>5.切片截取</u></h1><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/common/slice-截取.png" style="zoom:40%;"></p>
+<p>Slice 的截取操作本质上也是引用传递，因为截取出来的新的 Slice 依然引用了同一片内存空间，只是所引内存空间起始位置有所不同，以及 len 和 cap 会有所变动;</p>
+<p>我们可以通过切片索引的方式对其进行截取，如 s[start:end]格式，其实start和end分别表示要截取的首部和尾部索引;</p>
+<p><strong>切片截取规则:</strong></p>
+<ol>
+<li>左闭右开，比如 <code>[start:end]</code> 表示截取范围为 start ~ (end-1) 的元素;</li>
+<li>截取的左边界和有边界索引都是可以省略的，如左边界缺省则默认为0，<code>[:end]</code> 等同于 <code>[0:end]</code>;</li>
+<li>右边界缺省则取切片的len长度,<code>[start:]</code> 等同于 <code>[start:len(s)]</code></li>
+<li>左右边界同时缺省则表示截取完整的切片 <code>[:]</code> 等同于 <code>[0:len(s)]</code></li>
+<li>产生的新切片的 len = (end - start)</li>
+<li>产生的新切片的 cap = (oldcap - start)</li>
+</ol>
+<p>下面给出一些截取示例:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">}</span>
+
+<span class="token comment">// 截取索引从0~4的元素</span>
+ns <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">]</span>
+ns <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token comment">// [1,2,3,4,5] len=5 cap=9</span>
+
+<span class="token comment">// 截取索引5后面的所有元素</span>
+ns <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">:</span><span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">]</span>
+ns <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment">// [6,7,8,9] len=4 cap=4</span>
+
+<span class="token comment">// 截取索引从2~7的元素</span>
+ns <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token comment">// [3,4,5,6,7,8] len=6 cap=7</span>
+
+<span class="token comment">// 截取s的所有元素，形成一个新的切片</span>
+ns <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">]</span>
+ns <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment">// [1,2,3,4,5,6,7,8,9] len=9 cap=9</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h1 id="6-操作元素"><a href="#6-操作元素" class="headerlink" title="6.操作元素"></a><u>6.操作元素</u></h1><p>下面介绍如何向 Slice 中添加元素，可以通过<code>append()</code>内置函数，在指定的 Slice 的末尾追加n个元素,并且返回一个新的切片。</p>
+<h3 id="1-追加元素"><a href="#1-追加元素" class="headerlink" title="1.追加元素"></a><u>1.追加元素</u></h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">list <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">}</span> <span class="token comment">// [2,3,4] len=3 cap=3</span>
+list <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token comment">// [2,3,4,5] len=4 cap=6</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>list初始化设置3个元素，所以 len 和 cap 均为3;</p>
+<p>通过<code>append()</code>在list末尾追加一个元素，len + 1，并且由于 cap 容量已经不足，所以会进行扩容为原来的2倍。</p>
+<h3 id="2-插入到index位置"><a href="#2-插入到index位置" class="headerlink" title="2.插入到index位置"></a><u>2.插入到index位置</u></h3><p>如果想对 Slice 中的某一个索引位置进行添加元素，如下: 将元素插入到索引为2的位置</p>
+<ul>
+<li><p>第一种方式: 使用<code>append()</code>拼接</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">list <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">}</span> <span class="token comment">// [2,3,5,6,7]</span>
+index <span class="token operator">:=</span> <span class="token number">2</span> <span class="token comment">// 要插入的位置</span>
+elem <span class="token operator">:=</span> <span class="token number">4</span> <span class="token comment">// 要插入的元素</span>
+list <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>list<span class="token punctuation">[</span><span class="token punctuation">:</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span>elem<span class="token punctuation">}</span><span class="token punctuation">,</span> list<span class="token punctuation">[</span>index<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token operator">...</span><span class="token punctuation">)</span><span class="token operator">...</span><span class="token punctuation">)</span> <span class="token comment">//[2,3,4,5,6,7]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>看起来稍微有点复杂，下面我们来解释一下思路:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// [2,3,5,6,7]</span>
+<span class="token comment">// 现在要将 4 插入到索引为 2 的位置,也就是[2,3]和[5,6,7]之间</span>
+<span class="token comment">// 那么我们只需要截取获取[2,3]以及[5,6,7]这两个切片，再将2转为[2]切片拼接到一起即可</span>
+
+left <span class="token operator">:=</span> list<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token comment">// 获取[2,3]</span>
+val <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">}</span> <span class="token comment">//获取[4]</span>
+right <span class="token operator">:=</span> list<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment">// 获取[5,6,7]</span>
+
+list <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>left<span class="token punctuation">,</span><span class="token function">append</span><span class="token punctuation">(</span>val<span class="token punctuation">,</span>right<span class="token operator">...</span><span class="token punctuation">)</span><span class="token operator">...</span><span class="token punctuation">)</span> <span class="token comment">// 将这三个切片，按顺序拼接到一起，形成一个新的切片</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>第二种方式: 使用<code>copy()</code>移位</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">list <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">}</span> <span class="token comment">// [2,3,5,6,7]</span>
+index <span class="token operator">:=</span> <span class="token number">2</span> <span class="token comment">// 要插入的位置</span>
+elem <span class="token operator">:=</span> <span class="token number">4</span> <span class="token comment">// 要插入的元素</span>
+
+<span class="token comment">// 预留一个位置给新元素，防止cap不够用</span>
+list <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">//[2,3,5,6,7,0]</span>
+<span class="token comment">// 使用copy函数,将5,6,7元素进行后移一位</span>
+<span class="token function">copy</span><span class="token punctuation">(</span>list<span class="token punctuation">[</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span> list<span class="token punctuation">[</span>index<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// [2,3,0,5,6,7]</span>
+<span class="token comment">// 设置index位置元素</span>
+list<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> elem <span class="token comment">// [2 3 4 5 6 7]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h3 id="3-删除元素"><a href="#3-删除元素" class="headerlink" title="3.删除元素"></a><u>3.删除元素</u></h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 根据index删除元素</span>
+list <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">}</span> <span class="token comment">// [2,3,5,6,7]</span>
+index <span class="token operator">:=</span> <span class="token number">3</span> <span class="token comment">//要删除的元素索引</span>
+list <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>list<span class="token punctuation">[</span><span class="token punctuation">:</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span>list<span class="token punctuation">[</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token operator">...</span><span class="token punctuation">)</span> <span class="token comment">// [2,3,5,7]</span>
+
+<span class="token comment">// 删除头部元素</span>
+list <span class="token operator">=</span> list<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+
+<span class="token comment">// 删除末尾元素</span>
+list <span class="token operator">=</span> list<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token function">len</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>
+
+<span class="token comment">// 删除所有元素</span>
+list <span class="token operator">=</span> list<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>删除也可以使用<code>copy()</code>来实现,只是相对稍微复杂一些:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">list <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">}</span> <span class="token comment">// [2,3,5,6,7]</span>
+index <span class="token operator">:=</span> <span class="token number">3</span>
+<span class="token comment">// 将要删除的索引位置之后的元素，向前移动一位，覆盖掉要删除的元素，此时最后一个元素就是无效的元素。</span>
+<span class="token function">copy</span><span class="token punctuation">(</span>list<span class="token punctuation">[</span>index<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span>list<span class="token punctuation">[</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">//[2,3,5,7,7]</span>
+<span class="token comment">// 删除最后一个无效元素</span>
+list <span class="token operator">=</span> list<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token function">len</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token comment">// [2,3,5,7]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h1 id="7-切片拷贝"><a href="#7-切片拷贝" class="headerlink" title="7.切片拷贝"></a><u>7.切片拷贝</u></h1><p>Slice 的拷贝分为浅拷贝和深拷贝。</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">}</span> <span class="token comment">//0x140000143c0</span>
+
+<span class="token comment">// 赋值传递</span>
+s1 <span class="token operator">:=</span> s <span class="token comment">//0x140000143c0</span>
+
+<span class="token comment">// 切片截取</span>
+s2 <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment">//0x140000143c0</span>
+
+<span class="token comment">// 方法传递</span>
+<span class="token function">fn1</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token comment">//0x140000143c0</span>
+
+<span class="token keyword">func</span> <span class="token function">fn1</span><span class="token punctuation">(</span>list <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如上所示，像我们之前介绍的切片截取、方法传递、赋值传递等都属于浅拷贝，<code>array</code>所指向的地址可能指向相同的区域;</p>
+<p>深拷贝是指会额外创建出一块和原 Slice 容量大小相等的内存空间，并且将原 Slice 中的元素拷贝到新创建好的空间，两个 Slice 之间完全独立;</p>
+<p>如果想进行深拷贝，则需要通过<code>copy()</code>函数来进行拷贝:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">}</span>
+<span class="token comment">// 创建一个容量相等的新切片</span>
+news <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">// 通过copy函数，将s的元素拷贝到news中</span>
+<span class="token function">copy</span><span class="token punctuation">(</span>news<span class="token punctuation">,</span> s<span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%p %v \n"</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> s<span class="token punctuation">)</span> <span class="token comment">// 0x140000b8030 [1 2 3 4 5 6]</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%p %v \n"</span><span class="token punctuation">,</span> news<span class="token punctuation">,</span> news<span class="token punctuation">)</span> <span class="token comment">// 0x140000b8060 [1 2 3 4 5 6] </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h1 id="8-切片扩容"><a href="#8-切片扩容" class="headerlink" title="8.切片扩容"></a><u>8.切片扩容</u></h1><p>通过上述的学习，我们知道了 Slice 会利用一块连续的内存空间来存储元素，但是每次分配的空间(cap)是有限的，而随着元素的不断添加，内存空间将不够使用，所以这个时候将会产生切片的扩容。</p>
+<p>触发条件: 当 Slice 的 len 与 cap 相等时，则表示容量已经用完，需要进行扩容; 并且扩容的容量是原来 Slice 的两倍;</p>
+<p>切片扩容的详细流程如下:</p>
+<ol>
+<li>如果新切片cap小于旧切片的cap，则会产生panic(但是通常不会发生该情况);</li>
+<li>如果切片的元素类型所占字节为0,则无需分配内存空间;</li>
+<li>扩容的核心就是计算新切片的容量大小(cap)逻辑如下:<ol>
+<li>触发扩容操作时，会产生一个cap的预期值，表示新容量大小，公式为:<code>oldcap + 添加的元素数量</code>;</li>
+<li>假设添加一个元素时触发了扩容机制，那么预期值则为<code>oldcap + 1</code>，主要是因为一次写入可能写入n多个元素;</li>
+<li>默认为新容量为旧容量的两倍，但是具体会分配多少需要根据预期值而分配，有以下规则:<ol>
+<li>如果预期值大于 oldcap*2，这表示即使扩容两倍也依然不够使用，需要分配更大的内存空间，直接以预期值为新容量;</li>
+<li>如果预期值小于 oldcap*2，则判断 oldcap 是否大于256:<ol>
+<li>如果oldcap 小于 256，则直接采用 oldcap *2 作为新容量;</li>
+<li>如果oldcap 大于 256，则会将默认扩容2倍过渡为扩容1.25倍，在一个循环内部，对oldcap进行递增，每次增量为<code>oldcap * 1.25 + 192</code>，直到大于预期值后，使用该值作为新切片的cap;</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>计算出新切片的cap容量后，使用元素类型大小 * cap得出所需要的内存大小，然后基于内存分配单元的等级制度，进行推算填充，得到实际所需要申请的内存空间大小;</li>
+<li>有了实际所需要分配的内存大小后，通过<code>mallocgc()</code>分配内存并且初始化切片;</li>
+<li>然后通过<code>memmove()</code>将旧切片中的内容拷贝到扩容后的新切片中;</li>
+<li>返回新切片;</li>
+</ol>
+<p>切片扩容流程源码位于<code>runtime/slice.go</code>文件中的<code>growslice</code>方法</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token comment">// 切片扩容方法,扩容后返回一个新的切片</span>
+<span class="token comment">// et: 元素类型</span>
+<span class="token comment">// old：旧切片</span>
+<span class="token comment">// cap：新切片所需要的容量大小预期值 (oldcap + 添加的元素数量)</span>
+<span class="token keyword">func</span> <span class="token function">growslice</span><span class="token punctuation">(</span>et <span class="token operator">*</span>_type<span class="token punctuation">,</span> old slice<span class="token punctuation">,</span> <span class="token builtin">cap</span> <span class="token builtin">int</span><span class="token punctuation">)</span> slice <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> raceenabled <span class="token punctuation">{</span>
+    callerpc <span class="token operator">:=</span> <span class="token function">getcallerpc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">racereadrangepc</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span>array<span class="token punctuation">,</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token operator">*</span><span class="token function">int</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callerpc<span class="token punctuation">,</span> abi<span class="token punctuation">.</span><span class="token function">FuncPCABIInternal</span><span class="token punctuation">(</span>growslice<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> msanenabled <span class="token punctuation">{</span>
+    <span class="token function">msanread</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span>array<span class="token punctuation">,</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token operator">*</span><span class="token function">int</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> asanenabled <span class="token punctuation">{</span>
+    <span class="token function">asanread</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span>array<span class="token punctuation">,</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token operator">*</span><span class="token function">int</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 1. 新切片的cap必须大于旧切片的cap</span>
+  <span class="token keyword">if</span> <span class="token builtin">cap</span> <span class="token operator">&lt;</span> old<span class="token punctuation">.</span><span class="token builtin">cap</span> <span class="token punctuation">{</span>
+    <span class="token function">panic</span><span class="token punctuation">(</span><span class="token function">errorString</span><span class="token punctuation">(</span><span class="token string">"growslice: cap out of range"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 2. 如果元素类型大小为0，则无需分配内存，直接返回</span>
+  <span class="token comment">// 返回一个array指向0的切片</span>
+  <span class="token keyword">if</span> et<span class="token punctuation">.</span>size <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> slice<span class="token punctuation">{</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>zerobase<span class="token punctuation">)</span><span class="token punctuation">,</span> old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token punctuation">,</span> <span class="token builtin">cap</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// 3. 计算扩容后的切片实际要分配的cap大小</span>
+  newcap <span class="token operator">:=</span> old<span class="token punctuation">.</span><span class="token builtin">cap</span>
+  <span class="token comment">// 默认要扩容的容量大小: 旧切片的容量 * 2</span>
+  doublecap <span class="token operator">:=</span> newcap <span class="token operator">+</span> newcap
+  <span class="token keyword">if</span> <span class="token builtin">cap</span> <span class="token operator">&gt;</span> doublecap <span class="token punctuation">{</span>
+    <span class="token comment">// 如果预期值要大于默认扩容的两倍容量，表示既然扩容两倍依然空间不够使用，则直接使用预期值作为实际要分配的cap</span>
+    newcap <span class="token operator">=</span> <span class="token builtin">cap</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 如果预期值小于默认扩容的两倍容量，则判断旧容量是否大于256</span>
+    <span class="token keyword">const</span> threshold <span class="token operator">=</span> <span class="token number">256</span> <span class="token comment">// 阈值</span>
+    <span class="token keyword">if</span> old<span class="token punctuation">.</span><span class="token builtin">cap</span> <span class="token operator">&lt;</span> threshold <span class="token punctuation">{</span>
+      <span class="token comment">// 如果旧容量小于256,则直接使用 (旧容量 * 2) 作为新容量</span>
+      newcap <span class="token operator">=</span> doublecap
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 如果旧容量 &gt; 256,则对旧容量进行循环增量</span>
+      <span class="token comment">// 每次增量值为: 旧容量 * 0.25 + 192(threshold * 3 / 4)</span>
+      <span class="token comment">// 直到增量到大于预期值，然后使用该值作为新容量</span>
+      <span class="token keyword">for</span> <span class="token number">0</span> <span class="token operator">&lt;</span> newcap <span class="token operator">&amp;&amp;</span> newcap <span class="token operator">&lt;</span> <span class="token builtin">cap</span> <span class="token punctuation">{</span>
+        newcap <span class="token operator">+=</span> <span class="token punctuation">(</span>newcap <span class="token operator">+</span> <span class="token number">3</span><span class="token operator">*</span>threshold<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">4</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">if</span> newcap <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+        newcap <span class="token operator">=</span> <span class="token builtin">cap</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">var</span> overflow <span class="token builtin">bool</span>
+  <span class="token keyword">var</span> lenmem<span class="token punctuation">,</span> newlenmem<span class="token punctuation">,</span> capmem <span class="token builtin">uintptr</span>
+  <span class="token comment">// 基于新切片的cap，计算整个切片所需要使用的内存大小 capmem</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 如果元素类型所占字节大小为1，则新容量为 1 * newcap.</span>
+    <span class="token comment">// 同时会针对 span class 进行取整</span>
+    <span class="token keyword">case</span> et<span class="token punctuation">.</span>size <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+    lenmem <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token punctuation">)</span>
+    newlenmem <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span><span class="token builtin">cap</span><span class="token punctuation">)</span>
+    capmem <span class="token operator">=</span> <span class="token function">roundupsize</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>newcap<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    overflow <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>newcap<span class="token punctuation">)</span> <span class="token operator">&gt;</span> maxAlloc
+    newcap <span class="token operator">=</span> <span class="token function">int</span><span class="token punctuation">(</span>capmem<span class="token punctuation">)</span>
+    <span class="token comment">// 如果元素类型是指针类型,则根据指针占用空间结合元素个数计算空间大小</span>
+    <span class="token keyword">case</span> et<span class="token punctuation">.</span>size <span class="token operator">==</span> goarch<span class="token punctuation">.</span>PtrSize<span class="token punctuation">:</span>
+    lenmem <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token punctuation">)</span> <span class="token operator">*</span> goarch<span class="token punctuation">.</span>PtrSize
+    newlenmem <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span><span class="token builtin">cap</span><span class="token punctuation">)</span> <span class="token operator">*</span> goarch<span class="token punctuation">.</span>PtrSize
+    capmem <span class="token operator">=</span> <span class="token function">roundupsize</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>newcap<span class="token punctuation">)</span> <span class="token operator">*</span> goarch<span class="token punctuation">.</span>PtrSize<span class="token punctuation">)</span>
+    overflow <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>newcap<span class="token punctuation">)</span> <span class="token operator">&gt;</span> maxAlloc<span class="token operator">/</span>goarch<span class="token punctuation">.</span>PtrSize
+    newcap <span class="token operator">=</span> <span class="token function">int</span><span class="token punctuation">(</span>capmem <span class="token operator">/</span> goarch<span class="token punctuation">.</span>PtrSize<span class="token punctuation">)</span>
+    <span class="token comment">// 倘若元素大小为 2 的指数，则直接通过位运算进行空间大小的计算</span>
+    <span class="token keyword">case</span> <span class="token function">isPowerOfTwo</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">var</span> shift <span class="token builtin">uintptr</span>
+    <span class="token keyword">if</span> goarch<span class="token punctuation">.</span>PtrSize <span class="token operator">==</span> <span class="token number">8</span> <span class="token punctuation">{</span>
+      shift <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span><span class="token function">Ctz64</span><span class="token punctuation">(</span><span class="token function">uint64</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">63</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      shift <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span><span class="token function">Ctz32</span><span class="token punctuation">(</span><span class="token function">uint32</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">31</span>
+    <span class="token punctuation">}</span>
+    lenmem <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> shift
+    newlenmem <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span><span class="token builtin">cap</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> shift
+    capmem <span class="token operator">=</span> <span class="token function">roundupsize</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>newcap<span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> shift<span class="token punctuation">)</span>
+    overflow <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>newcap<span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token punctuation">(</span>maxAlloc <span class="token operator">&gt;&gt;</span> shift<span class="token punctuation">)</span>
+    newcap <span class="token operator">=</span> <span class="token function">int</span><span class="token punctuation">(</span>capmem <span class="token operator">&gt;&gt;</span> shift<span class="token punctuation">)</span>
+    <span class="token comment">// 根据元素大小乘以元素个数</span>
+    <span class="token comment">// 再针对 span class 进行取整</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+    lenmem <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token punctuation">)</span> <span class="token operator">*</span> et<span class="token punctuation">.</span>size
+    newlenmem <span class="token operator">=</span> <span class="token function">uintptr</span><span class="token punctuation">(</span><span class="token builtin">cap</span><span class="token punctuation">)</span> <span class="token operator">*</span> et<span class="token punctuation">.</span>size
+    capmem<span class="token punctuation">,</span> overflow <span class="token operator">=</span> math<span class="token punctuation">.</span><span class="token function">MulUintptr</span><span class="token punctuation">(</span>et<span class="token punctuation">.</span>size<span class="token punctuation">,</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>newcap<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    capmem <span class="token operator">=</span> <span class="token function">roundupsize</span><span class="token punctuation">(</span>capmem<span class="token punctuation">)</span>
+    newcap <span class="token operator">=</span> <span class="token function">int</span><span class="token punctuation">(</span>capmem <span class="token operator">/</span> et<span class="token punctuation">.</span>size<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 内存分配是否超过上限</span>
+  <span class="token keyword">if</span> overflow <span class="token operator">||</span> capmem <span class="token operator">&gt;</span> maxAlloc <span class="token punctuation">{</span>
+    <span class="token function">panic</span><span class="token punctuation">(</span><span class="token function">errorString</span><span class="token punctuation">(</span><span class="token string">"growslice: cap out of range"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 声明一个指针，指向分配好的内存空间,然后交给新切片</span>
+
+  <span class="token comment">// 4.分配内存</span>
+  <span class="token keyword">var</span> p unsafe<span class="token punctuation">.</span>Pointer
+  <span class="token keyword">if</span> et<span class="token punctuation">.</span>ptrdata <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 如果元素类型没有指针</span>
+    p <span class="token operator">=</span> <span class="token function">mallocgc</span><span class="token punctuation">(</span>capmem<span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+    <span class="token function">memclrNoHeapPointers</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> newlenmem<span class="token punctuation">)</span><span class="token punctuation">,</span> capmem<span class="token operator">-</span>newlenmem<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 分配capmem大小的内存，并且指定元素类型，以及标识这块内存需要被GC扫描</span>
+    p <span class="token operator">=</span> <span class="token function">mallocgc</span><span class="token punctuation">(</span>capmem<span class="token punctuation">,</span> et<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> lenmem <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> writeBarrier<span class="token punctuation">.</span>enabled <span class="token punctuation">{</span>
+      <span class="token function">bulkBarrierPreWriteSrcOnly</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">uintptr</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span>array<span class="token punctuation">)</span><span class="token punctuation">,</span> lenmem<span class="token operator">-</span>et<span class="token punctuation">.</span>size<span class="token operator">+</span>et<span class="token punctuation">.</span>ptrdata<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 5.通过memmove，将旧切片中的元素拷贝到刚分配好的内存地址中</span>
+  <span class="token function">memmove</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> old<span class="token punctuation">.</span>array<span class="token punctuation">,</span> lenmem<span class="token punctuation">)</span>
+  <span class="token comment">// 6. 返回一个新的slice，array指向刚分配并且完成数据拷贝的地址</span>
+  <span class="token keyword">return</span> slice<span class="token punctuation">{</span>p<span class="token punctuation">,</span> old<span class="token punctuation">.</span><span class="token builtin">len</span><span class="token punctuation">,</span> newcap<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+<h1 id="9-测试题"><a href="#9-测试题" class="headerlink" title="9.测试题"></a><u>9.测试题</u></h1><h3 id="问题1"><a href="#问题1" class="headerlink" title="问题1"></a>问题1</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+s <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v len=%d cap=%d"</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>初始化切片，len与cap均为10;</li>
+<li>由于len为10，则会初始化10个对应元素的零值插入切片中;</li>
+<li>向追加一个元素，由于len与cap相等，则触发扩容;</li>
+<li>扩容之后将元素添加到新的切片中，此时len=11，cap=20;</li>
+</ol>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">10</span><span class="token punctuation">]</span> <span class="token builtin">len</span><span class="token operator">=</span><span class="token number">11</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">20</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+s <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v len=%d cap=%d"</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>初始化切片，len为0，cap为10;</li>
+<li>由于len为0，所以不会产生元素零值;</li>
+<li>向追加一个元素，此时len&lt;cap，所以也不会产生扩容;</li>
+</ol>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span> <span class="token builtin">len</span><span class="token operator">=</span><span class="token number">1</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题3"><a href="#问题3" class="headerlink" title="问题3"></a>问题3</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span>  
+s <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v len=%d cap=%d"</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>初始化切片，len为10，cap为11;</li>
+<li>会产生10个元素零值插入到切片中;</li>
+<li>向切片中插入元素，此时len&lt;cap，还有空位所以不会扩容;</li>
+</ol>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">10</span><span class="token punctuation">]</span> <span class="token builtin">len</span><span class="token operator">=</span><span class="token number">11</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">11</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题4"><a href="#问题4" class="headerlink" title="问题4"></a>问题4</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span>  
+s1 <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v len=%d cap=%d"</span><span class="token punctuation">,</span> s1<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>初始化切片，len为10，cap为12;</li>
+<li>产生10个元素零值插入到切片中;</li>
+<li>截取index从8到最末尾的元素;</li>
+<li>只有索引为8、9的位置有元素，所以s1的len为2</li>
+<li>s1的cap为4(oldcap - 8);</li>
+</ol>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token builtin">len</span><span class="token operator">=</span><span class="token number">2</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">4</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题5"><a href="#问题5" class="headerlink" title="问题5"></a>问题5</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span>  
+s1 <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">:</span><span class="token number">9</span><span class="token punctuation">]</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v len=%d cap=%d"</span><span class="token punctuation">,</span> s1<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token builtin">len</span><span class="token operator">=</span><span class="token number">1</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">4</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题6"><a href="#问题6" class="headerlink" title="问题6"></a>问题6</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span>  
+s1 <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+s1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v "</span><span class="token punctuation">,</span>s<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>s1[0]所指向的内存就是s[8]，所以修改s1[0]就等同于修改了s[8]元素的值;</li>
+</ol>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token number">0</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题7"><a href="#问题7" class="headerlink" title="问题7"></a>问题7</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span>  
+v <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>由于s的len为10，所以可以访问的最大索引位置为9(10-1)，如果超过9则会数组越界导致panic;</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token builtin">panic</span><span class="token punctuation">:</span> runtime <span class="token builtin">error</span><span class="token punctuation">:</span> index out of <span class="token keyword">range</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span> with length <span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题8"><a href="#问题8" class="headerlink" title="问题8"></a>问题8</h3><p>以下案例是否会越界?</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span>  
+s1 <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+s1 <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">}</span><span class="token operator">...</span><span class="token punctuation">)</span>
+v <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>初始化切片s,len为10，cap为12;</li>
+<li>截取s的[8:]范围形成一个新的切片，len为2，cap为4;</li>
+<li>向s1切片追加3个元素，由于空间不够，所以会将s1进行扩容;</li>
+<li>s1扩容后形成一个新切片，len为5，cap为8，并且和s完全独立;</li>
+<li>此时s的len依然为10，所以访问s[10]会直接越界;</li>
+</ol>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token builtin">panic</span><span class="token punctuation">:</span> runtime <span class="token builtin">error</span><span class="token punctuation">:</span> index out of <span class="token keyword">range</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span> with length <span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题9"><a href="#问题9" class="headerlink" title="问题9"></a>问题9</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span>  
+s1 <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+<span class="token function">changeSlice</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v"</span><span class="token punctuation">,</span>s<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">changeSlice</span><span class="token punctuation">(</span>s1 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  s1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token number">0</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题10"><a href="#问题10" class="headerlink" title="问题10"></a>问题10</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span>  
+s1 <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+<span class="token function">changeSlice</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v len=%d cap=%d"</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v len=%d cap=%d"</span><span class="token punctuation">,</span> s1<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">changeSlice</span><span class="token punctuation">(</span>s1 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  s1 <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>将一个切片传入方法内进行append()追加操作的话，是不会影响到外部的引用的;</li>
+<li>如上案例所示，在方法内进行追加元素，其实是对外部的<code>s[10]</code>和<code>s1[2]</code>内存进行添加;</li>
+<li>但是s的len为10，以及s的len为2，是访问不到s[10]或者s1[2]的元素的，尽管这个元素所在内存中有实际数据，但并不属于外部的切片元素;</li>
+</ol>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token builtin">len</span><span class="token operator">=</span><span class="token number">10</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">12</span>
+<span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token builtin">len</span><span class="token operator">=</span><span class="token number">2</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">4</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这个问题可能稍微有点绕，需要多多思考;</p>
+<hr>
+
+<h3 id="问题11"><a href="#问题11" class="headerlink" title="问题11"></a>问题11</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">}</span>
+s <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>s<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token operator">...</span><span class="token punctuation">)</span> <span class="token comment">//[0 1 3 4]</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%v len=%d cap=%d"</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+v <span class="token operator">:=</span> s<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> 
+<span class="token comment">// 是否会数组访问越界</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>会产生越界，因为s最终的len为4;</li>
+</ol>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">1</span> <span class="token number">3</span> <span class="token number">4</span><span class="token punctuation">]</span> <span class="token builtin">len</span><span class="token operator">=</span><span class="token number">4</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">5</span><span class="token builtin">panic</span><span class="token punctuation">:</span> runtime <span class="token builtin">error</span><span class="token punctuation">:</span> index out of <span class="token keyword">range</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> with length <span class="token number">4</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+
+<h3 id="问题12"><a href="#问题12" class="headerlink" title="问题12"></a>问题12</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go">s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">512</span><span class="token punctuation">)</span>  
+s <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"len=%d cap=%d"</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>由于切片原容量为512，已经超过了256的阈值;</li>
+<li>所以新切片的容量计算公式为 <code>512 + (512 + 3 * 256) / 4</code> = 832;</li>
+<li>然后根据切片元素类型所占字节 <em> 新容量得出所需要的内存空间大小: 8 byte(int) </em> 832 = 6656 byte;</li>
+<li>再进一步，结合分配内存的 mallocgc 流程，为了更好地进行内存空间对其，golang 允许产生一些有限的内部碎片，对拟申请空间的 object 进行大小补齐，最终 6656 byte 会被补齐到 6784 byte 的这一档次.</li>
+<li>再终，在 mallocgc 流程中，我们为扩容后的新切片分配到了 6784 byte 的空间，于是扩容后实际的新容量为 cap = 6784/8 = 848;</li>
+</ol>
+<p>答案如下:</p>
+<pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token builtin">len</span><span class="token operator">=</span><span class="token number">513</span> <span class="token builtin">cap</span><span class="token operator">=</span><span class="token number">848</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zlx2019.github.io">Zero</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zlx2019.github.io/article/d8e2378e.html">https://zlx2019.github.io/article/d8e2378e.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zlx2019.github.io" target="_blank">Zero(˶˚ ᗨ ˚˶)</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Go/">Go</a></div><div class="post_share"><div class="social-share" data-image="/img/logo/Go-logo.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/reward/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/reward/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/reward/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/reward/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/c8a2cfce.html" title="Go核心篇章-Map原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" onerror="onerror=null;src='/img/loadError.jpeg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Go核心篇章-Map原理</div></div></a></div><div class="next-post pull-right"><a href="/article/623023ce.html" title="Go核心篇章-Mutex原理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" onerror="onerror=null;src='/img/loadError.jpeg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Go核心篇章-Mutex原理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/article/35aea58a.html" title="Go【七】Channel"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-09</div><div class="title">Go【七】Channel</div></div></a></div><div><a href="/article/5f275f0a.html" title="Go【二】容器集合"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-27</div><div class="title">Go【二】容器集合</div></div></a></div><div><a href="/article/efc238b2.html" title="Go【五】文件操作"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-28</div><div class="title">Go【五】文件操作</div></div></a></div><div><a href="/article/d1f817d2.html" title="Go【八】context"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-10</div><div class="title">Go【八】context</div></div></a></div><div><a href="/article/324b991b.html" title="Go【十】泛型"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-11</div><div class="title">Go【十】泛型</div></div></a></div><div><a href="/article/905697b5.html" title="Go【三】字符处理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-28</div><div class="title">Go【三】字符处理</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Zero</div><div class="author-info__description">欲买桂花同载酒<br/>终不似,少年游</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zlx2019"><i class="fab fa-github"></i><span>前往Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://res.abeim.cn/api/qq/?qq=1143967454" target="_blank" title="QQ"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-QQ"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/397253487" target="_blank" title="BiliBili"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://github.com/zlx2019" target="_blank" title="Github"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-github"></use></svg></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-text">1.前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%BB%93%E6%9E%84%E5%8E%9F%E7%90%86"><span class="toc-text">2.结构原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%A0%B8%E5%BF%83%E7%BB%93%E6%9E%84"><span class="toc-text">3.核心结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">4.初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%A3%B0%E6%98%8E%E4%BD%86%E4%B8%8D%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">1.声明但不初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">2.初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%94%E8%B5%8B%E5%80%BC"><span class="toc-text">3.初始化且赋值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%88%87%E7%89%87%E6%88%AA%E5%8F%96"><span class="toc-text">5.切片截取</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%93%8D%E4%BD%9C%E5%85%83%E7%B4%A0"><span class="toc-text">6.操作元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BF%BD%E5%8A%A0%E5%85%83%E7%B4%A0"><span class="toc-text">1.追加元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8F%92%E5%85%A5%E5%88%B0index%E4%BD%8D%E7%BD%AE"><span class="toc-text">2.插入到index位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0"><span class="toc-text">3.删除元素</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%88%87%E7%89%87%E6%8B%B7%E8%B4%9D"><span class="toc-text">7.切片拷贝</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%88%87%E7%89%87%E6%89%A9%E5%AE%B9"><span class="toc-text">8.切片扩容</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E6%B5%8B%E8%AF%95%E9%A2%98"><span class="toc-text">9.测试题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%981"><span class="toc-text">问题1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%982"><span class="toc-text">问题2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%983"><span class="toc-text">问题3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%984"><span class="toc-text">问题4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%985"><span class="toc-text">问题5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%986"><span class="toc-text">问题6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%987"><span class="toc-text">问题7</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%988"><span class="toc-text">问题8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%989"><span class="toc-text">问题9</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%9810"><span class="toc-text">问题10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%9811"><span class="toc-text">问题11</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%9812"><span class="toc-text">问题12</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/article/c8a2cfce.html" title="Go核心篇章-Map原理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Go核心篇章-Map原理"/></a><div class="content"><a class="title" href="/article/c8a2cfce.html" title="Go核心篇章-Map原理">Go核心篇章-Map原理</a><time datetime="2023-08-01T06:40:29.000Z" title="发表于 2023-08-01 14:40:29">2023-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/d8e2378e.html" title="Go核心篇章-Slice原理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Go核心篇章-Slice原理"/></a><div class="content"><a class="title" href="/article/d8e2378e.html" title="Go核心篇章-Slice原理">Go核心篇章-Slice原理</a><time datetime="2023-07-30T07:48:27.000Z" title="发表于 2023-07-30 15:48:27">2023-07-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/623023ce.html" title="Go核心篇章-Mutex原理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Go核心篇章-Mutex原理"/></a><div class="content"><a class="title" href="/article/623023ce.html" title="Go核心篇章-Mutex原理">Go核心篇章-Mutex原理</a><time datetime="2023-07-26T10:53:57.000Z" title="发表于 2023-07-26 18:53:57">2023-07-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/bb7ea76b.html" title="Go核心篇章-Channel原理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Go核心篇章-Channel原理"/></a><div class="content"><a class="title" href="/article/bb7ea76b.html" title="Go核心篇章-Channel原理">Go核心篇章-Channel原理</a><time datetime="2023-07-25T13:11:32.000Z" title="发表于 2023-07-25 21:11:32">2023-07-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/article/e7691b7b.html" title="Go核心篇章-GMP调度原理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo/Go-logo.png" onerror="this.onerror=null;this.src='/img/loadError.jpeg'" alt="Go核心篇章-GMP调度原理"/></a><div class="content"><a class="title" href="/article/e7691b7b.html" title="Go核心篇章-GMP调度原理">Go核心篇章-GMP调度原理</a><time datetime="2023-07-24T06:06:20.000Z" title="发表于 2023-07-24 14:06:20">2023-07-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By Zero</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script async src="//at.alicdn.com/t/c/font_3947604_tesead3g5v.js"></script><div class="aplayer no-destroy" data-id="2658354885" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false"> </div><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://dashboard.4everland.org/" style="margin-inline:5px" data-title="本站采用多线部署，备用线路托管于4EVERLAND" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-4EVERLAND-22DDDD?style=flat&amp;logo=IPFS" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 280px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/about/'|| '/about/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("https://gitcalendar.fomal.cc/api?zlx2019",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'zlx2019')
+    }
+  </script><!-- hexo injector body_end end --></body></html>
